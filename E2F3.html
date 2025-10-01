@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Producto - Parrilladas Familiares</title>
+    <style>
+        /* Estilos generales (reutilizables) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background-color: #8B0000;
+            color: white;
+            padding: 15px 0;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        /* Detalle del producto */
+        .product-detail {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 300px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+        
+        .product-info h1 {
+            color: #8B0000;
+            margin-bottom: 15px;
+        }
+        
+        .product-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B0000;
+            margin: 15px 0;
+        }
+        
+        .product-description {
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        
+        .product-specs {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        
+        .spec-item {
+            margin-bottom: 8px;
+        }
+        
+        /* Recomendaciones */
+        .recommendations {
+            margin-top: 30px;
+        }
+        
+        .recommendations h2 {
+            margin-bottom: 15px;
+            color: #8B0000;
+        }
+        
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .recommendation-card {
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        /* Estado sin recomendaciones */
+        .no-recommendations {
+            text-align: center;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            margin-top: 20px;
+            color: #666;
+        }
+        
+        /* Botones de acción */
+        .action-buttons {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background-color: #8B0000;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="nav">
+            <a href="#">← Volver al catálogo</a>
+            <a href="#">Ir a Perfil</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Escenario 1: Producto con recomendaciones -->
+        <div class="product-detail">
+            <div class="product-layout">
+                <div class="product-image">
+                    [Imagen del Producto]
+                </div>
+                
+                <div class="product-info">
+                    <h1> Lomo Vetado- 12 kg</h1>
+                    <div class="product-price">$16.000</div>
+                    
+                    <div class="product-description">
+                        Para 4-5 personas - regresadas pagas y enudada rosa
+                    </div>
+                    
+                    <div class="product-specs">
+                        <div class="spec-item"><strong>Peso:</strong> 12 kg</div>
+                        <div class="spec-item"><strong>Para:</strong> 4-5 personas</div>
+                        <div class="spec-item"><strong>Tipo:</strong> Carne de res</div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recomendaciones -->
+            <div class="recommendations">
+                <h2>Recomendaciones de Acompañamiento</h2>
+                <div class="recommendations-grid">
+                    <div class="recommendation-card">
+                        <div>Papas Fritas</div>
+                    </div>
+                    <div class="recommendation-card">
+                        <div>Ensalada</div>
+                    </div>
+                    <div class="recommendation-card">
+                        <div>Salsas</div>
+                    </div>
+                    <div class="recommendation-card">
+                        <div>Bebidas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Escenario 2: Producto sin recomendaciones -->
+        <!-- 
+        <div class="product-detail">
+            <div class="product-layout">
+                <div class="product-image">
+                    [Imagen del Producto]
+                </div>
+                
+                <div class="product-info">
+                    <h1>Nombre del Producto</h1>
+                    <div class="product-price">$XX.XXX</div>
+                    
+                    <div class="product-description">
+                        Descripción detallada del producto...
+                    </div>
+                    
+                    <div class="no-recommendations">
+                        Sin recomendaciones disponibles
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+</body>
+</html>
