@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña - Parrilladas Familiares</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Selector de Escenarios -->
+        <nav class="selector-escenarios">
+            <button class="btn-escenario activo" onclick="mostrarEscenario('solicitud')">Solicitar Recuperación</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('enlace-enviado')">Enlace Enviado</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('token-caducado')">Token Caducado</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('exito')">Contraseña Actualizada</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('nueva-password')">Nueva Contraseña</button>
+        </nav>
+
+        <!-- Escenario 1: Solicitud de Recuperación -->
+        <div id="escenario-solicitud" class="escenario activo">
+            <header class="header">
+                <h1>RECUPERAR CONTRASEÑA</h1>
+                <p>Ingresa tu correo para recibir un enlace de recuperación</p>
+            </header>
+
+            <form class="formulario">
+                <div class="campo">
+                    <input type="email" placeholder="Correo electrónico" value="eduardo@ejemplo.com">
+                </div>
+
+                <button type="button" class="btn-primario" onclick="mostrarEscenario('enlace-enviado')">
+                    ENVIAR ENLACE
+                </button>
+            </form>
+
+            <footer class="footer-form">
+                <p><a href="login.html">Volver al login</a></p>
+            </footer>
+        </div>
+
+        <!-- Escenario 2: Enlace Enviado -->
+        <div id="escenario-enlace-enviado" class="escenario">
+            <div class="mensaje-exito">
+                <div class="icono">✓</div>
+                <h2>ENLACE ENVIADO</h2>
+                <p>Se ha enviado correctamente un enlace de recuperación al correo:</p>
+                <p class="email-destacado">eduardo@ejemplo.com</p>
+                <p class="advertencia">RECUERDA QUE EL ENLACE EXPIRA EN 15 MINUTOS</p>
+                <button class="btn-primario" onclick="mostrarEscenario('nueva-password')">
+                    IR A CORREO
+                </button>
+            </div>
+        </div>
+
+        <!-- Escenario 3: Token Caducado -->
+        <div id="escenario-token-caducado" class="escenario">
+            <div class="mensaje-error">
+                <div class="icono">error</div>
+                <h2>ENLACE CADUCADO</h2>
+                <p>El enlace de recuperación ha expirado (válido por 15 minutos)</p>
+                <button class="btn-primario" onclick="mostrarEscenario('solicitud')">
+                    SOLICITAR NUEVO ENLACE
+                </button>
+            </div>
+        </div>
+
+        <!-- Escenario 4: Formulario Nueva Contraseña -->
+        <div id="escenario-nueva-password" class="escenario">
+            <header class="header">
+                <h1>RESTABLECER CONTRASEÑA</h1>
+                <p>Crea una nueva contraseña para: eduardo@ejemplo.com</p>
+            </header>
+
+            <form class="formulario">
+                <div class="campo">
+                    <input type="password" placeholder="Nueva contraseña">
+                </div>
+                
+                <div class="campo">
+                    <input type="password" placeholder="Confirmar nueva contraseña">
+                </div>
+
+                <div class="requisitos">
+                    <p><strong>Requisitos:</strong></p>
+                    <ul>
+                        <li>Mínimo 8 caracteres</li>
+                        <li>Al menos 1 número</li>
+                        <li>1 letra mayúscula</li>
+                    </ul>
+                </div>
+
+                <button type="button" class="btn-primario" onclick="mostrarEscenario('exito')">
+                    ACTUALIZAR CONTRASEÑA
+                </button>
+            </form>
+        </div>
+
+        <!-- Escenario 5: Contraseña Actualizada -->
+        <div id="escenario-exito" class="escenario">
+            <div class="mensaje-exito">
+                <div class="icono">✓</div>
+                <h2>CONTRASEÑA ACTUALIZADA</h2>
+                <p>Contraseña actualizada con éxito</p>
+                <p>Ya puedes iniciar sesión con tu nueva contraseña</p>
+                <button class="btn-primario" onclick="location.href='login.html'">
+                    IR AL LOGIN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/escenarios.js"></script>
+</body>
+</html>
