@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Parrilladas Familiares</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Selector de Escenarios -->
+        <nav class="selector-escenarios">
+            <button class="btn-escenario activo" onclick="mostrarEscenario('formulario')">Formulario Login</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('bloqueado')">Cuenta Bloqueada</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('expirada')">Sesión Expirada</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('exito')">Login Exitoso</button>
+        </nav>
+
+        <!-- Escenario 1: Formulario de Login -->
+        <div id="escenario-formulario" class="escenario activo">
+            <header class="header">
+                <h1>INICIAR SESIÓN</h1>
+            </header>
+
+            <form class="formulario">
+                <div class="campo">
+                    <input type="email" placeholder="Correo electrónico" value="eduardo@ejemplo.com">
+                </div>
+                
+                <div class="campo">
+                    <input type="password" placeholder="Contraseña" value="Contraseña1622">
+                </div>
+
+                <div class="checkbox">
+                    <input type="checkbox" id="recordar">
+                    <label for="recordar">Mantener sesión iniciada</label>
+                </div>
+
+                <button type="button" class="btn-primario" onclick="mostrarEscenario('exito')">
+                    INGRESAR
+                </button>
+            </form>
+
+            <footer class="footer-form">
+                <p><a href="recuperacion.html">Olvidé mi contraseña</a></p>
+                <p>¿No tienes cuenta? <a href="registro.html">Registrarse</a></p>
+            </footer>
+        </div>
+
+        <!-- Escenario 2: Cuenta Bloqueada -->
+        <div id="escenario-bloqueado" class="escenario">
+            <div class="mensaje-error">
+                <div class="icono">🔒</div>
+                <h2>CUENTA BLOQUEADA</h2>
+                <p>Por seguridad, tu cuenta ha sido bloqueada tras 5 intentos fallidos</p>
+                <p class="timer">Tiempo restante: <strong>59:45</strong></p>
+                <div class="botones-dobles">
+                    <button class="btn-secundario">RECIBIR AYUDA</button>
+                    <button class="btn-primario">CONTACTAR SOPORTE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Escenario 3: Sesión Expirada -->
+        <div id="escenario-expirada" class="escenario">
+            <div class="mensaje-error">
+                <div class="icono">⏰</div>
+                <h2>SESIÓN EXPIRADA</h2>
+                <p>Por seguridad, tu sesión ha caducado después de 30 minutos sin actividad</p>
+                <button class="btn-primario" onclick="mostrarEscenario('formulario')">
+                    VOLVER A INICIAR SESIÓN
+                </button>
+            </div>
+        </div>
+
+        <!-- Escenario 4: Login Exitoso -->
+        <div id="escenario-exito" class="escenario">
+            <div class="mensaje-exito">
+                <div class="icono">✓</div>
+                <h2>SESIÓN INICIADA</h2>
+                <p>Se inició correctamente la sesión</p>
+                <div class="botones-dobles">
+                    <button class="btn-secundario">IR AL CATÁLOGO</button>
+                    <button class="btn-primario">VER MI PERFIL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/escenarios.js"></script>
+</body>
+</html>
