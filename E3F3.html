@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método de Entrega - Parrilladas Familiares</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #8B0000;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .delivery-title {
+            text-align: center;
+            margin: 20px 0;
+            color: #8B0000;
+        }
+        
+        /* Opciones de entrega */
+        .delivery-options {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .option-group {
+            margin-bottom: 20px;
+        }
+        
+        .option-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .radio-option {
+            margin-bottom: 10px;
+        }
+        
+        .radio-option input {
+            margin-right: 10px;
+        }
+        
+        /* Formularios específicos */
+        .form-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        select.form-control {
+            height: 42px;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .time-slot {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .time-slot.selected {
+            background-color: #8B0000;
+            color: white;
+            border-color: #8B0000;
+        }
+        
+        /* Mensajes de error */
+        .error-message {
+            color: #d9534f;
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        /* Botones de acción */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background-color: #8B0000;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Parrilladas Familiares</h1>
+    </div>
+    
+    <div class="container">
+        <h2 class="delivery-title">Método de Entrega</h2>
+        
+        <!-- Escenario 1: Retiro en local -->
+        <div class="delivery-options">
+            <div class="option-group">
+                <span class="option-label">Tipo de entrega:</span>
+                <div class="radio-option">
+                    <input type="radio" id="delivery" name="deliveryType" value="delivery">
+                    <label for="delivery">Delivery</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="pickup" name="deliveryType" value="pickup" checked>
+                    <label for="pickup">Retiro en local</label>
+                </div>
+            </div>
+            
+            <!-- Formulario para retiro en local -->
+            <div id="pickupForm" class="form-section active">
+                <div class="form-group">
+                    <label for="branch">Selecciona sucursal:</label>
+                    <select id="branch" class="form-control">
+                        <option value="">Selecciona sucursal</option>
+                        <option value="vitacura">Vitacura</option>
+                        <option value="las-condes">Las Condes</option>
+                        <option value="africa">África</option>
+                        <option value="barcelona">Barcelona</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Selecciona hora de retiro:</label>
+                    <div class="time-slots">
+                        <div class="time-slot">15:40 hrs</div>
+                        <div class="time-slot">15:50 hrs</div>
+                        <div class="time-slot selected">16:00 hrs</div>
+                        <div class="time-slot">16:10 hrs</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Formulario para delivery -->
+            <div id="deliveryForm" class="form-section">
+                <div class="form-group">
+                    <label for="address">Ingresa la dirección correspondiente:</label>
+                    <textarea id="address" class="form-control" rows="3" placeholder="Ingresa tu dirección completa"></textarea>
+                </div>
+                
+                <div id="addressError" class="error-message">
+                    Ingresa una dirección válida
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-secondary">Volver</button>
+            <button class="btn btn-primary">Guardar</button>
+        </div>
+
+        <!-- Escenario 2: Delivery con error -->
+        <!-- 
+        <div class="delivery-options">
+            <div class="option-group">
+                <span class="option-label">Tipo de entrega:</span>
+                <div class="radio-option">
+                    <input type="radio" id="delivery2" name="deliveryType2" value="delivery" checked>
+                    <label for="delivery2">Delivery</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="pickup2" name="deliveryType2" value="pickup">
+                    <label for="pickup2">Retiro en local</label>
+                </div>
+            </div>
+            
+            <div id="deliveryForm2" class="form-section active">
+                <div class="form-group">
+                    <label for="address2">Ingresa la dirección correspondiente:</label>
+                    <textarea id="address2" class="form-control" rows="3" placeholder="Ingresa tu dirección completa">thauifhsadkhas</textarea>
+                </div>
+                
+                <div id="addressError2" class="error-message show">
+                    Ingresa una dirección válida
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-secondary">Volver</button>
+            <button class="btn btn-primary">Confirmar dirección</button>
+        </div>
+        -->
+    </div>
+
+    <script>
+        // Script básico para cambiar entre formularios
+        document.addEventListener('DOMContentLoaded', function() {
+            const deliveryRadio = document.getElementById('delivery');
+            const pickupRadio = document.getElementById('pickup');
+            const deliveryForm = document.getElementById('deliveryForm');
+            const pickupForm = document.getElementById('pickupForm');
+            
+            deliveryRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    deliveryForm.classList.add('active');
+                    pickupForm.classList.remove('active');
+                }
+            });
+            
+            pickupRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    pickupForm.classList.add('active');
+                    deliveryForm.classList.remove('active');
+                }
+            });
+            
+            // Selección de horarios
+            const timeSlots = document.querySelectorAll('.time-slot');
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    timeSlots.forEach(s => s.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
