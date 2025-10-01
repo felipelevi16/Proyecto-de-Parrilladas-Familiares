@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promociones - Parrilladas Familiares</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #8B0000;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        
+        .date-indicator {
+            background: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin: 20px 0 30px 0;
+            color: #8B0000;
+            font-size: 28px;
+        }
+        
+        /* Lista de promociones */
+        .promotions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .promotion-card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid #8B0000;
+        }
+        
+        .promotion-card.active {
+            border-left-color: #28a745;
+        }
+        
+        .promotion-card.expired {
+            border-left-color: #6c757d;
+            opacity: 0.7;
+        }
+        
+        .promotion-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .promotion-period {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .promotion-price {
+            color: #8B0000;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .promotion-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .promotion-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background-color: #8B0000;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Estados */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-expired {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .empty-promotions {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 8px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Parrilladas Familiares</h1>
+    </div>
+    
+    <!-- Indicador de fecha -->
+    <div class="date-indicator" id="currentDate">
+        Sábado 10 de junio
+    </div>
+    
+    <div class="container">
+        <h2 class="page-title">Promociones</h2>
+        
+        <!-- Escenario 1: Promoción activa durante fin de semana -->
+        <div class="promotions-list">
+            <!-- Promoción 1 activa -->
+            <div class="promotion-card active">
+                <div class="promotion-title">
+                    Finde Parrillero
+                    <span class="status-badge status-active">Activa</span>
+                </div>
+                <div class="promotion-period">
+                    Oferta disponible entre el sábado 10 y domingo 11 de junio
+                </div>
+                <div class="promotion-price">$15.000</div>
+                <div class="promotion-description">
+                    Parrillada especial para el fin de semana incluye costillar, chorizos, pollo y acompañamientos
+                </div>
+                <div class="promotion-actions">
+                    <button class="btn btn-primary">Agregar al carrito</button>
+                </div>
+            </div>
+            
+            <!-- Promoción 2 futura -->
+            <div class="promotion-card">
+                <div class="promotion-title">
+                    Oferta de Feriado
+                </div>
+                <div class="promotion-period">
+                    Oferta disponible el 12 de junio
+                </div>
+                <div class="promotion-price">$12.000</div>
+                <div class="promotion-actions">
+                    <button class="btn btn-secondary">Ver oferta</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Escenario 2: Promoción fuera de fecha -->
+        <!-- 
+        <div class="date-indicator">
+            Lunes 12 de junio
+        </div>
+        
+        <div class="promotions-list">
+            <div class="promotion-card expired">
+                <div class="promotion-title">
+                    Finde Parrillero
+                    <span class="status-badge status-expired">Expirada</span>
+                </div>
+                <div class="promotion-period">
+                    Oferta disponible entre el sábado 10 y domingo 11 de junio
+                </div>
+                <div class="promotion-price">$15.000</div>
+                <div class="promotion-description">
+                    Parrillada especial para el fin de semana incluye costillar, chorizos, pollo y acompañamientos
+                </div>
+                <div class="promotion-actions">
+                    <button class="btn btn-secondary" disabled>Agregar al carrito</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="empty-promotions">
+            <h3>No hay promociones activas en este momento</h3>
+            <p>Vuelve a revisar durante fines de semana o feriados para disfrutar de nuestras ofertas especiales.</p>
+        </div>
+        -->
+    </div>
+
+    <script>
+        // Simulación de fecha actual (para demostración)
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentDate = new Date();
+            const options = { weekday: 'long', day: 'numeric', month: 'long' };
+            document.getElementById('currentDate').textContent = 
+                currentDate.toLocaleDateString('es-ES', options);
+            
+            // Aquí iría la lógica real para verificar fechas de promociones
+            checkPromotionDates();
+        });
+        
+        function checkPromotionDates() {
+            // Lógica para verificar qué promociones están activas
+            // basándose en la fecha actual
+        }
+    </script>
+</body>
+</html>
