@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Parrilladas Familiares</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Selector de Escenarios -->
+        <nav class="selector-escenarios">
+            <button class="btn-escenario activo" onclick="mostrarEscenario('formulario')">Formulario Registro</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('exito')">Registro Exitoso</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('error')">Error Contraseña</button>
+        </nav>
+
+        <!-- Escenario 1: Formulario de Registro -->
+        <div id="escenario-formulario" class="escenario activo">
+            <header class="header">
+                <h1>PARRILLADAS FAMILIARES</h1>
+                <h2>CREAR CUENTA NUEVA</h2>
+            </header>
+
+            <form class="formulario">
+                <div class="campo">
+                    <label>Correo electrónico:</label>
+                    <input type="email" value="eduardo@ejemplo.com">
+                </div>
+                
+                <div class="campo">
+                    <label>Contraseña:</label>
+                    <input type="password" value="Contraseña1622">
+                </div>
+                
+                <div class="campo">
+                    <label>Confirmar contraseña:</label>
+                    <input type="password" value="Contraseña1622">
+                </div>
+
+                <div class="checkbox">
+                    <input type="checkbox" id="terminos">
+                    <label for="terminos">Acepto términos y condiciones</label>
+                </div>
+
+                <button type="button" class="btn-primario" onclick="mostrarEscenario('exito')">
+                    REGISTRARME
+                </button>
+            </form>
+
+            <footer class="footer-form">
+                <p>¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
+            </footer>
+        </div>
+
+        <!-- Escenario 2: Registro Exitoso -->
+        <div id="escenario-exito" class="escenario">
+            <div class="mensaje-exito">
+                <div class="icono">✓</div>
+                <h2>REGISTRO EXITOSO</h2>
+                <p>¡Cuenta creada exitosamente!</p>
+                <p>Hemos enviado un correo de verificación a:</p>
+                <p class="email-destacado">eduardo@ejemplo.com</p>
+                <button class="btn-primario" onclick="mostrarEscenario('formulario')">
+                    IR A MI CORREO
+                </button>
+            </div>
+        </div>
+
+        <!-- Escenario 3: Error de Contraseña -->
+        <div id="escenario-error" class="escenario">
+            <div class="mensaje-error">
+                <div class="icono">error</div>
+                <h2>CONTRASEÑA INVÁLIDA</h2>
+                <p>La contraseña no cumple con los requisitos mínimos</p>
+                <ul class="requisitos">
+                    <li>Mínimo 8 caracteres</li>
+                    <li>Al menos 1 número</li>
+                    <li>1 letra mayúscula</li>
+                </ul>
+                <button class="btn-primario" onclick="mostrarEscenario('formulario')">
+                    CORREGIR CONTRASEÑA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/escenarios.js"></script>
+</body>
+</html>
