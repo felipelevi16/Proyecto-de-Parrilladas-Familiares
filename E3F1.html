@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar al Carrito - Parrilladas Familiares</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #8B0000;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Catálogo con botones de agregar */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 150px;
+            background-color: #eee;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        
+        .add-to-cart-btn {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .add-to-cart-btn:hover {
+            background-color: #A52A2A;
+        }
+        
+        /* Página de detalle del producto */
+        .product-detail-page {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .product-detail-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .detail-image {
+            width: 100%;
+            height: 300px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .product-info h1 {
+            color: #8B0000;
+            margin-bottom: 15px;
+        }
+        
+        .product-specs {
+            margin: 20px 0;
+        }
+        
+        .spec-item {
+            margin-bottom: 8px;
+            color: #666;
+        }
+        
+        .quantity-selector {
+            margin: 20px 0;
+        }
+        
+        .quantity-selector label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .quantity-input {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .price-section {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B0000;
+            margin: 20px 0;
+        }
+        
+        .add-detail-btn {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Parrilladas Familiares</h1>
+    </div>
+    
+    <div class="container">
+        <!-- Escenario 1: Agregar desde catálogo -->
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image">COSTILLAR</div>
+                <button class="add-to-cart-btn">Agregar al Carrito</button>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">PRODUCTO 2</div>
+                <button class="add-to-cart-btn">Agregar al Carrito</button>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">PRODUCTO 3</div>
+                <button class="add-to-cart-btn">Agregar al Carrito</button>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">PRODUCTO 4</div>
+                <button class="add-to-cart-btn">Agregar al Carrito</button>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">PRODUCTO 5</div>
+                <button class="add-to-cart-btn">Agregar al Carrito</button>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">PRODUCTO 6</div>
+                <button class="add-to-cart-btn">Agregar al Carrito</button>
+            </div>
+        </div>
+
+        <!-- Escenario 2: Agregar desde ficha con cantidad -->
+        <!-- 
+        <div class="product-detail-page">
+            <div class="product-detail-layout">
+                <div class="detail-image">
+                    IMAGEN DE PRODUCTO
+                </div>
+                
+                <div class="product-info">
+                    <h1>POLLO ASADO</h1>
+                    
+                    <div class="product-specs">
+                        <div class="spec-item">- 1.6 kg</div>
+                        <div class="spec-item">- Para 3-4 personas</div>
+                        <div class="spec-item">- Sin sugerencias</div>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <label for="quantity">Cantidad:</label>
+                        <input type="number" id="quantity" class="quantity-input" value="1" min="1">
+                    </div>
+                    
+                    <div class="price-section">
+                        $16.000
+                    </div>
+                    
+                    <button class="add-detail-btn">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+</body>
+</html>
