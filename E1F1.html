@@ -12,7 +12,8 @@
         <nav class="selector-escenarios">
             <button class="btn-escenario activo" onclick="mostrarEscenario('formulario')">Formulario Registro</button>
             <button class="btn-escenario" onclick="mostrarEscenario('exito')">Registro Exitoso</button>
-            <button class="btn-escenario" onclick="mostrarEscenario('error')">Error Contraseña</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('error-correo')">Correo en Uso</button>
+            <button class="btn-escenario" onclick="mostrarEscenario('error-password')">Contraseña Inválida</button>
         </nav>
 
         <!-- Escenario 1: Formulario de Registro -->
@@ -24,18 +25,15 @@
 
             <form class="formulario">
                 <div class="campo">
-                    <label>Correo electrónico:</label>
-                    <input type="email" value="eduardo@ejemplo.com">
+                    <input type="email" placeholder="Correo electrónico" value="eduardo@ejemplo.com">
                 </div>
                 
                 <div class="campo">
-                    <label>Contraseña:</label>
-                    <input type="password" value="Contraseña1622">
+                    <input type="password" placeholder="Contraseña" value="Contraseña1622">
                 </div>
                 
                 <div class="campo">
-                    <label>Confirmar contraseña:</label>
-                    <input type="password" value="Contraseña1622">
+                    <input type="password" placeholder="Confirmar contraseña" value="Contraseña1622">
                 </div>
 
                 <div class="checkbox">
@@ -67,17 +65,25 @@
             </div>
         </div>
 
-        <!-- Escenario 3: Error de Contraseña -->
-        <div id="escenario-error" class="escenario">
+        <!-- Escenario 3: Correo Ya Registrado -->
+        <div id="escenario-error-correo" class="escenario">
             <div class="mensaje-error">
-                <div class="icono">error</div>
+                <div class="icono">✗</div>
+                <h2>CORREO EN USO</h2>
+                <p>Este correo ya está en uso dentro del sistema</p>
+                <p>¿Olvidaste tu contraseña?</p>
+                <button class="btn-primario" onclick="mostrarEscenario('formulario')">
+                    INTENTAR CON OTRO CORREO
+                </button>
+            </div>
+        </div>
+
+        <!-- Escenario 4: Contraseña Inválida -->
+        <div id="escenario-error-password" class="escenario">
+            <div class="mensaje-error">
+                <div class="icono">⚠</div>
                 <h2>CONTRASEÑA INVÁLIDA</h2>
                 <p>La contraseña no cumple con los requisitos mínimos</p>
-                <ul class="requisitos">
-                    <li>Mínimo 8 caracteres</li>
-                    <li>Al menos 1 número</li>
-                    <li>1 letra mayúscula</li>
-                </ul>
                 <button class="btn-primario" onclick="mostrarEscenario('formulario')">
                     CORREGIR CONTRASEÑA
                 </button>
