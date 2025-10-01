@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ofertas del Día - Parrilladas Familiares</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #8B0000;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin: 20px 0 30px 0;
+            color: #8B0000;
+            font-size: 28px;
+        }
+        
+        /* Carrusel de ofertas */
+        .offers-carousel {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .carousel-slide {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .carousel-title {
+            color: #8B0000;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        /* Grid de ofertas */
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .offer-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .offer-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .offer-image {
+            width: 100%;
+            height: 200px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .offer-content {
+            padding: 20px;
+        }
+        
+        .offer-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .offer-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .offer-price {
+            color: #8B0000;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .add-to-cart-btn {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+        
+        .add-to-cart-btn:hover {
+            background-color: #A52A2A;
+        }
+        
+        /* Estados especiales */
+        .expired-offer {
+            position: relative;
+            opacity: 0.7;
+        }
+        
+        .expired-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 8px;
+            color: #666;
+        }
+        
+        .back-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Parrilladas Familiares</h1>
+    </div>
+    
+    <div class="container">
+        <h2 class="page-title">Ofertas del Día</h2>
+        
+        <!-- Escenario 1: Ofertas activas -->
+        <div class="offers-carousel">
+            <div class="carousel-slide">
+                <h3 class="carousel-title">Ofertas del día</h3>
+                <!-- Aquí iría el carrusel real -->
+            </div>
+        </div>
+        
+        <div class="offers-grid">
+            <!-- Oferta 1 -->
+            <div class="offer-card">
+                <div class="offer-image">Bife a lo Pobre</div>
+                <div class="offer-content">
+                    <div class="offer-name">Bife a lo Pobre</div>
+                    <div class="offer-description">Delicioso bife acompañado de huevo frito, cebolla caramelizada y papas fritas</div>
+                    <div class="offer-price">$10.000</div>
+                    <button class="add-to-cart-btn">Agregar al Carrito</button>
+                </div>
+            </div>
+            
+            <!-- Oferta 2 -->
+            <div class="offer-card">
+                <div class="offer-image">Pollo Asado</div>
+                <div class="offer-content">
+                    <div class="offer-name">Pollo Asado</div>
+                    <div class="offer-description">Pollo entero asado a la parrilla con especias especiales de la casa</div>
+                    <div class="offer-price">$8.000</div>
+                    <button class="add-to-cart-btn">Agregar al Carrito</button>
+                </div>
+            </div>
+            
+            <!-- Oferta 3 -->
+            <div class="offer-card">
+                <div class="offer-image">Oferta del Día Lunes</div>
+                <div class="offer-content">
+                    <div class="offer-name">Costillar Especial</div>
+                    <div class="offer-description">Costillar de cerdo BBQ con salsa secreta de la casa</div>
+                    <div class="offer-price">$12.000</div>
+                    <button class="add-to-cart-btn">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Escenario 2: Oferta expirada -->
+        <!-- 
+        <div class="offers-grid">
+            <div class="offer-card expired-offer">
+                <div class="expired-badge">Expirada</div>
+                <div class="offer-image">Bife a lo Pobre</div>
+                <div class="offer-content">
+                    <div class="offer-name">Bife a lo Pobre</div>
+                    <div class="offer-description">Delicioso bife acompañado de huevo frito, cebolla caramelizada y papas fritas</div>
+                    <div class="offer-price">$10.000</div>
+                    <button class="add-to-cart-btn" disabled>Oferta Expirada</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="empty-state">
+            <h3>Esta oferta ya expiró</h3>
+            <button class="back-btn">Volver a Ofertas</button>
+        </div>
+        -->
+    </div>
+</body>
+</html>
