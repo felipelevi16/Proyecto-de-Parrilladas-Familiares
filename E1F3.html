@@ -4,18 +4,244 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Contraseña - Parrilladas Familiares</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* === RESET GENERAL === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff8a00, #e52e71);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            width: 95%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        /* === NAV DE ESCENARIOS === */
+        .selector-escenarios {
+            display: flex;
+            flex-wrap: wrap;
+            background: #f4f4f4;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .btn-escenario {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 5px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: #888;
+            transition: 0.3s;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .btn-escenario.activo,
+        .btn-escenario:hover {
+            background: #ffe5c0;
+            color: #d35400;
+        }
+
+        /* === ESCENARIOS === */
+        .escenario {
+            display: none;
+            padding: 25px;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.98);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .escenario.activo {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* === HEADER === */
+        .header h1 {
+            color: #d35400;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .header p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+
+        /* === FORMULARIO === */
+        .formulario .campo {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .formulario input[type="email"],
+        .formulario input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .formulario input:focus {
+            border-color: #d35400;
+            box-shadow: 0 0 5px rgba(211,84,0,0.3);
+        }
+
+        /* === BOTONES === */
+        .btn-primario {
+            background: #d35400;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-primario:hover {
+            background: #e67e22;
+        }
+
+        /* === MENSAJES === */
+        .mensaje-exito, .mensaje-error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icono {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .mensaje-exito .icono {
+            color: #27ae60;
+        }
+
+        .mensaje-error .icono {
+            color: #c0392b;
+        }
+
+        .email-destacado {
+            font-weight: 600;
+            color: #d35400;
+            margin: 10px 0 15px;
+            font-size: 16px;
+            word-break: break-all;
+        }
+
+        .advertencia {
+            color: #e67e22;
+            font-weight: 600;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .footer-form {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .footer-form a {
+            color: #d35400;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer-form a:hover {
+            text-decoration: underline;
+        }
+
+        /* === REQUISITOS CONTRASEÑA === */
+        .requisitos {
+            text-align: left;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #d35400;
+        }
+
+        .requisitos p {
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .requisitos ul {
+            padding-left: 20px;
+        }
+
+        .requisitos li {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .requisito-cumplido {
+            color: #27ae60;
+        }
+
+        .requisito-incumplido {
+            color: #e74c3c;
+        }
+
+        /* === MENSAJES DE ERROR === */
+        .mensaje-error-campo {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            text-align: left;
+            display: none;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 500px) {
+            .container {
+                border-radius: 12px;
+                max-width: 100%;
+            }
+
+            .btn-escenario {
+                font-size: 10px;
+                padding: 8px 2px;
+            }
+            
+            .escenario {
+                padding: 20px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <!-- Selector de Escenarios -->
-        <nav class="selector-escenarios">
-            <button class="btn-escenario activo" onclick="mostrarEscenario('solicitud')">Solicitar Recuperación</button>
-            <button class="btn-escenario" onclick="mostrarEscenario('enlace-enviado')">Enlace Enviado</button>
-            <button class="btn-escenario" onclick="mostrarEscenario('token-caducado')">Token Caducado</button>
-            <button class="btn-escenario" onclick="mostrarEscenario('exito')">Contraseña Actualizada</button>
-            <button class="btn-escenario" onclick="mostrarEscenario('nueva-password')">Nueva Contraseña</button>
-        </nav>
 
         <!-- Escenario 1: Solicitud de Recuperación -->
         <div id="escenario-solicitud" class="escenario activo">
@@ -24,12 +250,13 @@
                 <p>Ingresa tu correo para recibir un enlace de recuperación</p>
             </header>
 
-            <form class="formulario">
+            <form class="formulario" id="formSolicitud">
                 <div class="campo">
-                    <input type="email" placeholder="Correo electrónico" value="eduardo@ejemplo.com">
+                    <input type="email" id="emailSolicitud" placeholder="Correo electrónico" value="eduardo@ejemplo.com" required>
+                    <div class="mensaje-error-campo" id="error-emailSolicitud"></div>
                 </div>
 
-                <button type="button" class="btn-primario" onclick="mostrarEscenario('enlace-enviado')">
+                <button type="submit" class="btn-primario">
                     ENVIAR ENLACE
                 </button>
             </form>
@@ -45,9 +272,9 @@
                 <div class="icono">✓</div>
                 <h2>ENLACE ENVIADO</h2>
                 <p>Se ha enviado correctamente un enlace de recuperación al correo:</p>
-                <p class="email-destacado">eduardo@ejemplo.com</p>
+                <p class="email-destacado" id="emailEnviado">eduardo@ejemplo.com</p>
                 <p class="advertencia">RECUERDA QUE EL ENLACE EXPIRA EN 15 MINUTOS</p>
-                <button class="btn-primario" onclick="mostrarEscenario('nueva-password')">
+                <button class="btn-primario" onclick="irACorreo()">
                     IR A CORREO
                 </button>
             </div>
@@ -56,7 +283,7 @@
         <!-- Escenario 3: Token Caducado -->
         <div id="escenario-token-caducado" class="escenario">
             <div class="mensaje-error">
-                <div class="icono">error</div>
+                <div class="icono">⏰</div>
                 <h2>ENLACE CADUCADO</h2>
                 <p>El enlace de recuperación ha expirado (válido por 15 minutos)</p>
                 <button class="btn-primario" onclick="mostrarEscenario('solicitud')">
@@ -69,28 +296,30 @@
         <div id="escenario-nueva-password" class="escenario">
             <header class="header">
                 <h1>RESTABLECER CONTRASEÑA</h1>
-                <p>Crea una nueva contraseña para: eduardo@ejemplo.com</p>
+                <p>Crea una nueva contraseña para: <span id="emailRestablecer">eduardo@ejemplo.com</span></p>
             </header>
 
-            <form class="formulario">
+            <form class="formulario" id="formNuevaPassword">
                 <div class="campo">
-                    <input type="password" placeholder="Nueva contraseña">
+                    <input type="password" id="nuevaPassword" placeholder="Nueva contraseña" required>
+                    <div class="mensaje-error-campo" id="error-nuevaPassword"></div>
                 </div>
                 
                 <div class="campo">
-                    <input type="password" placeholder="Confirmar nueva contraseña">
+                    <input type="password" id="confirmarPassword" placeholder="Confirmar nueva contraseña" required>
+                    <div class="mensaje-error-campo" id="error-confirmarPassword"></div>
                 </div>
 
                 <div class="requisitos">
                     <p><strong>Requisitos:</strong></p>
                     <ul>
-                        <li>Mínimo 8 caracteres</li>
-                        <li>Al menos 1 número</li>
-                        <li>1 letra mayúscula</li>
+                        <li id="req-longitud" class="requisito-incumplido">Mínimo 8 caracteres</li>
+                        <li id="req-numero" class="requisito-incumplido">Al menos 1 número</li>
+                        <li id="req-mayuscula" class="requisito-incumplido">1 letra mayúscula</li>
                     </ul>
                 </div>
 
-                <button type="button" class="btn-primario" onclick="mostrarEscenario('exito')">
+                <button type="submit" class="btn-primario">
                     ACTUALIZAR CONTRASEÑA
                 </button>
             </form>
@@ -103,13 +332,189 @@
                 <h2>CONTRASEÑA ACTUALIZADA</h2>
                 <p>Contraseña actualizada con éxito</p>
                 <p>Ya puedes iniciar sesión con tu nueva contraseña</p>
-                <button class="btn-primario" onclick="location.href='login.html'">
+                <button class="btn-primario" onclick="irALogin()">
                     IR AL LOGIN
                 </button>
             </div>
         </div>
     </div>
 
-    <script src="../js/escenarios.js"></script>
+    <script>
+        // Función para cambiar de escenario
+        function mostrarEscenario(nombre) {
+            // Ocultar todos los escenarios
+            document.querySelectorAll('.escenario').forEach(e => {
+                e.classList.remove('activo');
+            });
+            
+            // Mostrar el escenario seleccionado
+            const escenario = document.getElementById(`escenario-${nombre}`);
+            if (escenario) {
+                escenario.classList.add('activo');
+            }
+            
+            // Actualizar botones activos
+            document.querySelectorAll('.btn-escenario').forEach(b => {
+                b.classList.remove('activo');
+            });
+            
+            const botonActivo = document.querySelector(`.btn-escenario[onclick="mostrarEscenario('${nombre}')"]`);
+            if (botonActivo) {
+                botonActivo.classList.add('activo');
+            }
+        }
+
+        // Función para validar email
+        function validarEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Función para mostrar errores en campos
+        function mostrarError(campoId, mensaje) {
+            const errorElement = document.getElementById(`error-${campoId}`);
+            if (errorElement) {
+                errorElement.textContent = mensaje;
+                errorElement.style.display = 'block';
+            }
+        }
+
+        // Función para ocultar errores en campos
+        function ocultarError(campoId) {
+            const errorElement = document.getElementById(`error-${campoId}`);
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+        }
+
+        // Función para validar contraseña
+        function validarPassword(password) {
+            const requisitos = {
+                longitud: password.length >= 8,
+                numero: /\d/.test(password),
+                mayuscula: /[A-Z]/.test(password)
+            };
+            
+            return requisitos;
+        }
+
+        // Actualizar indicadores de requisitos de contraseña
+        function actualizarRequisitos(password) {
+            const requisitos = validarPassword(password);
+            
+            // Actualizar visualización de requisitos
+            document.getElementById('req-longitud').className = requisitos.longitud ? 'requisito-cumplido' : 'requisito-incumplido';
+            document.getElementById('req-numero').className = requisitos.numero ? 'requisito-cumplido' : 'requisito-incumplido';
+            document.getElementById('req-mayuscula').className = requisitos.mayuscula ? 'requisito-cumplido' : 'requisito-incumplido';
+            
+            return requisitos.longitud && requisitos.numero && requisitos.mayuscula;
+        }
+
+        // Manejo del formulario de solicitud
+        document.getElementById("formSolicitud").addEventListener("submit", e => {
+            e.preventDefault();
+            
+            const email = document.getElementById("emailSolicitud").value.trim();
+            
+            // Validar email
+            if (!email) {
+                mostrarError('emailSolicitud', 'El correo electrónico es obligatorio');
+                return;
+            }
+            
+            if (!validarEmail(email)) {
+                mostrarError('emailSolicitud', 'Por favor, introduce un correo electrónico válido');
+                return;
+            }
+            
+            // Ocultar errores
+            ocultarError('emailSolicitud');
+            
+            // Actualizar email en el escenario de enlace enviado
+            document.getElementById("emailEnviado").textContent = email;
+            document.getElementById("emailRestablecer").textContent = email;
+            
+            // Mostrar escenario de enlace enviado
+            mostrarEscenario("enlace-enviado");
+        });
+
+        // Validación en tiempo real de la nueva contraseña
+        document.getElementById("nuevaPassword").addEventListener("input", function() {
+            const password = this.value;
+            actualizarRequisitos(password);
+            
+            // Validar confirmación si ya hay valor
+            const confirmacion = document.getElementById("confirmarPassword").value;
+            if (confirmacion && password !== confirmacion) {
+                mostrarError('confirmarPassword', 'Las contraseñas no coinciden');
+            } else {
+                ocultarError('confirmarPassword');
+            }
+        });
+
+        document.getElementById("confirmarPassword").addEventListener("input", function() {
+            const password = document.getElementById("nuevaPassword").value;
+            const confirmacion = this.value;
+            
+            if (confirmacion && password !== confirmacion) {
+                mostrarError('confirmarPassword', 'Las contraseñas no coinciden');
+            } else {
+                ocultarError('confirmarPassword');
+            }
+        });
+
+        // Manejo del formulario de nueva contraseña
+        document.getElementById("formNuevaPassword").addEventListener("submit", e => {
+            e.preventDefault();
+            
+            const nuevaPassword = document.getElementById("nuevaPassword").value;
+            const confirmarPassword = document.getElementById("confirmarPassword").value;
+            
+            // Ocultar errores previos
+            ocultarError('nuevaPassword');
+            ocultarError('confirmarPassword');
+            
+            let hayErrores = false;
+            
+            // Validar requisitos de contraseña
+            const passwordValida = actualizarRequisitos(nuevaPassword);
+            if (!passwordValida) {
+                mostrarError('nuevaPassword', 'La contraseña no cumple con todos los requisitos');
+                hayErrores = true;
+            }
+            
+            // Validar confirmación
+            if (nuevaPassword !== confirmarPassword) {
+                mostrarError('confirmarPassword', 'Las contraseñas no coinciden');
+                hayErrores = true;
+            }
+            
+            // Si hay errores, detener el proceso
+            if (hayErrores) {
+                return;
+            }
+            
+            // Mostrar escenario de éxito
+            mostrarEscenario("exito");
+        });
+
+        // Funciones auxiliares
+        function irACorreo() {
+            alert("Redirigiendo a tu cliente de correo...");
+            // En una implementación real, esto redirigiría al cliente de correo
+        }
+
+        function irALogin() {
+            // En una implementación real, esto redirigiría a la página de login
+            alert("Redirigiendo al login...");
+            // window.location.href = "login.html";
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Asegurarse de que el escenario correcto esté activo al cargar
+            mostrarEscenario('solicitud');
+        });
+    </script>
 </body>
 </html>
