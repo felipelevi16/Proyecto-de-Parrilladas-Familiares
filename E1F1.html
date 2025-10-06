@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Parrilladas Familiares</title>
-    <link rel="stylesheet" href="../css/styles.css">
-
     <style>
     /* === RESET GENERAL === */
     * {
@@ -22,6 +20,7 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      padding: 20px;
     }
 
     .container {
@@ -50,6 +49,8 @@
       font-weight: 600;
       color: #888;
       transition: 0.3s;
+      font-size: 12px;
+      text-align: center;
     }
 
     .btn-escenario.activo,
@@ -78,16 +79,19 @@
     .header h1 {
       color: #d35400;
       margin-bottom: 5px;
+      font-size: 24px;
     }
 
     .header h2 {
       color: #666;
       font-size: 18px;
       margin-bottom: 25px;
+      font-weight: 500;
     }
 
     .formulario .campo {
       margin-bottom: 15px;
+      text-align: left;
     }
 
     .formulario input[type="email"],
@@ -110,9 +114,14 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin: 10px 0 20px;
+      margin: 15px 0 20px;
       font-size: 14px;
       color: #555;
+      text-align: left;
+    }
+
+    .checkbox input {
+      width: auto;
     }
 
     /* === BOTONES === */
@@ -127,6 +136,7 @@
       cursor: pointer;
       width: 100%;
       transition: 0.3s;
+      margin-top: 10px;
     }
 
     .btn-primario:hover {
@@ -157,11 +167,13 @@
     .email-destacado {
       font-weight: 600;
       color: #d35400;
-      margin-bottom: 15px;
+      margin: 10px 0 15px;
+      font-size: 16px;
+      word-break: break-all;
     }
 
     .footer-form {
-      margin-top: 15px;
+      margin-top: 20px;
       font-size: 14px;
     }
 
@@ -171,16 +183,48 @@
       font-weight: bold;
     }
 
+    .footer-form a:hover {
+      text-decoration: underline;
+    }
+
+    /* === MENSAJES DE ERROR === */
+    .mensaje-error-campo {
+      color: #e74c3c;
+      font-size: 12px;
+      margin-top: 5px;
+      text-align: left;
+      display: none;
+    }
+
+    /* === BOTONES DOBLES === */
+    .botones-dobles {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .botones-dobles button {
+      flex: 1;
+    }
+
     /* === RESPONSIVE === */
     @media (max-width: 500px) {
       .container {
-        border-radius: 0;
+        border-radius: 12px;
         max-width: 100%;
       }
 
       .btn-escenario {
-        font-size: 12px;
-        padding: 8px;
+        font-size: 11px;
+        padding: 8px 4px;
+      }
+      
+      .escenario {
+        padding: 20px 15px;
+      }
+      
+      .botones-dobles {
+        flex-direction: column;
       }
     }
   </style>
@@ -198,20 +242,24 @@
       <form class="formulario" id="registroForm">
         <div class="campo">
           <input type="email" id="email" placeholder="Correo electrónico" required>
+          <div class="mensaje-error-campo" id="error-email"></div>
         </div>
         
         <div class="campo">
           <input type="password" id="password" placeholder="Contraseña" required>
+          <div class="mensaje-error-campo" id="error-password"></div>
         </div>
         
         <div class="campo">
           <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" required>
+          <div class="mensaje-error-campo" id="error-confirmPassword"></div>
         </div>
 
         <div class="checkbox">
           <input type="checkbox" id="terminos">
           <label for="terminos">Acepto términos y condiciones</label>
         </div>
+        <div class="mensaje-error-campo" id="error-terminos"></div>
 
         <button type="submit" class="btn-primario">
           REGISTRARME
@@ -231,9 +279,14 @@
         <p>¡Cuenta creada exitosamente!</p>
         <p>Hemos enviado un correo de verificación a:</p>
         <p class="email-destacado" id="correoExito"></p>
-        <button class="btn-primario" onclick="mostrarEscenario('formulario')">
-          IR A MI CORREO
-        </button>
+        <div class="botones-dobles">
+          <button class="btn-primario" onclick="mostrarEscenario('formulario')">
+            VOLVER AL REGISTRO
+          </button>
+          <button class="btn-primario" onclick="irACorreo()">
+            IR A MI CORREO
+          </button>
+        </div>
       </div>
     </div>
 
@@ -244,9 +297,14 @@
         <h2>CORREO EN USO</h2>
         <p>Este correo ya está en uso dentro del sistema</p>
         <p>¿Olvidaste tu contraseña?</p>
-        <button class="btn-primario" onclick="mostrarEscenario('formulario')">
-          INTENTAR CON OTRO CORREO
-        </button>
+        <div class="botones-dobles">
+          <button class="btn-primario" onclick="mostrarEscenario('formulario')">
+            INTENTAR CON OTRO CORREO
+          </button>
+          <button class="btn-primario" onclick="irARecuperacion()">
+            RECUPERAR CONTRASEÑA
+          </button>
+        </div>
       </div>
     </div>
 
@@ -255,53 +313,184 @@
       <div class="mensaje-error">
         <div class="icono">⚠</div>
         <h2>CONTRASEÑA INVÁLIDA</h2>
-        <p>La contraseña no cumple con los requisitos mínimos</p>
+        <p>La contraseña no cumple con los requisitos mínimos:</p>
+        <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
+          <li>Mínimo 8 caracteres</li>
+          <li>Al menos una letra mayúscula</li>
+          <li>Al menos un número</li>
+          <li>Al menos un carácter especial</li>
+        </ul>
         <button class="btn-primario" onclick="mostrarEscenario('formulario')">
           CORREGIR CONTRASEÑA
         </button>
       </div>
     </div>
   </div>
-
   <script>
     // Función para cambiar de escenario
     function mostrarEscenario(nombre) {
-      document.querySelectorAll('.escenario').forEach(e => e.classList.remove('activo'));
-      document.querySelectorAll('.btn-escenario').forEach(b => b.classList.remove('activo'));
-      document.getElementById(`escenario-${nombre}`).classList.add('activo');
-      document.querySelector(`button[onclick="mostrarEscenario('${nombre}')"]`).classList.add('activo');
+      // Ocultar todos los escenarios
+      document.querySelectorAll('.escenario').forEach(e => {
+        e.classList.remove('activo');
+      });
+      
+      // Mostrar el escenario seleccionado
+      const escenario = document.getElementById(`escenario-${nombre}`);
+      if (escenario) {
+        escenario.classList.add('activo');
+      }
+      
+      // Actualizar botones activos
+      document.querySelectorAll('.btn-escenario').forEach(b => {
+        b.classList.remove('activo');
+      });
+      
+      const botonActivo = document.querySelector(`.btn-escenario[onclick="mostrarEscenario('${nombre}')"]`);
+      if (botonActivo) {
+        botonActivo.classList.add('activo');
+      }
     }
 
     // Simulación de registros existentes
     const correosRegistrados = ["eduardo@ejemplo.com", "maria@ejemplo.com"];
 
+    // Función para validar email
+    function validarEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // Función para validar contraseña
+    function validarPassword(password) {
+      // Mínimo 8 caracteres, al menos una mayúscula, un número y un carácter especial
+      const re = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return re.test(password);
+    }
+
+    // Función para mostrar errores en campos
+    function mostrarError(campoId, mensaje) {
+      const errorElement = document.getElementById(`error-${campoId}`);
+      if (errorElement) {
+        errorElement.textContent = mensaje;
+        errorElement.style.display = 'block';
+      }
+    }
+
+    // Función para ocultar errores en campos
+    function ocultarError(campoId) {
+      const errorElement = document.getElementById(`error-${campoId}`);
+      if (errorElement) {
+        errorElement.style.display = 'none';
+      }
+    }
+
+    // Validación en tiempo real
+    document.getElementById("email").addEventListener("blur", function() {
+      const email = this.value.trim();
+      if (email && !validarEmail(email)) {
+        mostrarError('email', 'Por favor, introduce un correo electrónico válido');
+      } else {
+        ocultarError('email');
+      }
+    });
+
+    document.getElementById("password").addEventListener("blur", function() {
+      const password = this.value;
+      if (password && !validarPassword(password)) {
+        mostrarError('password', 'La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial');
+      } else {
+        ocultarError('password');
+      }
+    });
+
+    document.getElementById("confirmPassword").addEventListener("blur", function() {
+      const password = document.getElementById("password").value;
+      const confirm = this.value;
+      if (confirm && password !== confirm) {
+        mostrarError('confirmPassword', 'Las contraseñas no coinciden');
+      } else {
+        ocultarError('confirmPassword');
+      }
+    });
+
+    // Manejo del envío del formulario
     document.getElementById("registroForm").addEventListener("submit", e => {
       e.preventDefault();
+
+      // Ocultar todos los errores previos
+      ocultarError('email');
+      ocultarError('password');
+      ocultarError('confirmPassword');
+      ocultarError('terminos');
 
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
       const confirm = document.getElementById("confirmPassword").value;
       const terminos = document.getElementById("terminos").checked;
 
-      // Validaciones
-      if (correosRegistrados.includes(email)) {
+      let hayErrores = false;
+
+      // Validar email
+      if (!email) {
+        mostrarError('email', 'El correo electrónico es obligatorio');
+        hayErrores = true;
+      } else if (!validarEmail(email)) {
+        mostrarError('email', 'Por favor, introduce un correo electrónico válido');
+        hayErrores = true;
+      } else if (correosRegistrados.includes(email)) {
         mostrarEscenario("error-correo");
         return;
       }
 
-      if (password !== confirm || password.length < 8) {
+      // Validar contraseña
+      if (!password) {
+        mostrarError('password', 'La contraseña es obligatoria');
+        hayErrores = true;
+      } else if (!validarPassword(password)) {
         mostrarEscenario("error-password");
         return;
       }
 
+      // Validar confirmación de contraseña
+      if (!confirm) {
+        mostrarError('confirmPassword', 'Debes confirmar tu contraseña');
+        hayErrores = true;
+      } else if (password !== confirm) {
+        mostrarError('confirmPassword', 'Las contraseñas no coinciden');
+        hayErrores = true;
+      }
+
+      // Validar términos y condiciones
       if (!terminos) {
-        alert("Debes aceptar los términos y condiciones.");
+        mostrarError('terminos', 'Debes aceptar los términos y condiciones');
+        hayErrores = true;
+      }
+
+      // Si hay errores, detener el proceso
+      if (hayErrores) {
         return;
       }
 
       // Registro exitoso
       document.getElementById("correoExito").textContent = email;
       mostrarEscenario("exito");
+    });
+
+    // Funciones auxiliares
+    function irACorreo() {
+      alert("Redirigiendo a tu cliente de correo...");
+      // En una implementación real, esto redirigiría al cliente de correo
+    }
+
+    function irARecuperacion() {
+      alert("Redirigiendo a recuperación de contraseña...");
+      // En una implementación real, esto redirigiría a la página de recuperación
+    }
+
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', function() {
+      // Asegurarse de que el escenario correcto esté activo al cargar
+      mostrarEscenario('formulario');
     });
   </script>
 </body>
