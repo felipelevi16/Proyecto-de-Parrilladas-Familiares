@@ -5,92 +5,304 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Parrilladas Familiares</title>
     <link rel="stylesheet" href="../css/styles.css">
+
+    <style>
+    /* === RESET GENERAL === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ff8a00, #e52e71);
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      width: 95%;
+      max-width: 420px;
+      overflow: hidden;
+    }
+
+    /* === NAV DE ESCENARIOS === */
+    .selector-escenarios {
+      display: flex;
+      justify-content: space-around;
+      background: #f4f4f4;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .btn-escenario {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-weight: 600;
+      color: #888;
+      transition: 0.3s;
+    }
+
+    .btn-escenario.activo,
+    .btn-escenario:hover {
+      background: #ffe5c0;
+      color: #d35400;
+    }
+
+    /* === ESCENARIOS === */
+    .escenario {
+      display: none;
+      padding: 25px;
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.98);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .escenario.activo {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* === FORMULARIO === */
+    .header h1 {
+      color: #d35400;
+      margin-bottom: 5px;
+    }
+
+    .header h2 {
+      color: #666;
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .formulario .campo {
+      margin-bottom: 15px;
+    }
+
+    .formulario input[type="email"],
+    .formulario input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .formulario input:focus {
+      border-color: #d35400;
+      box-shadow: 0 0 5px rgba(211,84,0,0.3);
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0 20px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* === BOTONES === */
+    .btn-primario {
+      background: #d35400;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: 0.3s;
+    }
+
+    .btn-primario:hover {
+      background: #e67e22;
+    }
+
+    /* === MENSAJES === */
+    .mensaje-exito, .mensaje-error {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icono {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+
+    .mensaje-exito .icono {
+      color: #27ae60;
+    }
+
+    .mensaje-error .icono {
+      color: #c0392b;
+    }
+
+    .email-destacado {
+      font-weight: 600;
+      color: #d35400;
+      margin-bottom: 15px;
+    }
+
+    .footer-form {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .footer-form a {
+      color: #d35400;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 500px) {
+      .container {
+        border-radius: 0;
+        max-width: 100%;
+      }
+
+      .btn-escenario {
+        font-size: 12px;
+        padding: 8px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Selector de Escenarios -->
-        <nav class="selector-escenarios">
-            <button class="btn-escenario activo" onclick="mostrarEscenario('formulario')">Formulario Registro</button>
-            <button class="btn-escenario" onclick="mostrarEscenario('exito')">Registro Exitoso</button>
-            <button class="btn-escenario" onclick="mostrarEscenario('error-correo')">Correo en Uso</button>
-            <button class="btn-escenario" onclick="mostrarEscenario('error-password')">Contraseña Inválida</button>
-        </nav>
+  <div class="container">
 
-        <!-- Escenario 1: Formulario de Registro -->
-        <div id="escenario-formulario" class="escenario activo">
-            <header class="header">
-                <h1>PARRILLADAS FAMILIARES</h1>
-                <h2>CREAR CUENTA NUEVA</h2>
-            </header>
+    <!-- Escenario 1: Formulario de Registro -->
+    <div id="escenario-formulario" class="escenario activo">
+      <header class="header">
+        <h1>PARRILLADAS FAMILIARES</h1>
+        <h2>CREAR CUENTA NUEVA</h2>
+      </header>
 
-            <form class="formulario">
-                <div class="campo">
-                    <input type="email" placeholder="Correo electrónico" value="eduardo@ejemplo.com">
-                </div>
-                
-                <div class="campo">
-                    <input type="password" placeholder="Contraseña" value="Contraseña1622">
-                </div>
-                
-                <div class="campo">
-                    <input type="password" placeholder="Confirmar contraseña" value="Contraseña1622">
-                </div>
-
-                <div class="checkbox">
-                    <input type="checkbox" id="terminos">
-                    <label for="terminos">Acepto términos y condiciones</label>
-                </div>
-
-                <button type="button" class="btn-primario" onclick="mostrarEscenario('exito')">
-                    REGISTRARME
-                </button>
-            </form>
-
-            <footer class="footer-form">
-                <p>¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
-            </footer>
+      <form class="formulario" id="registroForm">
+        <div class="campo">
+          <input type="email" id="email" placeholder="Correo electrónico" required>
+        </div>
+        
+        <div class="campo">
+          <input type="password" id="password" placeholder="Contraseña" required>
+        </div>
+        
+        <div class="campo">
+          <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" required>
         </div>
 
-        <!-- Escenario 2: Registro Exitoso -->
-        <div id="escenario-exito" class="escenario">
-            <div class="mensaje-exito">
-                <div class="icono">✓</div>
-                <h2>REGISTRO EXITOSO</h2>
-                <p>¡Cuenta creada exitosamente!</p>
-                <p>Hemos enviado un correo de verificación a:</p>
-                <p class="email-destacado">eduardo@ejemplo.com</p>
-                <button class="btn-primario" onclick="mostrarEscenario('formulario')">
-                    IR A MI CORREO
-                </button>
-            </div>
+        <div class="checkbox">
+          <input type="checkbox" id="terminos">
+          <label for="terminos">Acepto términos y condiciones</label>
         </div>
 
-        <!-- Escenario 3: Correo Ya Registrado -->
-        <div id="escenario-error-correo" class="escenario">
-            <div class="mensaje-error">
-                <div class="icono">✗</div>
-                <h2>CORREO EN USO</h2>
-                <p>Este correo ya está en uso dentro del sistema</p>
-                <p>¿Olvidaste tu contraseña?</p>
-                <button class="btn-primario" onclick="mostrarEscenario('formulario')">
-                    INTENTAR CON OTRO CORREO
-                </button>
-            </div>
-        </div>
+        <button type="submit" class="btn-primario">
+          REGISTRARME
+        </button>
+      </form>
 
-        <!-- Escenario 4: Contraseña Inválida -->
-        <div id="escenario-error-password" class="escenario">
-            <div class="mensaje-error">
-                <div class="icono">⚠</div>
-                <h2>CONTRASEÑA INVÁLIDA</h2>
-                <p>La contraseña no cumple con los requisitos mínimos</p>
-                <button class="btn-primario" onclick="mostrarEscenario('formulario')">
-                    CORREGIR CONTRASEÑA
-                </button>
-            </div>
-        </div>
+      <footer class="footer-form">
+        <p>¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
+      </footer>
     </div>
 
-    <script src="../js/escenarios.js"></script>
+    <!-- Escenario 2: Registro Exitoso -->
+    <div id="escenario-exito" class="escenario">
+      <div class="mensaje-exito">
+        <div class="icono">✓</div>
+        <h2>REGISTRO EXITOSO</h2>
+        <p>¡Cuenta creada exitosamente!</p>
+        <p>Hemos enviado un correo de verificación a:</p>
+        <p class="email-destacado" id="correoExito"></p>
+        <button class="btn-primario" onclick="mostrarEscenario('formulario')">
+          IR A MI CORREO
+        </button>
+      </div>
+    </div>
+
+    <!-- Escenario 3: Correo Ya Registrado -->
+    <div id="escenario-error-correo" class="escenario">
+      <div class="mensaje-error">
+        <div class="icono">✗</div>
+        <h2>CORREO EN USO</h2>
+        <p>Este correo ya está en uso dentro del sistema</p>
+        <p>¿Olvidaste tu contraseña?</p>
+        <button class="btn-primario" onclick="mostrarEscenario('formulario')">
+          INTENTAR CON OTRO CORREO
+        </button>
+      </div>
+    </div>
+
+    <!-- Escenario 4: Contraseña Inválida -->
+    <div id="escenario-error-password" class="escenario">
+      <div class="mensaje-error">
+        <div class="icono">⚠</div>
+        <h2>CONTRASEÑA INVÁLIDA</h2>
+        <p>La contraseña no cumple con los requisitos mínimos</p>
+        <button class="btn-primario" onclick="mostrarEscenario('formulario')">
+          CORREGIR CONTRASEÑA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Función para cambiar de escenario
+    function mostrarEscenario(nombre) {
+      document.querySelectorAll('.escenario').forEach(e => e.classList.remove('activo'));
+      document.querySelectorAll('.btn-escenario').forEach(b => b.classList.remove('activo'));
+      document.getElementById(`escenario-${nombre}`).classList.add('activo');
+      document.querySelector(`button[onclick="mostrarEscenario('${nombre}')"]`).classList.add('activo');
+    }
+
+    // Simulación de registros existentes
+    const correosRegistrados = ["eduardo@ejemplo.com", "maria@ejemplo.com"];
+
+    document.getElementById("registroForm").addEventListener("submit", e => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirm = document.getElementById("confirmPassword").value;
+      const terminos = document.getElementById("terminos").checked;
+
+      // Validaciones
+      if (correosRegistrados.includes(email)) {
+        mostrarEscenario("error-correo");
+        return;
+      }
+
+      if (password !== confirm || password.length < 8) {
+        mostrarEscenario("error-password");
+        return;
+      }
+
+      if (!terminos) {
+        alert("Debes aceptar los términos y condiciones.");
+        return;
+      }
+
+      // Registro exitoso
+      document.getElementById("correoExito").textContent = email;
+      mostrarEscenario("exito");
+    });
+  </script>
 </body>
 </html>
