@@ -9,107 +9,333 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #f5f5f5;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
         }
         
         .header {
-            background-color: #8B0000;
+            background: linear-gradient(135deg, #8B0000, #A52A2A);
             color: white;
-            padding: 15px 0;
-            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav a:hover {
+            background-color: rgba(255,255,255,0.1);
         }
         
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
         
+        /* Selector de escenarios */
+        .scenario-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .scenario-btn {
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .scenario-btn.active {
+            background: #8B0000;
+            color: white;
+            border-color: #8B0000;
+        }
+        
         .delivery-title {
             text-align: center;
-            margin: 20px 0;
+            margin: 30px 0;
             color: #8B0000;
+            font-size: 32px;
+            position: relative;
+        }
+        
+        .delivery-title:after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: #8B0000;
+            margin: 10px auto;
+        }
+        
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .progress-bar:before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #ddd;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .step-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .step-circle.active {
+            border-color: #8B0000;
+            background: #8B0000;
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .step-label.active {
+            color: #8B0000;
+            font-weight: 600;
         }
         
         /* Opciones de entrega */
         .delivery-options {
             background: white;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .option-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .option-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
         }
         
         .option-label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+        
+        .radio-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         
         .radio-option {
-            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .radio-option:hover {
+            border-color: #8B0000;
+            background: #fff9f9;
+        }
+        
+        .radio-option.selected {
+            border-color: #8B0000;
+            background: #fff9f9;
         }
         
         .radio-option input {
-            margin-right: 10px;
+            margin-right: 15px;
+            transform: scale(1.2);
+            accent-color: #8B0000;
+        }
+        
+        .option-content {
+            flex: 1;
+        }
+        
+        .option-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .option-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .option-price {
+            color: #8B0000;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .option-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #27ae60;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
         }
         
         /* Formularios específicos */
         .form-section {
             background: #f9f9f9;
-            padding: 20px;
-            border-radius: 4px;
-            margin-top: 15px;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #8B0000;
             display: none;
         }
         
         .form-section.active {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
         }
         
         .form-control {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #8B0000;
+            outline: none;
+        }
+        
+        .form-control.error {
+            border-color: #e74c3c;
         }
         
         select.form-control {
-            height: 42px;
+            height: 48px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
         
         .time-slots {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
             margin-top: 10px;
         }
         
         .time-slot {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 15px 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             text-align: center;
             cursor: pointer;
             background: white;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .time-slot:hover {
+            border-color: #8B0000;
+            background: #fff9f9;
         }
         
         .time-slot.selected {
@@ -118,19 +344,70 @@
             border-color: #8B0000;
         }
         
+        .time-slot.disabled {
+            background: #f8f9fa;
+            color: #ccc;
+            cursor: not-allowed;
+            border-color: #eee;
+        }
+        
+        .branch-info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .branch-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .branch-address {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .branch-hours {
+            color: #8B0000;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
         /* Mensajes de error */
         .error-message {
-            color: #d9534f;
-            background-color: #f2dede;
-            border: 1px solid #ebccd1;
-            padding: 10px;
-            border-radius: 4px;
+            color: #e74c3c;
+            background-color: #fdf2f2;
+            border: 1px solid #f8d7da;
+            padding: 12px 15px;
+            border-radius: 8px;
             margin-top: 10px;
             display: none;
+            font-size: 14px;
         }
         
         .error-message.show {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .success-message {
+            color: #27ae60;
+            background-color: #f2fdf2;
+            border: 1px solid #d4edda;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+            font-size: 14px;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
         }
         
         /* Botones de acción */
@@ -138,158 +415,496 @@
             display: flex;
             justify-content: space-between;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
         
         .btn {
-            padding: 12px 25px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             flex: 1;
         }
         
         .btn-primary {
-            background-color: #8B0000;
+            background: linear-gradient(135deg, #8B0000, #A52A2A);
             color: white;
         }
         
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139,0,0,0.3);
+        }
+        
         .btn-secondary {
-            background-color: #f0f0f0;
+            background: #f8f9fa;
             color: #333;
+            border: 2px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #8B0000;
+            color: #8B0000;
+        }
+        
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Notificaciones */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background: #e74c3c;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .delivery-options {
+                padding: 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .progress-bar {
+                flex-wrap: wrap;
+            }
+            
+            .progress-step {
+                flex: 0 0 50%;
+                margin-bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .time-slots {
+                grid-template-columns: 1fr;
+            }
+            
+            .radio-option {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .radio-option input {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Parrilladas Familiares</h1>
-    </div>
-    
-    <div class="container">
-        <h2 class="delivery-title">Método de Entrega</h2>
-        
-        <!-- Escenario 1: Retiro en local -->
-        <div class="delivery-options">
-            <div class="option-group">
-                <span class="option-label">Tipo de entrega:</span>
-                <div class="radio-option">
-                    <input type="radio" id="delivery" name="deliveryType" value="delivery">
-                    <label for="delivery">Delivery</label>
+
+    <!-- Escenario 1: Retiro en local -->
+    <div id="escenario-retiro-local" class="escenario activo">
+        <div class="header">
+            <div class="nav">
+                <div class="logo">🥩 Parrilladas Familiares</div>
+                <div class="nav-links">
+                    <a href="carrito.html">← Volver al Carrito</a>
+                    <a href="perfil.html">Mi Perfil</a>
                 </div>
-                <div class="radio-option">
-                    <input type="radio" id="pickup" name="deliveryType" value="pickup" checked>
-                    <label for="pickup">Retiro en local</label>
+            </div>
+        </div>
+        
+        <div class="container">
+            <h2 class="delivery-title">Método de Entrega</h2>
+            
+            <div class="progress-bar">
+                <div class="progress-step">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Carrito</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle active">2</div>
+                    <div class="step-label active">Entrega</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Pago</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Confirmación</div>
                 </div>
             </div>
             
-            <!-- Formulario para retiro en local -->
-            <div id="pickupForm" class="form-section active">
-                <div class="form-group">
-                    <label for="branch">Selecciona sucursal:</label>
-                    <select id="branch" class="form-control">
-                        <option value="">Selecciona sucursal</option>
-                        <option value="vitacura">Vitacura</option>
-                        <option value="las-condes">Las Condes</option>
-                        <option value="africa">África</option>
-                        <option value="barcelona">Barcelona</option>
-                    </select>
+            <div class="delivery-options">
+                <div class="option-group">
+                    <span class="option-label">Selecciona tu método de entrega:</span>
+                    <div class="radio-options">
+                        <div class="radio-option selected" onclick="seleccionarMetodo('retiro')">
+                            <input type="radio" id="pickup" name="deliveryType" value="pickup" checked>
+                            <div class="option-content">
+                                <div class="option-title">Retiro en Local</div>
+                                <div class="option-description">Recoge tu pedido en nuestra sucursal más cercana</div>
+                                <div class="option-price">Gratis</div>
+                            </div>
+                            <div class="option-badge">Más Popular</div>
+                        </div>
+                        
+                        <div class="radio-option" onclick="seleccionarMetodo('delivery')">
+                            <input type="radio" id="delivery" name="deliveryType" value="delivery">
+                            <div class="option-content">
+                                <div class="option-title">Delivery a Domicilio</div>
+                                <div class="option-description">Te llevamos tu pedido directamente a tu casa</div>
+                                <div class="option-price">$5.000</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label>Selecciona hora de retiro:</label>
-                    <div class="time-slots">
-                        <div class="time-slot">15:40 hrs</div>
-                        <div class="time-slot">15:50 hrs</div>
-                        <div class="time-slot selected">16:00 hrs</div>
-                        <div class="time-slot">16:10 hrs</div>
+                <!-- Formulario para retiro en local -->
+                <div id="pickupForm" class="form-section active">
+                    <div class="form-group">
+                        <label for="branch">Selecciona sucursal:</label>
+                        <select id="branch" class="form-control" onchange="actualizarInfoSucursal()">
+                            <option value="">Selecciona una sucursal</option>
+                            <option value="vitacura">Vitacura - Av. Vitacura 1234</option>
+                            <option value="las-condes">Las Condes - Av. Apoquindo 5678</option>
+                            <option value="providencia">Providencia - Av. Providencia 9012</option>
+                            <option value="nunoa">Ñuñoa - Av. Irarrázaval 3456</option>
+                        </select>
+                    </div>
+                    
+                    <div id="branchInfo" class="branch-info" style="display: none;">
+                        <div class="branch-name" id="branchName"></div>
+                        <div class="branch-address" id="branchAddress"></div>
+                        <div class="branch-hours">Horario: 10:00 - 22:00 hrs</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Selecciona hora de retiro:</label>
+                        <div class="time-slots" id="timeSlots">
+                            <!-- Los horarios se cargan dinámicamente -->
+                        </div>
+                    </div>
+                    
+                    <div class="success-message" id="pickupSuccess">
+                        ✅ Retiro programado correctamente
+                    </div>
+                </div>
+                
+                <!-- Formulario para delivery -->
+                <div id="deliveryForm" class="form-section">
+                    <div class="form-group">
+                        <label for="address">Dirección de entrega:</label>
+                        <textarea id="address" class="form-control" rows="3" placeholder="Ingresa tu dirección completa (calle, número, departamento, comuna)"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="comuna">Comuna:</label>
+                            <select id="comuna" class="form-control">
+                                <option value="">Selecciona comuna</option>
+                                <option value="vitacura">Vitacura</option>
+                                <option value="las-condes">Las Condes</option>
+                                <option value="providencia">Providencia</option>
+                                <option value="nunoa">Ñuñoa</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Teléfono de contacto:</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="+56 9 1234 5678">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Horario de entrega preferido:</label>
+                        <div class="time-slots">
+                            <div class="time-slot">12:00 - 14:00 hrs</div>
+                            <div class="time-slot selected">14:00 - 16:00 hrs</div>
+                            <div class="time-slot">16:00 - 18:00 hrs</div>
+                            <div class="time-slot">18:00 - 20:00 hrs</div>
+                        </div>
+                    </div>
+                    
+                    <div id="addressError" class="error-message">
+                        Por favor ingresa una dirección válida
+                    </div>
+                    
+                    <div class="success-message" id="deliverySuccess">
+                        ✅ Dirección guardada correctamente
                     </div>
                 </div>
             </div>
             
-            <!-- Formulario para delivery -->
-            <div id="deliveryForm" class="form-section">
-                <div class="form-group">
-                    <label for="address">Ingresa la dirección correspondiente:</label>
-                    <textarea id="address" class="form-control" rows="3" placeholder="Ingresa tu dirección completa"></textarea>
-                </div>
-                
-                <div id="addressError" class="error-message">
-                    Ingresa una dirección válida
-                </div>
+            <div class="action-buttons">
+                <a href="carrito.html" class="btn btn-secondary">
+                    ← Volver al Carrito
+                </a>
+                <button class="btn btn-primary" onclick="guardarMetodoEntrega()">
+                    Continuar al Pago →
+                </button>
             </div>
         </div>
-        
-        <div class="action-buttons">
-            <button class="btn btn-secondary">Volver</button>
-            <button class="btn btn-primary">Guardar</button>
-        </div>
+    </div>
 
-        <!-- Escenario 2: Delivery con error -->
-        <!-- 
-        <div class="delivery-options">
-            <div class="option-group">
-                <span class="option-label">Tipo de entrega:</span>
-                <div class="radio-option">
-                    <input type="radio" id="delivery2" name="deliveryType2" value="delivery" checked>
-                    <label for="delivery2">Delivery</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="pickup2" name="deliveryType2" value="pickup">
-                    <label for="pickup2">Retiro en local</label>
-                </div>
-            </div>
-            
-            <div id="deliveryForm2" class="form-section active">
-                <div class="form-group">
-                    <label for="address2">Ingresa la dirección correspondiente:</label>
-                    <textarea id="address2" class="form-control" rows="3" placeholder="Ingresa tu dirección completa">thauifhsadkhas</textarea>
-                </div>
-                
-                <div id="addressError2" class="error-message show">
-                    Ingresa una dirección válida
-                </div>
-            </div>
-        </div>
-        
-        <div class="action-buttons">
-            <button class="btn btn-secondary">Volver</button>
-            <button class="btn btn-primary">Confirmar dirección</button>
-        </div>
-        -->
+    <!-- Los otros escenarios usarían la misma estructura pero con diferentes configuraciones -->
+
+    <!-- Notificación -->
+    <div class="notification" id="notification">
+        <span>✅ Método de entrega guardado correctamente!</span>
     </div>
 
     <script>
-        // Script básico para cambiar entre formularios
+        // Datos de sucursales
+        const sucursales = {
+            'vitacura': {
+                nombre: 'Sucursal Vitacura',
+                direccion: 'Av. Vitacura 1234, Vitacura',
+                horario: '10:00 - 22:00 hrs'
+            },
+            'las-condes': {
+                nombre: 'Sucursal Las Condes',
+                direccion: 'Av. Apoquindo 5678, Las Condes',
+                horario: '10:00 - 22:00 hrs'
+            },
+            'providencia': {
+                nombre: 'Sucursal Providencia',
+                direccion: 'Av. Providencia 9012, Providencia',
+                horario: '10:00 - 22:00 hrs'
+            },
+            'nunoa': {
+                nombre: 'Sucursal Ñuñoa',
+                direccion: 'Av. Irarrázaval 3456, Ñuñoa',
+                horario: '10:00 - 22:00 hrs'
+            }
+        };
+
+        // Variables de estado
+        let metodoSeleccionado = 'retiro';
+        let horarioSeleccionado = null;
+        let sucursalSeleccionada = null;
+
+        // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
-            const deliveryRadio = document.getElementById('delivery');
-            const pickupRadio = document.getElementById('pickup');
-            const deliveryForm = document.getElementById('deliveryForm');
-            const pickupForm = document.getElementById('pickupForm');
-            
-            deliveryRadio.addEventListener('change', function() {
-                if (this.checked) {
-                    deliveryForm.classList.add('active');
-                    pickupForm.classList.remove('active');
-                }
-            });
-            
-            pickupRadio.addEventListener('change', function() {
-                if (this.checked) {
-                    pickupForm.classList.add('active');
-                    deliveryForm.classList.remove('active');
-                }
-            });
-            
-            // Selección de horarios
-            const timeSlots = document.querySelectorAll('.time-slot');
-            timeSlots.forEach(slot => {
-                slot.addEventListener('click', function() {
-                    timeSlots.forEach(s => s.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
+            generarHorariosRetiro();
+            seleccionarMetodo('retiro');
         });
+
+        // Función para seleccionar método de entrega
+        function seleccionarMetodo(metodo) {
+            metodoSeleccionado = metodo;
+            
+            // Actualizar radio buttons
+            document.getElementById('pickup').checked = metodo === 'retiro';
+            document.getElementById('delivery').checked = metodo === 'delivery';
+            
+            // Actualizar estilos visuales
+            document.querySelectorAll('.radio-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            if (metodo === 'retiro') {
+                document.querySelector('.radio-option[onclick="seleccionarMetodo(\'retiro\')"]').classList.add('selected');
+                document.getElementById('pickupForm').classList.add('active');
+                document.getElementById('deliveryForm').classList.remove('active');
+            } else {
+                document.querySelector('.radio-option[onclick="seleccionarMetodo(\'delivery\')"]').classList.add('selected');
+                document.getElementById('deliveryForm').classList.add('active');
+                document.getElementById('pickupForm').classList.remove('active');
+            }
+            
+            // Ocultar mensajes de error/éxito
+            ocultarMensajes();
+        }
+
+        // Función para generar horarios de retiro
+        function generarHorariosRetiro() {
+            const timeSlots = document.getElementById('timeSlots');
+            timeSlots.innerHTML = '';
+            
+            const ahora = new Date();
+            const horaActual = ahora.getHours();
+            const minutosActual = ahora.getMinutes();
+            
+            // Generar horarios cada 20 minutos desde la hora actual + 1 hora
+            for (let i = 3; i <= 12; i++) {
+                const hora = horaActual + i;
+                const minutos = minutosActual > 40 ? 0 : minutosActual > 20 ? 40 : 20;
+                
+                if (hora >= 10 && hora < 22) {
+                    const horaFormateada = `${hora.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+                    const timeSlot = document.createElement('div');
+                    timeSlot.className = 'time-slot';
+                    timeSlot.textContent = `${horaFormateada} hrs`;
+                    
+                    // Seleccionar el primer horario disponible por defecto
+                    if (i === 3 && minutosActual <= 20) {
+                        timeSlot.classList.add('selected');
+                        horarioSeleccionado = horaFormateada;
+                    }
+                    
+                    timeSlot.addEventListener('click', function() {
+                        document.querySelectorAll('.time-slot').forEach(slot => {
+                            slot.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                        horarioSeleccionado = this.textContent.trim();
+                    });
+                    
+                    timeSlots.appendChild(timeSlot);
+                }
+            }
+        }
+
+        // Función para actualizar información de sucursal
+        function actualizarInfoSucursal() {
+            const select = document.getElementById('branch');
+            const branchInfo = document.getElementById('branchInfo');
+            const branchName = document.getElementById('branchName');
+            const branchAddress = document.getElementById('branchAddress');
+            
+            sucursalSeleccionada = select.value;
+            
+            if (sucursalSeleccionada && sucursales[sucursalSeleccionada]) {
+                branchName.textContent = sucursales[sucursalSeleccionada].nombre;
+                branchAddress.textContent = sucursales[sucursalSeleccionada].direccion;
+                branchInfo.style.display = 'block';
+            } else {
+                branchInfo.style.display = 'none';
+            }
+        }
+
+        // Función para guardar método de entrega
+        function guardarMetodoEntrega() {
+            ocultarMensajes();
+            
+            if (metodoSeleccionado === 'retiro') {
+                if (!sucursalSeleccionada) {
+                    mostrarNotificacion('Por favor selecciona una sucursal', 'error');
+                    return;
+                }
+                
+                if (!horarioSeleccionado) {
+                    mostrarNotificacion('Por favor selecciona un horario de retiro', 'error');
+                    return;
+                }
+                
+                document.getElementById('pickupSuccess').classList.add('show');
+                mostrarNotificacion('Retiro programado correctamente');
+                
+            } else { // Delivery
+                const address = document.getElementById('address').value.trim();
+                const comuna = document.getElementById('comuna').value;
+                
+                if (!address || address.length < 10) {
+                    document.getElementById('addressError').classList.add('show');
+                    mostrarNotificacion('Por favor ingresa una dirección válida', 'error');
+                    return;
+                }
+                
+                if (!comuna) {
+                    mostrarNotificacion('Por favor selecciona una comuna', 'error');
+                    return;
+                }
+                
+                document.getElementById('deliverySuccess').classList.add('show');
+                mostrarNotificacion('Dirección guardada correctamente');
+            }
+            
+            // Simular guardado y redirección
+            setTimeout(() => {
+                // window.location.href = 'pago.html';
+            }, 1500);
+        }
+
+        // Función para ocultar mensajes
+        function ocultarMensajes() {
+            document.querySelectorAll('.error-message, .success-message').forEach(msg => {
+                msg.classList.remove('show');
+            });
+        }
+
+        // Función para mostrar notificación
+        function mostrarNotificacion(mensaje, tipo = 'success') {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `<span>${mensaje}</span>`;
+            notification.className = `notification ${tipo} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Función para cambiar entre escenarios
+        function mostrarEscenario(escenario) {
+            document.querySelectorAll('.escenario').forEach(e => e.classList.remove('activo'));
+            document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`escenario-${escenario}`).classList.add('activo');
+            document.querySelector(`.scenario-btn[onclick="mostrarEscenario('${escenario}')"]`).classList.add('active');
+            
+            // Configurar estados específicos para cada escenario
+            if (escenario === 'delivery-error') {
+                seleccionarMetodo('delivery');
+                document.getElementById('address').value = 'thauifhsadkhas';
+                document.getElementById('addressError').classList.add('show');
+            } else if (escenario === 'delivery-exitoso') {
+                seleccionarMetodo('delivery');
+                document.getElementById('address').value = 'Av. Los Leones 123, Depto 45, Providencia';
+                document.getElementById('comuna').value = 'providencia';
+                document.getElementById('deliverySuccess').classList.add('show');
+            } else if (escenario === 'sin-stock') {
+                seleccionarMetodo('retiro');
+                document.querySelectorAll('.time-slot').forEach(slot => {
+                    slot.classList.add('disabled');
+                });
+                mostrarNotificacion('No hay stock disponible para retiro inmediato', 'error');
+            } else {
+                // Restaurar estado normal
+                seleccionarMetodo('retiro');
+                ocultarMensajes();
+                generarHorariosRetiro();
+            }
+        }
     </script>
 </body>
 </html>
