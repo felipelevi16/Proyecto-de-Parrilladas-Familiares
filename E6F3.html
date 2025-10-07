@@ -5,231 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Catálogo - Parrilladas Familiares</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background-color: #f8f9fa; }
+        .header { background: #8B0000; color: white; padding: 15px; text-align: center; }
+        .admin-nav { background: #343a40; padding: 15px; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; gap: 30px; }
+        .nav-item { color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; transition: background 0.3s; }
+        .nav-item:hover, .nav-item.active { background: #8B0000; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+        .page-title { text-align: center; margin-bottom: 30px; color: #333; }
         
-        body {
-            background-color: #f8f9fa;
-        }
+        .management-tabs { display: flex; margin-bottom: 30px; border-bottom: 2px solid #dee2e6; }
+        .tab { padding: 12px 25px; cursor: pointer; border: none; background: none; font-size: 16px; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .tab.active { border-bottom-color: #8B0000; color: #8B0000; font-weight: bold; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
         
-        .header {
-            background-color: #8B0000;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-        }
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px; }
+        .item-card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 4px solid #8B0000; }
+        .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .item-name { font-weight: bold; font-size: 18px; color: #333; }
+        .item-price { color: #8B0000; font-weight: bold; font-size: 16px; }
+        .item-description { color: #666; margin-bottom: 15px; line-height: 1.4; }
+        .item-actions { display: flex; gap: 10px; }
+        .action-btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; flex: 1; }
+        .btn-edit { background: #ffc107; color: #212529; }
+        .btn-delete { background: #dc3545; color: white; }
+        .btn-status { background: #28a745; color: white; }
         
-        .admin-nav {
-            background-color: #343a40;
-            padding: 15px 0;
-        }
+        .management-form { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
+        .form-actions { display: flex; gap: 15px; justify-content: flex-end; margin-top: 25px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-primary { background: #8B0000; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
         
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-        }
+        .status-indicator { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+        .status-active { background: #28a745; }
+        .status-inactive { background: #dc3545; }
         
-        .nav-item {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        
-        .nav-item:hover, .nav-item.active {
-            background-color: #8B0000;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-        
-        .page-title {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-        }
-        
-        /* Pestañas de gestión */
-        .management-tabs {
-            display: flex;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #dee2e6;
-        }
-        
-        .tab {
-            padding: 12px 25px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 16px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .tab.active {
-            border-bottom-color: #8B0000;
-            color: #8B0000;
-            font-weight: bold;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        /* Grid de productos/promociones */
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
-        .item-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid #8B0000;
-        }
-        
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-        
-        .item-name {
-            font-weight: bold;
-            font-size: 18px;
-            color: #333;
-        }
-        
-        .item-price {
-            color: #8B0000;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        
-        .item-description {
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-        
-        .item-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .action-btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            flex: 1;
-        }
-        
-        .btn-edit {
-            background-color: #ffc107;
-            color: #212529;
-        }
-        
-        .btn-delete {
-            background-color: #dc3545;
-            color: white;
-        }
-        
-        .btn-status {
-            background-color: #28a745;
-            color: white;
-        }
-        
-        /* Formularios de gestión */
-        .management-form {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-            margin-top: 25px;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .btn-primary {
-            background-color: #8B0000;
-            color: white;
-        }
-        
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        /* Estados */
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        
-        .status-active {
-            background-color: #28a745;
-        }
-        
-        .status-inactive {
-            background-color: #dc3545;
-        }
+        .notification { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 20px; border-radius: 4px; display: none; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -250,16 +67,18 @@
     <div class="container">
         <h2 class="page-title">Gestión de Contenido</h2>
         
+        <div class="notification" id="notification"></div>
+        
         <div class="management-tabs">
-            <button class="tab active" onclick="showTab('promotions')">Promociones y Ofertas</button>
-            <button class="tab" onclick="showTab('catalog')">Catálogo de Productos</button>
+            <button class="tab active" onclick="showTab('promotions')">Promociones</button>
+            <button class="tab" onclick="showTab('catalog')">Productos</button>
             <button class="tab" onclick="showTab('add-promotion')">Agregar Promoción</button>
             <button class="tab" onclick="showTab('add-product')">Agregar Producto</button>
         </div>
         
-        <!-- Pestaña: Promociones y Ofertas -->
+        <!-- Pestaña: Promociones -->
         <div id="promotions" class="tab-content active">
-            <h3 style="color: #333; margin-bottom: 25px;">Administración de Promociones y Ofertas</h3>
+            <h3 style="color: #333; margin-bottom: 25px;">Administración de Promociones</h3>
             
             <div class="items-grid">
                 <div class="item-card">
@@ -271,8 +90,8 @@
                         Combo especial incluye costillar, chorizos, pollo y acompañamientos para 4 personas
                     </div>
                     <div class="item-actions">
-                        <button class="action-btn btn-edit">Editar Promoción</button>
-                        <button class="action-btn btn-status">Desactivar</button>
+                        <button class="action-btn btn-edit" onclick="editItem('promo1')">Editar</button>
+                        <button class="action-btn btn-status" onclick="toggleStatus('promo1')">Desactivar</button>
                     </div>
                 </div>
                 
@@ -285,14 +104,14 @@
                         Promoción especial de fin de semana con descuento del 20%
                     </div>
                     <div class="item-actions">
-                        <button class="action-btn btn-edit">Editar Promoción</button>
-                        <button class="action-btn btn-delete">Eliminar</button>
+                        <button class="action-btn btn-edit" onclick="editItem('promo2')">Editar</button>
+                        <button class="action-btn btn-delete" onclick="deleteItem('promo2')">Eliminar</button>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Pestaña: Catálogo de Productos -->
+        <!-- Pestaña: Productos -->
         <div id="catalog" class="tab-content">
             <h3 style="color: #333; margin-bottom: 25px;">Catálogo de Productos</h3>
             
@@ -309,8 +128,8 @@
                         Corte premium de lomo vetado, 400g aproximadamente
                     </div>
                     <div class="item-actions">
-                        <button class="action-btn btn-edit">Editar Producto</button>
-                        <button class="action-btn btn-status">Desactivar</button>
+                        <button class="action-btn btn-edit" onclick="editItem('prod1')">Editar</button>
+                        <button class="action-btn btn-status" onclick="toggleStatus('prod1')">Desactivar</button>
                     </div>
                 </div>
                 
@@ -326,8 +145,8 @@
                         Pollo entero asado a la parrilla con especias especiales
                     </div>
                     <div class="item-actions">
-                        <button class="action-btn btn-edit">Editar Producto</button>
-                        <button class="action-btn btn-status">Desactivar</button>
+                        <button class="action-btn btn-edit" onclick="editItem('prod2')">Editar</button>
+                        <button class="action-btn btn-status" onclick="toggleStatus('prod2')">Desactivar</button>
                     </div>
                 </div>
             </div>
@@ -339,28 +158,28 @@
             
             <div class="management-form">
                 <div class="form-group">
-                    <label for="promoName">Nombre de la Promoción:</label>
-                    <input type="text" id="promoName" class="form-control" placeholder="Ej: Oferta Combo Parrillero">
+                    <label for="promoName">Nombre:</label>
+                    <input type="text" id="promoName" class="form-control" placeholder="Oferta Combo Parrillero">
                 </div>
                 
                 <div class="form-group">
                     <label for="promoDescription">Descripción:</label>
-                    <textarea id="promoDescription" class="form-control" rows="3" placeholder="Descripción detallada de la promoción"></textarea>
+                    <textarea id="promoDescription" class="form-control" rows="3" placeholder="Descripción de la promoción"></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label for="promoPrice">Precio Promocional:</label>
+                    <label for="promoPrice">Precio:</label>
                     <input type="number" id="promoPrice" class="form-control" placeholder="18000">
                 </div>
                 
                 <div class="form-group">
-                    <label for="promoPeriod">Período de Vigencia:</label>
-                    <input type="text" id="promoPeriod" class="form-control" placeholder="Ej: 10-11 de junio">
+                    <label for="promoPeriod">Vigencia:</label>
+                    <input type="text" id="promoPeriod" class="form-control" placeholder="10-11 de junio">
                 </div>
                 
                 <div class="form-actions">
-                    <button class="btn btn-secondary">Cancelar</button>
-                    <button class="btn btn-primary">Guardar Promoción</button>
+                    <button class="btn btn-secondary" onclick="showTab('promotions')">Cancelar</button>
+                    <button class="btn btn-primary" onclick="savePromotion()">Guardar</button>
                 </div>
             </div>
         </div>
@@ -371,8 +190,8 @@
             
             <div class="management-form">
                 <div class="form-group">
-                    <label for="productName">Nombre del Producto:</label>
-                    <input type="text" id="productName" class="form-control" placeholder="Ej: Lomo Vetado">
+                    <label for="productName">Nombre:</label>
+                    <input type="text" id="productName" class="form-control" placeholder="Lomo Vetado">
                 </div>
                 
                 <div class="form-group">
@@ -397,14 +216,27 @@
                 </div>
                 
                 <div class="form-actions">
-                    <button class="btn btn-secondary">Cancelar</button>
-                    <button class="btn btn-primary">Guardar Producto</button>
+                    <button class="btn btn-secondary" onclick="showTab('catalog')">Cancelar</button>
+                    <button class="btn btn-primary" onclick="saveProduct()">Guardar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Sistema de notificaciones
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Gestión de pestañas
         function showTab(tabName) {
             // Ocultar todas las pestañas
             document.querySelectorAll('.tab-content').forEach(tab => {
@@ -419,7 +251,87 @@
                 tab.classList.remove('active');
             });
             event.target.classList.add('active');
+            
+            showNotification(`Navegando a: ${event.target.textContent}`);
         }
+
+        // Funciones para gestión de items
+        function editItem(itemId) {
+            showNotification(`Editando: ${itemId}`);
+            console.log(`Abriendo editor para: ${itemId}`);
+            // Aquí se cargarían los datos del item en el formulario
+        }
+
+        function toggleStatus(itemId) {
+            showNotification(`Cambiando estado de: ${itemId}`);
+            console.log(`Alternando estado de: ${itemId}`);
+            // Aquí se cambiaría el estado en la base de datos
+        }
+
+        function deleteItem(itemId) {
+            if (confirm(`¿Estás seguro de eliminar ${itemId}?`)) {
+                showNotification(`${itemId} eliminado correctamente`);
+                console.log(`Eliminando: ${itemId}`);
+                // Aquí se eliminaría de la base de datos
+            }
+        }
+
+        // Funciones para guardar
+        function savePromotion() {
+            const name = document.getElementById('promoName').value;
+            const price = document.getElementById('promoPrice').value;
+            
+            if (!name || !price) {
+                showNotification('Por favor completa todos los campos', 'error');
+                return;
+            }
+            
+            showNotification(`Promoción "${name}" guardada correctamente`);
+            console.log('Guardando promoción:', { name, price });
+            
+            // Limpiar formulario y volver a promociones
+            document.getElementById('promoName').value = '';
+            document.getElementById('promoDescription').value = '';
+            document.getElementById('promoPrice').value = '';
+            document.getElementById('promoPeriod').value = '';
+            
+            showTab('promotions');
+        }
+
+        function saveProduct() {
+            const name = document.getElementById('productName').value;
+            const price = document.getElementById('productPrice').value;
+            const category = document.getElementById('productCategory').value;
+            
+            if (!name || !price || !category) {
+                showNotification('Por favor completa todos los campos', 'error');
+                return;
+            }
+            
+            showNotification(`Producto "${name}" guardado correctamente`);
+            console.log('Guardando producto:', { name, price, category });
+            
+            // Limpiar formulario y volver a productos
+            document.getElementById('productName').value = '';
+            document.getElementById('productDescription').value = '';
+            document.getElementById('productPrice').value = '';
+            document.getElementById('productCategory').value = '';
+            
+            showTab('catalog');
+        }
+
+        // Navegación del menú
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+                showNotification(`Navegando a: ${this.textContent}`);
+            });
+        });
+
+        // Demo: Datos de ejemplo
+        console.log('Sistema de gestión de catálogo cargado correctamente');
     </script>
 </body>
 </html>
