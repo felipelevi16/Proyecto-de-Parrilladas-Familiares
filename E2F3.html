@@ -5,29 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle Producto - Parrilladas Familiares</title>
     <style>
-        /* Estilos generales (reutilizables) */
+        /* Estilos generales */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #f5f5f5;
+            background-color: #f8f9fa;
             color: #333;
+            line-height: 1.6;
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
         
         .header {
-            background-color: #8B0000;
+            background: linear-gradient(135deg, #8B0000, #A52A2A);
             color: white;
-            padding: 15px 0;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .nav {
@@ -35,209 +37,630 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
         }
         
         .nav a {
             color: white;
             text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Selector de escenarios */
+        .scenario-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .scenario-btn {
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .scenario-btn.active {
+            background: #8B0000;
+            color: white;
+            border-color: #8B0000;
         }
         
         /* Detalle del producto */
         .product-detail {
             background: white;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             margin-top: 20px;
         }
         
         .product-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 30px;
+            gap: 40px;
+            padding: 40px;
         }
         
-        .product-image {
+        /* Galería de imágenes */
+        .product-gallery {
+            position: relative;
+        }
+        
+        .main-image {
             width: 100%;
-            height: 300px;
-            background-color: #eee;
+            height: 400px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            color: #8B0000;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            position: relative;
         }
         
+        .main-image:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(139,0,0,0.1), rgba(139,0,0,0.05));
+        }
+        
+        .image-thumbnails {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .thumbnail:hover, .thumbnail.active {
+            border-color: #8B0000;
+            transform: scale(1.05);
+        }
+        
+        /* Información del producto */
         .product-info h1 {
             color: #8B0000;
             margin-bottom: 15px;
+            font-size: 28px;
+        }
+        
+        .product-category {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .stars {
+            color: #FFD700;
+        }
+        
+        .rating-count {
+            color: #666;
+            font-size: 14px;
         }
         
         .product-price {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: bold;
             color: #8B0000;
-            margin: 15px 0;
+            margin: 20px 0;
         }
         
         .product-description {
             margin: 20px 0;
-            line-height: 1.6;
+            line-height: 1.7;
+            color: #555;
         }
         
         .product-specs {
             background: #f9f9f9;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 4px solid #8B0000;
         }
         
         .spec-item {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .spec-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .spec-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .spec-value {
+            color: #666;
+        }
+        
+        /* Selector de cantidad */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 5px;
+        }
+        
+        .quantity-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px 10px;
+            color: #8B0000;
+        }
+        
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .quantity-input:focus {
+            outline: none;
+        }
+        
+        .stock-info {
+            color: #27ae60;
+            font-weight: 600;
+        }
+        
+        /* Botones de acción */
+        .action-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 160px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #8B0000, #A52A2A);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139,0,0,0.3);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #8B0000;
+            color: #8B0000;
         }
         
         /* Recomendaciones */
         .recommendations {
-            margin-top: 30px;
+            margin-top: 40px;
+            padding: 30px;
+            border-top: 1px solid #eee;
         }
         
         .recommendations h2 {
-            margin-bottom: 15px;
+            margin-bottom: 25px;
             color: #8B0000;
+            font-size: 24px;
+            text-align: center;
         }
         
         .recommendations-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
         }
         
         .recommendation-card {
+            background: white;
             border: 1px solid #eee;
-            border-radius: 4px;
-            padding: 10px;
+            border-radius: 8px;
+            padding: 20px;
             text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .recommendation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #8B0000;
+        }
+        
+        .rec-image {
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8B0000;
+            font-size: 12px;
+        }
+        
+        .rec-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .rec-price {
+            color: #8B0000;
+            font-weight: bold;
         }
         
         /* Estado sin recomendaciones */
         .no-recommendations {
             text-align: center;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 4px;
-            margin-top: 20px;
+            padding: 40px 20px;
             color: #666;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-top: 20px;
         }
         
-        /* Botones de acción */
-        .action-buttons {
-            margin-top: 25px;
-            display: flex;
-            gap: 15px;
+        .no-recommendations h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
         }
         
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .product-layout {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 25px;
+            }
+            
+            .main-image {
+                height: 300px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                min-width: 100%;
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
         
-        .btn-primary {
-            background-color: #8B0000;
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .product-layout {
+                padding: 20px;
+            }
+            
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Notificaciones */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #27ae60;
             color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
         }
         
-        .btn-secondary {
-            background-color: #f0f0f0;
-            color: #333;
+        .notification.show {
+            transform: translateX(0);
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="nav">
-            <a href="#">← Volver al catálogo</a>
-            <a href="#">Ir a Perfil</a>
-        </div>
-    </div>
-    
-    <div class="container">
-        <!-- Escenario 1: Producto con recomendaciones -->
-        <div class="product-detail">
-            <div class="product-layout">
-                <div class="product-image">
-                    [Imagen del Producto]
-                </div>
-                
-                <div class="product-info">
-                    <h1> Lomo Vetado- 12 kg</h1>
-                    <div class="product-price">$16.000</div>
-                    
-                    <div class="product-description">
-                        Para 4-5 personas - regresadas pagas y enudada rosa
-                    </div>
-                    
-                    <div class="product-specs">
-                        <div class="spec-item"><strong>Peso:</strong> 12 kg</div>
-                        <div class="spec-item"><strong>Para:</strong> 4-5 personas</div>
-                        <div class="spec-item"><strong>Tipo:</strong> Carne de res</div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">Agregar al Carrito</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Recomendaciones -->
-            <div class="recommendations">
-                <h2>Recomendaciones de Acompañamiento</h2>
-                <div class="recommendations-grid">
-                    <div class="recommendation-card">
-                        <div>Papas Fritas</div>
-                    </div>
-                    <div class="recommendation-card">
-                        <div>Ensalada</div>
-                    </div>
-                    <div class="recommendation-card">
-                        <div>Salsas</div>
-                    </div>
-                    <div class="recommendation-card">
-                        <div>Bebidas</div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Escenario 2: Producto sin recomendaciones -->
-        <!-- 
-        <div class="product-detail">
-            <div class="product-layout">
-                <div class="product-image">
-                    [Imagen del Producto]
+
+    <!-- Escenario 1: Producto con recomendaciones -->
+    <div id="escenario-con-recomendaciones" class="escenario activo">
+        <div class="header">
+            <div class="nav">
+                <div class="logo">🥩 Parrilladas Familiares</div>
+                <div class="nav-links">
+                    <a href="catalogo.html">← Volver al Catálogo</a>
+                    <a href="carrito.html">Carrito (3)</a>
+                    <a href="perfil.html">Mi Perfil</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="product-detail">
+                <div class="product-layout">
+                    <div class="product-gallery">
+                        <div class="main-image" id="mainImage">
+                            LOMO VETADO PREMIUM
+                        </div>
+                        <div class="image-thumbnails">
+                            <div class="thumbnail active" onclick="cambiarImagen(0)">Vista 1</div>
+                            <div class="thumbnail" onclick="cambiarImagen(1)">Vista 2</div>
+                            <div class="thumbnail" onclick="cambiarImagen(2)">Corte</div>
+                            <div class="thumbnail" onclick="cambiarImagen(3)">Preparación</div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <div class="product-category">CARNE DE RES PREMIUM</div>
+                        <h1>Lomo Vetado - 12 kg</h1>
+                        
+                        <div class="product-rating">
+                            <div class="stars">★★★★★</div>
+                            <div class="rating-count">(48 reseñas)</div>
+                        </div>
+                        
+                        <div class="product-price">$160.000</div>
+                        
+                        <div class="product-description">
+                            Corte premium de lomo vetado, perfectamente marmoleado para garantizar máxima jugosidad y sabor. Ideal para ocasiones especiales y parrilladas familiares. Incluye servicio de preparación profesional y recomendaciones de cocción.
+                        </div>
+                        
+                        <div class="product-specs">
+                            <div class="spec-item">
+                                <span class="spec-label">Peso:</span>
+                                <span class="spec-value">12 kg</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Para:</span>
+                                <span class="spec-value">4-5 personas</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Tipo:</span>
+                                <span class="spec-value">Carne de res Angus</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Origen:</span>
+                                <span class="spec-value">Finca Los Álamos</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Maduración:</span>
+                                <span class="spec-value">28 días</span>
+                            </div>
+                        </div>
+                        
+                        <div class="quantity-selector">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="cambiarCantidad(-1)">-</button>
+                                <input type="text" class="quantity-input" id="quantityInput" value="1" readonly>
+                                <button class="quantity-btn" onclick="cambiarCantidad(1)">+</button>
+                            </div>
+                            <div class="stock-info">✓ En stock (15 disponibles)</div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="agregarAlCarrito()">
+                                🛒 Agregar al Carrito
+                            </button>
+                            <button class="btn btn-secondary" onclick="agregarAFavoritos()">
+                                ❤️ Agregar a Favoritos
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="product-info">
-                    <h1>Nombre del Producto</h1>
-                    <div class="product-price">$XX.XXX</div>
-                    
-                    <div class="product-description">
-                        Descripción detallada del producto...
-                    </div>
-                    
-                    <div class="no-recommendations">
-                        Sin recomendaciones disponibles
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">Agregar al Carrito</button>
+                <!-- Recomendaciones -->
+                <div class="recommendations">
+                    <h2>Perfectos Acompañamientos</h2>
+                    <div class="recommendations-grid">
+                        <div class="recommendation-card" onclick="mostrarDetalle(1)">
+                            <div class="rec-image">PAPAS</div>
+                            <div class="rec-name">Papas Rusticas</div>
+                            <div class="rec-price">$12.000</div>
+                        </div>
+                        <div class="recommendation-card" onclick="mostrarDetalle(2)">
+                            <div class="rec-image">ENSALADA</div>
+                            <div class="rec-name">Ensalada César</div>
+                            <div class="rec-price">$15.000</div>
+                        </div>
+                        <div class="recommendation-card" onclick="mostrarDetalle(3)">
+                            <div class="rec-image">SALSAS</div>
+                            <div class="rec-name">Surtido de Salsas</div>
+                            <div class="rec-price">$8.000</div>
+                        </div>
+                        <div class="recommendation-card" onclick="mostrarDetalle(4)">
+                            <div class="rec-image">VINO</div>
+                            <div class="rec-name">Vino Tinto Reserva</div>
+                            <div class="rec-price">$35.000</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        -->
     </div>
+
+    <!-- Los otros escenarios seguirían la misma estructura pero con diferentes contenidos -->
+
+    <!-- Notificación -->
+    <div class="notification" id="notification">
+        Producto agregado al carrito correctamente!
+    </div>
+
+    <script>
+        // Variables de estado
+        let cantidad = 1;
+        const imagenesProducto = [
+            "LOMO VETADO PREMIUM",
+            "VISTA LATERAL",
+            "DETALLE DEL CORTE", 
+            "PREPARACIÓN FINAL"
+        ];
+
+        // Función para cambiar entre escenarios
+        function mostrarEscenario(escenario) {
+            document.querySelectorAll('.escenario').forEach(e => e.classList.remove('activo'));
+            document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`escenario-${escenario}`).classList.add('activo');
+            document.querySelector(`.scenario-btn[onclick="mostrarEscenario('${escenario}')"]`).classList.add('active');
+            
+            // Configurar estados específicos para cada escenario
+            if (escenario === 'agotado') {
+                document.querySelector('.stock-info').innerHTML = '✗ Agotado temporalmente';
+                document.querySelector('.stock-info').style.color = '#e74c3c';
+                document.querySelector('.btn-primary').innerHTML = '📧 Notificar Disponibilidad';
+                document.querySelector('.btn-primary').disabled = true;
+                document.querySelector('.btn-primary').style.opacity = '0.6';
+            } else if (escenario === 'oferta') {
+                document.querySelector('.product-price').innerHTML = '<span style="text-decoration: line-through; color: #999; margin-right: 10px;">$190.000</span> $160.000';
+                document.querySelector('.product-price').innerHTML += '<span style="background: #e74c3c; color: white; padding: 2px 8px; border-radius: 4px; font-size: 14px; margin-left: 10px;">15% OFF</span>';
+            } else if (escenario === 'sin-recomendaciones') {
+                document.querySelector('.recommendations').innerHTML = `
+                    <div class="no-recommendations">
+                        <h3>Sin recomendaciones disponibles</h3>
+                        <p>Actualmente no tenemos recomendaciones para este producto</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Función para cambiar imagen principal
+        function cambiarImagen(index) {
+            document.getElementById('mainImage').textContent = imagenesProducto[index];
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        // Función para cambiar cantidad
+        function cambiarCantidad(delta) {
+            cantidad += delta;
+            if (cantidad < 1) cantidad = 1;
+            if (cantidad > 15) cantidad = 15;
+            document.getElementById('quantityInput').value = cantidad;
+        }
+
+        // Función para agregar al carrito
+        function agregarAlCarrito() {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+            
+            console.log(`Agregado al carrito: Lomo Vetado - Cantidad: ${cantidad}`);
+        }
+
+        // Función para agregar a favoritos
+        function agregarAFavoritos() {
+            alert('❤️ Producto agregado a tus favoritos');
+        }
+
+        // Función para mostrar detalle de producto recomendado
+        function mostrarDetalle(idProducto) {
+            alert(`Redirigiendo al detalle del producto ${idProducto}`);
+            // En implementación real: window.location.href = `producto.html?id=${idProducto}`;
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuración inicial
+            cambiarImagen(0);
+        });
+    </script>
 </body>
 </html>
