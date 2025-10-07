@@ -3,257 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva - Parrilladas Familiares</title>
+    <title>Reserva Grupos - Parrilladas Familiares</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f5f5f5; }
+        .header { background: #8B0000; color: white; padding: 15px; text-align: center; }
+        .container { max-width: 600px; margin: 20px auto; padding: 20px; }
         
-        body {
-            background-color: #f5f5f5;
-        }
+        .scenario-selector { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
+        .scenario-btn { padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; }
+        .scenario-btn.active { background: #8B0000; color: white; }
         
-        .header {
-            background-color: #8B0000;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-        }
+        .page-title { text-align: center; margin: 20px 0; color: #8B0000; }
         
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+        .reservation-form, .success-message, .error-message { 
+            background: white; padding: 30px; border-radius: 8px; margin: 20px 0; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
         }
+        .success-message { border-left: 4px solid #28a745; }
+        .error-message { border-left: 4px solid #dc3545; }
         
-        .page-title {
-            text-align: center;
-            margin: 20px 0;
-            color: #8B0000;
-        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; }
         
-        /* Formulario de reserva */
-        .reservation-form {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+        .people-counter { display: flex; align-items: center; gap: 15px; margin: 10px 0; }
+        .counter-btn { width: 40px; height: 40px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; }
+        .counter-input { width: 80px; text-align: center; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
         
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .capacity-info { color: #666; font-size: 14px; margin: 10px 0; }
+        .capacity-error { color: #dc3545; }
         
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
+        .table-suggestions { background: #e7f3ff; padding: 15px; border-radius: 4px; margin: 15px 0; border-left: 4px solid #007bff; }
         
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
+        .btn { padding: 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-primary { background: #8B0000; color: white; }
+        .btn-secondary { background: #6c757d; color: white; margin-top: 10px; }
         
-        .people-counter {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .counter-btn {
-            width: 40px;
-            height: 40px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .counter-input {
-            width: 80px;
-            text-align: center;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        
-        .reserve-btn {
-            background-color: #8B0000;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        /* Estados de resultado */
-        .success-message, .error-message {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-top: 20px;
-        }
-        
-        .success-message {
-            border-left: 4px solid #28a745;
-        }
-        
-        .error-message {
-            border-left: 4px solid #dc3545;
-        }
-        
-        .success-title {
-            color: #28a745;
-            margin-bottom: 20px;
-        }
-        
-        .error-title {
-            color: #dc3545;
-            margin-bottom: 20px;
-        }
-        
-        .reservation-details {
-            text-align: left;
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 4px;
-            margin: 20px 0;
-        }
-        
-        .table-suggestion {
-            background: #e7f3ff;
-            border-left: 4px solid #007bff;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 4px;
-        }
-        
-        .back-btn {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 15px;
-        }
+        .reservation-details { background: #f9f9f9; padding: 20px; border-radius: 4px; margin: 20px 0; }
+        .detail-item { margin-bottom: 10px; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Parrilladas Familiares</h1>
+        <h1>🥩 Parrilladas Familiares</h1>
     </div>
-    
+
+
+
     <div class="container">
-        <h2 class="page-title">Reserva en Restaurante</h2>
-        
-        <!-- Escenario 1: Formulario normal -->
-        <div class="reservation-form">
-            <div class="form-group">
-                <label for="branch">Sucursal:</label>
-                <select id="branch" class="form-control">
-                    <option value="africa">África</option>
-                    <option value="vitacura">Vitacura</option>
-                    <option value="las-condes">Las Condes</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="people">Cantidad de personas:</label>
-                <div class="people-counter">
-                    <button class="counter-btn" id="decrease">-</button>
-                    <input type="number" id="people" class="counter-input" value="10" min="1" max="50">
-                    <button class="counter-btn" id="increase">+</button>
-                    <span>personas</span>
+        <!-- Escenario 1: Formulario -->
+        <div id="formulario" class="escenario">
+            <h2 class="page-title">Reserva para Grupos</h2>
+            <div class="reservation-form">
+                <div class="form-group">
+                    <label>Sucursal:</label>
+                    <select class="form-control" onchange="actualizarCapacidad()">
+                        <option value="">Selecciona sucursal</option>
+                        <option value="africa">África (Capacidad: 12)</option>
+                        <option value="vitacura">Vitacura (Capacidad: 8)</option>
+                        <option value="las-condes">Las Condes (Capacidad: 10)</option>
+                    </select>
                 </div>
+                
+                <div class="form-group">
+                    <label>Personas:</label>
+                    <div class="people-counter">
+                        <button class="counter-btn" onclick="cambiarPersonas(-1)">-</button>
+                        <input type="number" class="counter-input" value="10" min="1" max="50" onchange="validarPersonas()">
+                        <button class="counter-btn" onclick="cambiarPersonas(1)">+</button>
+                        <span>personas</span>
+                    </div>
+                    <div class="capacity-info" id="capacityInfo">Capacidad máxima: 8 personas</div>
+                </div>
+                
+                <div class="table-suggestions" id="sugerencias" style="display: none;">
+                    <strong>💡 Sugerencias:</strong>
+                    <div id="sugerenciaTexto"></div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="realizarReserva()">Confirmar Reserva</button>
             </div>
-            
-            <div class="form-group">
-                <label for="datetime">Hora de reserva:</label>
-                <input type="text" id="datetime" class="form-control" value="Sábado 16/09 22:00 hrs" readonly>
-            </div>
-            
-            <button class="reserve-btn">Reservar</button>
         </div>
 
-        <!-- Escenario 2: Reserva exitosa para grupo grande -->
-        <!-- 
-        <div class="success-message">
-            <h2 class="success-title">¡Reserva Exitosa!</h2>
-            <div class="reservation-details">
-                <div class="detail-item"><strong>Sucursal:</strong> África</div>
-                <div class="detail-item"><strong>Cantidad de personas:</strong> 10</div>
-                <div class="table-suggestion">
-                    <strong>Para más de 8 personas se reserva una mesa grande</strong>
+        <!-- Escenario 2: Grupo Grande -->
+        <div id="grupo-grande" class="escenario" style="display: none;">
+            <div class="success-message">
+                <h2 style="color: #28a745; text-align: center;">¡Reserva Exitosa! 🎉</h2>
+                <div class="reservation-details">
+                    <div class="detail-item"><span>Sucursal:</span> <span>África</span></div>
+                    <div class="detail-item"><span>Personas:</span> <span>10 personas</span></div>
+                    <div class="table-suggestions">
+                        <strong>💡 Para grupos grandes:</strong><br>
+                        • Mesa grande asignada<br>
+                        • Área privada disponible<br>
+                        • Menú especial para grupos
+                    </div>
+                    <div class="detail-item"><span>N° Reserva:</span> <span>#3945</span></div>
+                    <div class="detail-item"><span>Fecha:</span> <span>Sábado 16/09 - 22:00</span></div>
                 </div>
-                <div class="detail-item"><strong>Número de reserva:</strong> 3945</div>
-                <div class="detail-item"><strong>Hora de reserva:</strong> 22:00 hrs</div>
+                <button class="btn btn-secondary" onclick="mostrarEscenario('formulario')">Nueva Reserva</button>
             </div>
-            <button class="back-btn">Volver a Menú</button>
         </div>
-        -->
 
-        <!-- Escenario 3: Número inválido de asistentes -->
-        <!-- 
-        <div class="error-message">
-            <h2 class="error-title">ERROR</h2>
-            <p>Número de asistentes inválido.</p>
-            <p>Intente con otra cantidad.</p>
-            <button class="back-btn">Volver a Reserva en Restaurante</button>
+        <!-- Escenario 3: Error -->
+        <div id="error" class="escenario" style="display: none;">
+            <div class="error-message">
+                <h2 style="color: #dc3545; text-align: center;">Capacidad Excedida</h2>
+                <p style="text-align: center; margin: 20px 0;">La cantidad de personas excede la capacidad de la sucursal.</p>
+                <button class="btn btn-secondary" onclick="mostrarEscenario('formulario')">Ajustar Reserva</button>
+            </div>
         </div>
-        -->
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const peopleInput = document.getElementById('people');
-            const decreaseBtn = document.getElementById('decrease');
-            const increaseBtn = document.getElementById('increase');
+        let cantidadPersonas = 10;
+        const capacidades = { 'africa': 12, 'vitacura': 8, 'las-condes': 10 };
+
+        function mostrarEscenario(escenario) {
+            document.querySelectorAll('.escenario').forEach(e => e.style.display = 'none');
+            document.getElementById(escenario).style.display = 'block';
+            document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function cambiarPersonas(delta) {
+            cantidadPersonas = Math.max(1, Math.min(50, cantidadPersonas + delta));
+            document.querySelector('.counter-input').value = cantidadPersonas;
+            actualizarSugerencias();
+        }
+
+        function validarPersonas() {
+            cantidadPersonas = Math.max(1, Math.min(50, parseInt(document.querySelector('.counter-input').value) || 1));
+            document.querySelector('.counter-input').value = cantidadPersonas;
+            actualizarSugerencias();
+        }
+
+        function actualizarCapacidad() {
+            const select = document.querySelector('select');
+            const capacidad = capacidades[select.value] || 8;
+            document.getElementById('capacityInfo').textContent = `Capacidad máxima: ${capacidad} personas`;
+            actualizarSugerencias();
+        }
+
+        function actualizarSugerencias() {
+            const select = document.querySelector('select');
+            const capacidad = capacidades[select.value] || 8;
+            const sugerencias = document.getElementById('sugerencias');
+            const texto = document.getElementById('sugerenciaTexto');
             
-            decreaseBtn.addEventListener('click', function() {
-                let currentValue = parseInt(peopleInput.value);
-                if (currentValue > 1) {
-                    peopleInput.value = currentValue - 1;
-                }
-            });
+            if (cantidadPersonas > capacidad) {
+                texto.innerHTML = '❌ Capacidad excedida. Elige otra sucursal o reduce personas.';
+                document.getElementById('capacityInfo').className = 'capacity-info capacity-error';
+            } else if (cantidadPersonas > 8) {
+                texto.innerHTML = '✅ Mesa grande asignada automáticamente';
+                document.getElementById('capacityInfo').className = 'capacity-info';
+            } else {
+                texto.innerHTML = '✅ Mesa estándar perfecta para tu grupo';
+                document.getElementById('capacityInfo').className = 'capacity-info';
+            }
+            sugerencias.style.display = 'block';
+        }
+
+        function realizarReserva() {
+            const select = document.querySelector('select');
+            const capacidad = capacidades[select.value] || 8;
             
-            increaseBtn.addEventListener('click', function() {
-                let currentValue = parseInt(peopleInput.value);
-                if (currentValue < 50) {
-                    peopleInput.value = currentValue + 1;
-                }
-            });
-            
-            peopleInput.addEventListener('change', function() {
-                let value = parseInt(this.value);
-                if (value < 1) {
-                    this.value = 1;
-                } else if (value > 50) {
-                    this.value = 50;
-                }
-            });
-        });
+            if (cantidadPersonas > capacidad) {
+                mostrarEscenario('error');
+            } else if (cantidadPersonas > 8) {
+                mostrarEscenario('grupo-grande');
+            } else {
+                alert('Reserva exitosa para ' + cantidadPersonas + ' personas');
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', actualizarSugerencias);
     </script>
 </body>
 </html>
