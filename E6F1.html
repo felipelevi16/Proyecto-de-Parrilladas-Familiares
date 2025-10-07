@@ -5,175 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Parrilladas Familiares</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background-color: #f8f9fa; }
+        .header { background: #8B0000; color: white; padding: 15px; text-align: center; }
+        .admin-nav { background: #343a40; padding: 15px; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; gap: 30px; }
+        .nav-item { color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; transition: background 0.3s; }
+        .nav-item:hover, .nav-item.active { background: #8B0000; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+        .dashboard-title { text-align: center; margin-bottom: 30px; color: #333; }
         
-        body {
-            background-color: #f8f9fa;
-        }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .dashboard-card { background: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 4px solid #8B0000; }
+        .card-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 15px; }
+        .stat-number { font-size: 32px; font-weight: bold; color: #8B0000; margin-bottom: 10px; }
+        .stat-description { color: #666; font-size: 14px; }
         
-        .header {
-            background-color: #8B0000;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-        }
+        .data-section { background: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .section-title { color: #333; margin-bottom: 20px; font-size: 20px; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { background: #f8f9fa; padding: 12px 15px; text-align: left; font-weight: bold; color: #333; border-bottom: 2px solid #dee2e6; }
+        .data-table td { padding: 12px 15px; border-bottom: 1px solid #dee2e6; }
         
-        .admin-nav {
-            background-color: #343a40;
-            padding: 15px 0;
-        }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-confirmed { background: #d4edda; color: #155724; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
         
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-        }
+        .action-btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; margin-right: 5px; }
+        .btn-primary { background: #8B0000; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-success { background: #28a745; color: white; }
         
-        .nav-item {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        
-        .nav-item:hover, .nav-item.active {
-            background-color: #8B0000;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-        
-        .dashboard-title {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-        }
-        
-        /* Dashboard Grid */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .dashboard-card {
-            background: white;
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid #8B0000;
-        }
-        
-        .card-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 15px;
-        }
-        
-        .stat-number {
-            font-size: 32px;
-            font-weight: bold;
-            color: #8B0000;
-            margin-bottom: 10px;
-        }
-        
-        .stat-description {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        /* Tablas de datos */
-        .data-section {
-            background: white;
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        .section-title {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-        
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .data-table th {
-            background-color: #f8f9fa;
-            padding: 12px 15px;
-            text-align: left;
-            font-weight: bold;
-            color: #333;
-            border-bottom: 2px solid #dee2e6;
-        }
-        
-        .data-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
-        .status-confirmed {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .status-cancelled {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .action-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            margin-right: 5px;
-        }
-        
-        .btn-primary {
-            background-color: #8B0000;
-            color: white;
-        }
-        
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        .btn-success {
-            background-color: #28a745;
-            color: white;
-        }
+        .notification { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 20px; border-radius: 4px; display: none; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -193,6 +57,8 @@
     
     <div class="container">
         <h2 class="dashboard-title">Dashboard Principal</h2>
+        
+        <div class="notification" id="notification"></div>
         
         <!-- Estadísticas rápidas -->
         <div class="dashboard-grid">
@@ -229,7 +95,6 @@
                     <tr>
                         <th>ID Pedido</th>
                         <th>Cliente</th>
-                        <th>Fecha/Hora</th>
                         <th>Total</th>
                         <th>Estado</th>
                         <th>Acciones</th>
@@ -239,32 +104,29 @@
                     <tr>
                         <td>#00125</td>
                         <td>María González</td>
-                        <td>10/06 14:30</td>
                         <td>$45.000</td>
                         <td><span class="status-badge status-pending">Pendiente</span></td>
                         <td>
-                            <button class="action-btn btn-primary">Ver</button>
-                            <button class="action-btn btn-success">Confirmar</button>
+                            <button class="action-btn btn-primary" onclick="viewOrder('00125')">Ver</button>
+                            <button class="action-btn btn-success" onclick="confirmOrder('00125')">Confirmar</button>
                         </td>
                     </tr>
                     <tr>
                         <td>#00124</td>
                         <td>Carlos López</td>
-                        <td>10/06 13:15</td>
                         <td>$32.000</td>
                         <td><span class="status-badge status-confirmed">Confirmado</span></td>
                         <td>
-                            <button class="action-btn btn-primary">Ver</button>
+                            <button class="action-btn btn-primary" onclick="viewOrder('00124')">Ver</button>
                         </td>
                     </tr>
                     <tr>
                         <td>#00123</td>
                         <td>Ana Martínez</td>
-                        <td>10/06 12:45</td>
                         <td>$28.500</td>
                         <td><span class="status-badge status-confirmed">En Preparación</span></td>
                         <td>
-                            <button class="action-btn btn-primary">Ver</button>
+                            <button class="action-btn btn-primary" onclick="viewOrder('00123')">Ver</button>
                         </td>
                     </tr>
                 </tbody>
@@ -279,9 +141,7 @@
                     <tr>
                         <th>ID Reserva</th>
                         <th>Cliente</th>
-                        <th>Fecha/Hora</th>
                         <th>Personas</th>
-                        <th>Sucursal</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -290,30 +150,102 @@
                     <tr>
                         <td>#R0045</td>
                         <td>Eduardo Díaz</td>
-                        <td>16/08 22:00</td>
                         <td>8 personas</td>
-                        <td>Las Condes</td>
                         <td><span class="status-badge status-pending">Por Confirmar</span></td>
                         <td>
-                            <button class="action-btn btn-primary">Ver</button>
-                            <button class="action-btn btn-success">Confirmar</button>
+                            <button class="action-btn btn-primary" onclick="viewReservation('R0045')">Ver</button>
+                            <button class="action-btn btn-success" onclick="confirmReservation('R0045')">Confirmar</button>
                         </td>
                     </tr>
                     <tr>
                         <td>#R0044</td>
                         <td>Laura Mendoza</td>
-                        <td>15/08 20:30</td>
                         <td>6 personas</td>
-                        <td>África</td>
                         <td><span class="status-badge status-pending">Por Confirmar</span></td>
                         <td>
-                            <button class="action-btn btn-primary">Ver</button>
-                            <button class="action-btn btn-success">Confirmar</button>
+                            <button class="action-btn btn-primary" onclick="viewReservation('R0044')">Ver</button>
+                            <button class="action-btn btn-success" onclick="confirmReservation('R0044')">Confirmar</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <script>
+        // Funcionalidad para notificaciones
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Funciones para pedidos
+        function viewOrder(orderId) {
+            showNotification(`Viendo detalles del pedido #${orderId}`);
+            console.log(`Abriendo detalles del pedido: ${orderId}`);
+        }
+
+        function confirmOrder(orderId) {
+            showNotification(`Pedido #${orderId} confirmado exitosamente`);
+            console.log(`Confirmando pedido: ${orderId}`);
+            
+            // Aquí iría la lógica para actualizar el estado en la base de datos
+            setTimeout(() => {
+                location.reload(); // Recargar para ver cambios
+            }, 1000);
+        }
+
+        // Funciones para reservas
+        function viewReservation(reservationId) {
+            showNotification(`Viendo detalles de la reserva ${reservationId}`);
+            console.log(`Abriendo detalles de reserva: ${reservationId}`);
+        }
+
+        function confirmReservation(reservationId) {
+            showNotification(`Reserva ${reservationId} confirmada exitosamente`);
+            console.log(`Confirmando reserva: ${reservationId}`);
+            
+            // Aquí iría la lógica para actualizar el estado en la base de datos
+            setTimeout(() => {
+                location.reload(); // Recargar para ver cambios
+            }, 1000);
+        }
+
+        // Navegación entre secciones
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remover clase active de todos los items
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Agregar clase active al item clickeado
+                    this.classList.add('active');
+                    
+                    // Mostrar notificación de cambio de sección
+                    const sectionName = this.textContent;
+                    showNotification(`Cambiando a sección: ${sectionName}`);
+                });
+            });
+
+            // Cargar datos iniciales del dashboard
+            loadDashboardData();
+        });
+
+        // Simulación de carga de datos
+        function loadDashboardData() {
+            console.log('Cargando datos del dashboard...');
+            // Aquí iría la lógica para cargar datos reales desde una API
+        }
+    </script>
 </body>
 </html>
