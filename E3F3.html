@@ -3,791 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Método de Entrega - Parrilladas Familiares</title>
+    <title>Método de Entrega</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #8B0000, #A52A2A);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .nav a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        
-        .nav a:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Selector de escenarios */
-        .scenario-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        
-        .scenario-btn {
-            padding: 8px 16px;
-            background: #f8f9fa;
-            border: 2px solid #ddd;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-        
-        .scenario-btn.active {
-            background: #8B0000;
-            color: white;
-            border-color: #8B0000;
-        }
-        
-        .delivery-title {
-            text-align: center;
-            margin: 30px 0;
-            color: #8B0000;
-            font-size: 32px;
-            position: relative;
-        }
-        
-        .delivery-title:after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 3px;
-            background: #8B0000;
-            margin: 10px auto;
-        }
-        
-        .progress-bar {
-            display: flex;
-            justify-content: space-between;
-            margin: 30px 0;
-            position: relative;
-        }
-        
-        .progress-bar:before {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #ddd;
-            z-index: 1;
-        }
-        
-        .progress-step {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            flex: 1;
-        }
-        
-        .step-circle {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-            font-weight: bold;
-            color: #666;
-        }
-        
-        .step-circle.active {
-            border-color: #8B0000;
-            background: #8B0000;
-            color: white;
-        }
-        
-        .step-label {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .step-label.active {
-            color: #8B0000;
-            font-weight: 600;
-        }
-        
-        /* Opciones de entrega */
-        .delivery-options {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .option-group {
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .option-group:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-        
-        .option-label {
-            display: block;
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-size: 18px;
-            color: #333;
-        }
-        
-        .radio-options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .radio-option {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-        
-        .radio-option:hover {
-            border-color: #8B0000;
-            background: #fff9f9;
-        }
-        
-        .radio-option.selected {
-            border-color: #8B0000;
-            background: #fff9f9;
-        }
-        
-        .radio-option input {
-            margin-right: 15px;
-            transform: scale(1.2);
-            accent-color: #8B0000;
-        }
-        
-        .option-content {
-            flex: 1;
-        }
-        
-        .option-title {
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        
-        .option-description {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .option-price {
-            color: #8B0000;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        
-        .option-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #27ae60;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        /* Formularios específicos */
-        .form-section {
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid #8B0000;
-            display: none;
-        }
-        
-        .form-section.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-control:focus {
-            border-color: #8B0000;
-            outline: none;
-        }
-        
-        .form-control.error {
-            border-color: #e74c3c;
-        }
-        
-        select.form-control {
-            height: 48px;
-        }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .time-slots {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-top: 10px;
-        }
-        
-        .time-slot {
-            padding: 15px 10px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            background: white;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-        
-        .time-slot:hover {
-            border-color: #8B0000;
-            background: #fff9f9;
-        }
-        
-        .time-slot.selected {
-            background-color: #8B0000;
-            color: white;
-            border-color: #8B0000;
-        }
-        
-        .time-slot.disabled {
-            background: #f8f9fa;
-            color: #ccc;
-            cursor: not-allowed;
-            border-color: #eee;
-        }
-        
-        .branch-info {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border-left: 4px solid #27ae60;
-        }
-        
-        .branch-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        
-        .branch-address {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .branch-hours {
-            color: #8B0000;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        /* Mensajes de error */
-        .error-message {
-            color: #e74c3c;
-            background-color: #fdf2f2;
-            border: 1px solid #f8d7da;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            display: none;
-            font-size: 14px;
-        }
-        
-        .error-message.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .success-message {
-            color: #27ae60;
-            background-color: #f2fdf2;
-            border: 1px solid #d4edda;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            display: none;
-            font-size: 14px;
-        }
-        
-        .success-message.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        /* Botones de acción */
-        .action-buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        
-        .btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: all 0.3s;
-            text-align: center;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex: 1;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #8B0000, #A52A2A);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139,0,0,0.3);
-        }
-        
-        .btn-secondary {
-            background: #f8f9fa;
-            color: #333;
-            border: 2px solid #ddd;
-        }
-        
-        .btn-secondary:hover {
-            border-color: #8B0000;
-            color: #8B0000;
-        }
-        
-        .btn:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        /* Notificaciones */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #27ae60;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .notification.error {
-            background: #e74c3c;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .delivery-options {
-                padding: 20px;
-            }
-            
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .progress-bar {
-                flex-wrap: wrap;
-            }
-            
-            .progress-step {
-                flex: 0 0 50%;
-                margin-bottom: 20px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .time-slots {
-                grid-template-columns: 1fr;
-            }
-            
-            .radio-option {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .radio-option input {
-                margin-bottom: 10px;
-            }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+        body{background:#f8f9fa;color:#333;line-height:1.6}
+        .header{background:linear-gradient(135deg,#8B0000,#A52A2A);color:white;padding:20px 0}
+        .nav{display:flex;justify-content:space-between;align-items:center;padding:0 20px;max-width:1200px;margin:0 auto}
+        .logo{font-size:24px;font-weight:bold}
+        .nav-links{display:flex;gap:20px}
+        .nav a{color:white;text-decoration:none;padding:8px 16px;border-radius:4px;transition:background-color 0.3s}
+        .nav a:hover{background:rgba(255,255,255,0.1)}
+        .container{max-width:800px;margin:0 auto;padding:20px}
+        .delivery-title{text-align:center;margin:30px 0;color:#8B0000;font-size:32px}
+        .delivery-title:after{content:'';display:block;width:100px;height:3px;background:#8B0000;margin:10px auto}
+        .progress-bar{display:flex;justify-content:space-between;margin:30px 0;position:relative}
+        .progress-bar:before{content:'';position:absolute;top:15px;left:0;right:0;height:3px;background:#ddd;z-index:1}
+        .progress-step{position:relative;z-index:2;text-align:center;flex:1}
+        .step-circle{width:35px;height:35px;border-radius:50%;background:white;border:3px solid #ddd;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-weight:bold;color:#666}
+        .step-circle.active{border-color:#8B0000;background:#8B0000;color:white}
+        .step-label{font-size:14px;color:#666}
+        .step-label.active{color:#8B0000;font-weight:600}
+        .delivery-options{background:white;border-radius:12px;padding:30px;margin-bottom:20px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+        .option-group{margin-bottom:25px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+        .option-group:last-child{border-bottom:none;margin-bottom:0}
+        .option-label{display:block;margin-bottom:15px;font-weight:bold;font-size:18px;color:#333}
+        .radio-options{display:flex;flex-direction:column;gap:15px}
+        .radio-option{display:flex;align-items:center;padding:20px;border:2px solid #eee;border-radius:10px;cursor:pointer;transition:all 0.3s;position:relative}
+        .radio-option:hover,.radio-option.selected{border-color:#8B0000;background:#fff9f9}
+        .radio-option input{margin-right:15px;transform:scale(1.2);accent-color:#8B0000}
+        .option-content{flex:1}
+        .option-title{font-weight:bold;font-size:16px;margin-bottom:5px;color:#333}
+        .option-description{color:#666;font-size:14px;margin-bottom:8px}
+        .option-price{color:#8B0000;font-weight:bold;font-size:16px}
+        .option-badge{position:absolute;top:10px;right:10px;background:#27ae60;color:white;padding:4px 8px;border-radius:12px;font-size:12px;font-weight:bold}
+        .form-section{background:#f9f9f9;padding:25px;border-radius:8px;margin-top:20px;border-left:4px solid #8B0000;display:none}
+        .form-section.active{display:block}
+        .form-group{margin-bottom:20px}
+        .form-group label{display:block;margin-bottom:8px;font-weight:600;color:#333}
+        .form-control{width:100%;padding:12px 15px;border:2px solid #ddd;border-radius:8px;font-size:16px;transition:border-color 0.3s}
+        .form-control:focus{border-color:#8B0000;outline:none}
+        select.form-control{height:48px}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+        .time-slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:10px}
+        .time-slot{padding:15px 10px;border:2px solid #ddd;border-radius:8px;text-align:center;cursor:pointer;background:white;transition:all 0.3s;font-weight:500}
+        .time-slot:hover,.time-slot.selected{border-color:#8B0000;background:#fff9f9}
+        .time-slot.selected{background:#8B0000;color:white;border-color:#8B0000}
+        .branch-info{background:white;padding:15px;border-radius:8px;margin-top:15px;border-left:4px solid #27ae60}
+        .branch-name{font-weight:bold;margin-bottom:5px;color:#333}
+        .branch-address{color:#666;font-size:14px;margin-bottom:8px}
+        .branch-hours{color:#8B0000;font-size:14px;font-weight:500}
+        .error-message,.success-message{padding:12px 15px;border-radius:8px;margin-top:10px;display:none;font-size:14px}
+        .error-message{color:#e74c3c;background:#fdf2f2;border:1px solid #f8d7da}
+        .success-message{color:#27ae60;background:#f2fdf2;border:1px solid #d4edda}
+        .error-message.show,.success-message.show{display:block}
+        .action-buttons{display:flex;justify-content:space-between;gap:15px;margin-top:30px}
+        .btn{padding:15px 30px;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:16px;transition:all 0.3s;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;flex:1}
+        .btn-primary{background:linear-gradient(135deg,#8B0000,#A52A2A);color:white}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(139,0,0,0.3)}
+        .btn-secondary{background:#f8f9fa;color:#333;border:2px solid #ddd}
+        .btn-secondary:hover{border-color:#8B0000;color:#8B0000}
+        .notification{position:fixed;top:20px;right:20px;background:#27ae60;color:white;padding:15px 25px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.2);transform:translateX(150%);transition:transform 0.3s;z-index:1000}
+        .notification.show{transform:translateX(0)}
+        .notification.error{background:#e74c3c}
+        @media (max-width:768px){
+            .container{padding:15px}
+            .delivery-options{padding:20px}
+            .form-row{grid-template-columns:1fr}
+            .action-buttons{flex-direction:column}
+            .nav{flex-direction:column;gap:15px}
+            .progress-bar{flex-wrap:wrap}
+            .progress-step{flex:0 0 50%;margin-bottom:20px}
+        }
+        @media (max-width:480px){
+            .time-slots{grid-template-columns:1fr}
+            .radio-option{flex-direction:column;align-items:flex-start}
+            .radio-option input{margin-bottom:10px}
         }
     </style>
 </head>
 <body>
-
-    <!-- Escenario 1: Retiro en local -->
-    <div id="escenario-retiro-local" class="escenario activo">
-        <div class="header">
-            <div class="nav">
-                <div class="logo">🥩 Parrilladas Familiares</div>
-                <div class="nav-links">
-                    <a href="carrito.html">← Volver al Carrito</a>
-                    <a href="perfil.html">Mi Perfil</a>
-                </div>
+    <div class="header">
+        <div class="nav">
+            <div class="logo">🥩 Parrilladas</div>
+            <div class="nav-links">
+                <a href="carrito.html">← Carrito</a>
+                <a href="perfil.html">Perfil</a>
             </div>
         </div>
+    </div>
+    
+    <div class="container">
+        <h2 class="delivery-title">Método de Entrega</h2>
         
-        <div class="container">
-            <h2 class="delivery-title">Método de Entrega</h2>
-            
-            <div class="progress-bar">
-                <div class="progress-step">
-                    <div class="step-circle">1</div>
-                    <div class="step-label">Carrito</div>
-                </div>
-                <div class="progress-step">
-                    <div class="step-circle active">2</div>
-                    <div class="step-label active">Entrega</div>
-                </div>
-                <div class="progress-step">
-                    <div class="step-circle">3</div>
-                    <div class="step-label">Pago</div>
-                </div>
-                <div class="progress-step">
-                    <div class="step-circle">4</div>
-                    <div class="step-label">Confirmación</div>
-                </div>
-            </div>
-            
-            <div class="delivery-options">
-                <div class="option-group">
-                    <span class="option-label">Selecciona tu método de entrega:</span>
-                    <div class="radio-options">
-                        <div class="radio-option selected" onclick="seleccionarMetodo('retiro')">
-                            <input type="radio" id="pickup" name="deliveryType" value="pickup" checked>
-                            <div class="option-content">
-                                <div class="option-title">Retiro en Local</div>
-                                <div class="option-description">Recoge tu pedido en nuestra sucursal más cercana</div>
-                                <div class="option-price">Gratis</div>
-                            </div>
-                            <div class="option-badge">Más Popular</div>
+        <div class="progress-bar">
+            <div class="progress-step"><div class="step-circle">1</div><div class="step-label">Carrito</div></div>
+            <div class="progress-step"><div class="step-circle active">2</div><div class="step-label active">Entrega</div></div>
+            <div class="progress-step"><div class="step-circle">3</div><div class="step-label">Pago</div></div>
+            <div class="progress-step"><div class="step-circle">4</div><div class="step-label">Confirmación</div></div>
+        </div>
+        
+        <div class="delivery-options">
+            <div class="option-group">
+                <span class="option-label">Método de entrega:</span>
+                <div class="radio-options">
+                    <div class="radio-option selected" onclick="selMetodo('retiro')">
+                        <input type="radio" id="pickup" name="deliveryType" checked>
+                        <div class="option-content">
+                            <div class="option-title">Retiro en Local</div>
+                            <div class="option-description">Recoge en sucursal</div>
+                            <div class="option-price">Gratis</div>
                         </div>
-                        
-                        <div class="radio-option" onclick="seleccionarMetodo('delivery')">
-                            <input type="radio" id="delivery" name="deliveryType" value="delivery">
-                            <div class="option-content">
-                                <div class="option-title">Delivery a Domicilio</div>
-                                <div class="option-description">Te llevamos tu pedido directamente a tu casa</div>
-                                <div class="option-price">$5.000</div>
-                            </div>
+                        <div class="option-badge">Popular</div>
+                    </div>
+                    
+                    <div class="radio-option" onclick="selMetodo('delivery')">
+                        <input type="radio" id="delivery" name="deliveryType">
+                        <div class="option-content">
+                            <div class="option-title">Delivery a Domicilio</div>
+                            <div class="option-description">Envío a tu casa</div>
+                            <div class="option-price">$5.000</div>
                         </div>
                     </div>
                 </div>
+            </div>
+            
+            <div id="pickupForm" class="form-section active">
+                <div class="form-group">
+                    <label for="branch">Sucursal:</label>
+                    <select id="branch" class="form-control" onchange="actualizarSucursal()">
+                        <option value="">Selecciona sucursal</option>
+                        <option value="vitacura">Vitacura</option>
+                        <option value="las-condes">Las Condes</option>
+                        <option value="providencia">Providencia</option>
+                        <option value="nunoa">Ñuñoa</option>
+                    </select>
+                </div>
                 
-                <!-- Formulario para retiro en local -->
-                <div id="pickupForm" class="form-section active">
+                <div id="branchInfo" class="branch-info" style="display:none">
+                    <div class="branch-name" id="branchName"></div>
+                    <div class="branch-address" id="branchAddress"></div>
+                    <div class="branch-hours">Horario: 10:00 - 22:00 hrs</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Hora de retiro:</label>
+                    <div class="time-slots" id="timeSlots"></div>
+                </div>
+                
+                <div class="success-message" id="pickupSuccess">✅ Retiro programado</div>
+            </div>
+            
+            <div id="deliveryForm" class="form-section">
+                <div class="form-group">
+                    <label for="address">Dirección:</label>
+                    <textarea id="address" class="form-control" rows="3" placeholder="Dirección completa"></textarea>
+                </div>
+                
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="branch">Selecciona sucursal:</label>
-                        <select id="branch" class="form-control" onchange="actualizarInfoSucursal()">
-                            <option value="">Selecciona una sucursal</option>
-                            <option value="vitacura">Vitacura - Av. Vitacura 1234</option>
-                            <option value="las-condes">Las Condes - Av. Apoquindo 5678</option>
-                            <option value="providencia">Providencia - Av. Providencia 9012</option>
-                            <option value="nunoa">Ñuñoa - Av. Irarrázaval 3456</option>
+                        <label for="comuna">Comuna:</label>
+                        <select id="comuna" class="form-control">
+                            <option value="">Selecciona comuna</option>
+                            <option value="vitacura">Vitacura</option>
+                            <option value="las-condes">Las Condes</option>
+                            <option value="providencia">Providencia</option>
+                            <option value="nunoa">Ñuñoa</option>
                         </select>
                     </div>
                     
-                    <div id="branchInfo" class="branch-info" style="display: none;">
-                        <div class="branch-name" id="branchName"></div>
-                        <div class="branch-address" id="branchAddress"></div>
-                        <div class="branch-hours">Horario: 10:00 - 22:00 hrs</div>
-                    </div>
-                    
                     <div class="form-group">
-                        <label>Selecciona hora de retiro:</label>
-                        <div class="time-slots" id="timeSlots">
-                            <!-- Los horarios se cargan dinámicamente -->
-                        </div>
-                    </div>
-                    
-                    <div class="success-message" id="pickupSuccess">
-                        ✅ Retiro programado correctamente
+                        <label for="phone">Teléfono:</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="+56 9 1234 5678">
                     </div>
                 </div>
                 
-                <!-- Formulario para delivery -->
-                <div id="deliveryForm" class="form-section">
-                    <div class="form-group">
-                        <label for="address">Dirección de entrega:</label>
-                        <textarea id="address" class="form-control" rows="3" placeholder="Ingresa tu dirección completa (calle, número, departamento, comuna)"></textarea>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="comuna">Comuna:</label>
-                            <select id="comuna" class="form-control">
-                                <option value="">Selecciona comuna</option>
-                                <option value="vitacura">Vitacura</option>
-                                <option value="las-condes">Las Condes</option>
-                                <option value="providencia">Providencia</option>
-                                <option value="nunoa">Ñuñoa</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Teléfono de contacto:</label>
-                            <input type="tel" id="phone" class="form-control" placeholder="+56 9 1234 5678">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Horario de entrega preferido:</label>
-                        <div class="time-slots">
-                            <div class="time-slot">12:00 - 14:00 hrs</div>
-                            <div class="time-slot selected">14:00 - 16:00 hrs</div>
-                            <div class="time-slot">16:00 - 18:00 hrs</div>
-                            <div class="time-slot">18:00 - 20:00 hrs</div>
-                        </div>
-                    </div>
-                    
-                    <div id="addressError" class="error-message">
-                        Por favor ingresa una dirección válida
-                    </div>
-                    
-                    <div class="success-message" id="deliverySuccess">
-                        ✅ Dirección guardada correctamente
+                <div class="form-group">
+                    <label>Horario preferido:</label>
+                    <div class="time-slots">
+                        <div class="time-slot">12:00 - 14:00</div>
+                        <div class="time-slot selected">14:00 - 16:00</div>
+                        <div class="time-slot">16:00 - 18:00</div>
+                        <div class="time-slot">18:00 - 20:00</div>
                     </div>
                 </div>
+                
+                <div id="addressError" class="error-message">Dirección inválida</div>
+                <div class="success-message" id="deliverySuccess">✅ Dirección guardada</div>
             </div>
-            
-            <div class="action-buttons">
-                <a href="carrito.html" class="btn btn-secondary">
-                    ← Volver al Carrito
-                </a>
-                <button class="btn btn-primary" onclick="guardarMetodoEntrega()">
-                    Continuar al Pago →
-                </button>
-            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="carrito.html" class="btn btn-secondary">← Volver</a>
+            <button class="btn btn-primary" onclick="guardarEntrega()">Continuar →</button>
         </div>
     </div>
 
-    <!-- Los otros escenarios usarían la misma estructura pero con diferentes configuraciones -->
-
-    <!-- Notificación -->
-    <div class="notification" id="notification">
-        <span>✅ Método de entrega guardado correctamente!</span>
-    </div>
+    <div class="notification" id="notification">✅ Método guardado!</div>
 
     <script>
-        // Datos de sucursales
         const sucursales = {
-            'vitacura': {
-                nombre: 'Sucursal Vitacura',
-                direccion: 'Av. Vitacura 1234, Vitacura',
-                horario: '10:00 - 22:00 hrs'
-            },
-            'las-condes': {
-                nombre: 'Sucursal Las Condes',
-                direccion: 'Av. Apoquindo 5678, Las Condes',
-                horario: '10:00 - 22:00 hrs'
-            },
-            'providencia': {
-                nombre: 'Sucursal Providencia',
-                direccion: 'Av. Providencia 9012, Providencia',
-                horario: '10:00 - 22:00 hrs'
-            },
-            'nunoa': {
-                nombre: 'Sucursal Ñuñoa',
-                direccion: 'Av. Irarrázaval 3456, Ñuñoa',
-                horario: '10:00 - 22:00 hrs'
-            }
+            'vitacura': { nombre: 'Sucursal Vitacura', direccion: 'Av. Vitacura 1234' },
+            'las-condes': { nombre: 'Sucursal Las Condes', direccion: 'Av. Apoquindo 5678' },
+            'providencia': { nombre: 'Sucursal Providencia', direccion: 'Av. Providencia 9012' },
+            'nunoa': { nombre: 'Sucursal Ñuñoa', direccion: 'Av. Irarrázaval 3456' }
         };
 
-        // Variables de estado
-        let metodoSeleccionado = 'retiro';
-        let horarioSeleccionado = null;
-        let sucursalSeleccionada = null;
+        let metodo = 'retiro';
+        let horario = null;
+        let sucursal = null;
 
-        // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
-            generarHorariosRetiro();
-            seleccionarMetodo('retiro');
+            generarHorarios();
+            selMetodo('retiro');
         });
 
-        // Función para seleccionar método de entrega
-        function seleccionarMetodo(metodo) {
-            metodoSeleccionado = metodo;
+        function selMetodo(m) {
+            metodo = m;
+            document.getElementById('pickup').checked = m === 'retiro';
+            document.getElementById('delivery').checked = m === 'delivery';
             
-            // Actualizar radio buttons
-            document.getElementById('pickup').checked = metodo === 'retiro';
-            document.getElementById('delivery').checked = metodo === 'delivery';
+            document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector(`.radio-option[onclick="selMetodo('${m}')"]`).classList.add('selected');
             
-            // Actualizar estilos visuales
-            document.querySelectorAll('.radio-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
+            document.getElementById('pickupForm').classList.toggle('active', m === 'retiro');
+            document.getElementById('deliveryForm').classList.toggle('active', m === 'delivery');
             
-            if (metodo === 'retiro') {
-                document.querySelector('.radio-option[onclick="seleccionarMetodo(\'retiro\')"]').classList.add('selected');
-                document.getElementById('pickupForm').classList.add('active');
-                document.getElementById('deliveryForm').classList.remove('active');
-            } else {
-                document.querySelector('.radio-option[onclick="seleccionarMetodo(\'delivery\')"]').classList.add('selected');
-                document.getElementById('deliveryForm').classList.add('active');
-                document.getElementById('pickupForm').classList.remove('active');
-            }
-            
-            // Ocultar mensajes de error/éxito
             ocultarMensajes();
         }
 
-        // Función para generar horarios de retiro
-        function generarHorariosRetiro() {
+        function generarHorarios() {
             const timeSlots = document.getElementById('timeSlots');
             timeSlots.innerHTML = '';
             
             const ahora = new Date();
             const horaActual = ahora.getHours();
-            const minutosActual = ahora.getMinutes();
             
-            // Generar horarios cada 20 minutos desde la hora actual + 1 hora
-            for (let i = 3; i <= 12; i++) {
+            for (let i = 3; i <= 8; i++) {
                 const hora = horaActual + i;
-                const minutos = minutosActual > 40 ? 0 : minutosActual > 20 ? 40 : 20;
-                
                 if (hora >= 10 && hora < 22) {
-                    const horaFormateada = `${hora.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+                    const horaFormateada = `${hora}:00`;
                     const timeSlot = document.createElement('div');
                     timeSlot.className = 'time-slot';
                     timeSlot.textContent = `${horaFormateada} hrs`;
                     
-                    // Seleccionar el primer horario disponible por defecto
-                    if (i === 3 && minutosActual <= 20) {
+                    if (i === 3) {
                         timeSlot.classList.add('selected');
-                        horarioSeleccionado = horaFormateada;
+                        horario = horaFormateada;
                     }
                     
                     timeSlot.addEventListener('click', function() {
-                        document.querySelectorAll('.time-slot').forEach(slot => {
-                            slot.classList.remove('selected');
-                        });
+                        document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
                         this.classList.add('selected');
-                        horarioSeleccionado = this.textContent.trim();
+                        horario = this.textContent.trim();
                     });
                     
                     timeSlots.appendChild(timeSlot);
@@ -795,115 +262,55 @@
             }
         }
 
-        // Función para actualizar información de sucursal
-        function actualizarInfoSucursal() {
+        function actualizarSucursal() {
             const select = document.getElementById('branch');
             const branchInfo = document.getElementById('branchInfo');
-            const branchName = document.getElementById('branchName');
-            const branchAddress = document.getElementById('branchAddress');
+            sucursal = select.value;
             
-            sucursalSeleccionada = select.value;
-            
-            if (sucursalSeleccionada && sucursales[sucursalSeleccionada]) {
-                branchName.textContent = sucursales[sucursalSeleccionada].nombre;
-                branchAddress.textContent = sucursales[sucursalSeleccionada].direccion;
+            if (sucursal && sucursales[sucursal]) {
+                document.getElementById('branchName').textContent = sucursales[sucursal].nombre;
+                document.getElementById('branchAddress').textContent = sucursales[sucursal].direccion;
                 branchInfo.style.display = 'block';
             } else {
                 branchInfo.style.display = 'none';
             }
         }
 
-        // Función para guardar método de entrega
-        function guardarMetodoEntrega() {
+        function guardarEntrega() {
             ocultarMensajes();
             
-            if (metodoSeleccionado === 'retiro') {
-                if (!sucursalSeleccionada) {
-                    mostrarNotificacion('Por favor selecciona una sucursal', 'error');
+            if (metodo === 'retiro') {
+                if (!sucursal) {
+                    notificar('Selecciona una sucursal', 'error');
                     return;
                 }
-                
-                if (!horarioSeleccionado) {
-                    mostrarNotificacion('Por favor selecciona un horario de retiro', 'error');
-                    return;
-                }
-                
                 document.getElementById('pickupSuccess').classList.add('show');
-                mostrarNotificacion('Retiro programado correctamente');
-                
-            } else { // Delivery
+                notificar('Retiro programado');
+            } else {
                 const address = document.getElementById('address').value.trim();
-                const comuna = document.getElementById('comuna').value;
-                
                 if (!address || address.length < 10) {
                     document.getElementById('addressError').classList.add('show');
-                    mostrarNotificacion('Por favor ingresa una dirección válida', 'error');
+                    notificar('Dirección inválida', 'error');
                     return;
                 }
-                
-                if (!comuna) {
-                    mostrarNotificacion('Por favor selecciona una comuna', 'error');
-                    return;
-                }
-                
                 document.getElementById('deliverySuccess').classList.add('show');
-                mostrarNotificacion('Dirección guardada correctamente');
+                notificar('Dirección guardada');
             }
             
-            // Simular guardado y redirección
             setTimeout(() => {
                 // window.location.href = 'pago.html';
             }, 1500);
         }
 
-        // Función para ocultar mensajes
         function ocultarMensajes() {
-            document.querySelectorAll('.error-message, .success-message').forEach(msg => {
-                msg.classList.remove('show');
-            });
+            document.querySelectorAll('.error-message, .success-message').forEach(msg => msg.classList.remove('show'));
         }
 
-        // Función para mostrar notificación
-        function mostrarNotificacion(mensaje, tipo = 'success') {
+        function notificar(mensaje, tipo = 'success') {
             const notification = document.getElementById('notification');
             notification.innerHTML = `<span>${mensaje}</span>`;
             notification.className = `notification ${tipo} show`;
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Función para cambiar entre escenarios
-        function mostrarEscenario(escenario) {
-            document.querySelectorAll('.escenario').forEach(e => e.classList.remove('activo'));
-            document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById(`escenario-${escenario}`).classList.add('activo');
-            document.querySelector(`.scenario-btn[onclick="mostrarEscenario('${escenario}')"]`).classList.add('active');
-            
-            // Configurar estados específicos para cada escenario
-            if (escenario === 'delivery-error') {
-                seleccionarMetodo('delivery');
-                document.getElementById('address').value = 'thauifhsadkhas';
-                document.getElementById('addressError').classList.add('show');
-            } else if (escenario === 'delivery-exitoso') {
-                seleccionarMetodo('delivery');
-                document.getElementById('address').value = 'Av. Los Leones 123, Depto 45, Providencia';
-                document.getElementById('comuna').value = 'providencia';
-                document.getElementById('deliverySuccess').classList.add('show');
-            } else if (escenario === 'sin-stock') {
-                seleccionarMetodo('retiro');
-                document.querySelectorAll('.time-slot').forEach(slot => {
-                    slot.classList.add('disabled');
-                });
-                mostrarNotificacion('No hay stock disponible para retiro inmediato', 'error');
-            } else {
-                // Restaurar estado normal
-                seleccionarMetodo('retiro');
-                ocultarMensajes();
-                generarHorariosRetiro();
-            }
+            setTimeout(() => notification.classList.remove('show'), 3000);
         }
     </script>
 </body>
