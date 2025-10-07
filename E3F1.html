@@ -9,18 +9,66 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #f5f5f5;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
         }
         
         .header {
-            background-color: #8B0000;
+            background: linear-gradient(135deg, #8B0000, #A52A2A);
             color: white;
-            padding: 15px 0;
-            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .cart-counter {
+            background: #FFD700;
+            color: #8B0000;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            margin-left: 5px;
         }
         
         .container {
@@ -29,192 +77,748 @@
             padding: 20px;
         }
         
+        /* Selector de escenarios */
+        .scenario-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .scenario-btn {
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .scenario-btn.active {
+            background: #8B0000;
+            color: white;
+            border-color: #8B0000;
+        }
+        
         /* Catálogo con botones de agregar */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
             margin-top: 20px;
         }
         
         .product-card {
             background: white;
-            border-radius: 8px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
         
         .product-image {
             width: 100%;
-            height: 150px;
-            background-color: #eee;
-            margin-bottom: 10px;
+            height: 180px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #8B0000;
+            font-weight: bold;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-image:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(139,0,0,0.1), rgba(139,0,0,0.05));
+        }
+        
+        .product-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .product-category {
             color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .product-price {
+            color: #8B0000;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 15px;
         }
         
         .add-to-cart-btn {
-            background-color: #8B0000;
+            background: linear-gradient(135deg, #8B0000, #A52A2A);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 12px 25px;
+            border-radius: 25px;
             cursor: pointer;
-            margin-top: 10px;
+            font-weight: bold;
             width: 100%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
         .add-to-cart-btn:hover {
-            background-color: #A52A2A;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139,0,0,0.3);
+        }
+        
+        .add-to-cart-btn:active {
+            transform: translateY(0);
+        }
+        
+        .add-to-cart-btn.added {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+        
+        .product-stock {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #27ae60;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .product-stock.low {
+            background: #e67e22;
+        }
+        
+        .product-stock.out {
+            background: #e74c3c;
         }
         
         /* Página de detalle del producto */
         .product-detail-page {
             background: white;
-            border-radius: 8px;
-            padding: 30px;
+            border-radius: 12px;
+            padding: 40px;
             margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .product-detail-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 40px;
         }
         
         .detail-image {
             width: 100%;
-            height: 300px;
-            background-color: #eee;
+            height: 400px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #8B0000;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .detail-image:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(139,0,0,0.1), rgba(139,0,0,0.05));
         }
         
         .product-info h1 {
             color: #8B0000;
             margin-bottom: 15px;
+            font-size: 32px;
+        }
+        
+        .product-category-detail {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stars {
+            color: #FFD700;
+        }
+        
+        .rating-count {
+            color: #666;
+            font-size: 14px;
         }
         
         .product-specs {
-            margin: 20px 0;
+            margin: 25px 0;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #8B0000;
         }
         
         .spec-item {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .spec-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .spec-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .spec-value {
             color: #666;
         }
         
         .quantity-selector {
-            margin: 20px 0;
+            margin: 25px 0;
         }
         
         .quantity-selector label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-weight: bold;
+            color: #333;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .quantity-btn {
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .quantity-btn:hover {
+            border-color: #8B0000;
+            color: #8B0000;
         }
         
         .quantity-input {
             width: 80px;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            transition: border-color 0.3s;
+        }
+        
+        .quantity-input:focus {
+            border-color: #8B0000;
+            outline: none;
         }
         
         .price-section {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: bold;
             color: #8B0000;
-            margin: 20px 0;
+            margin: 25px 0;
+        }
+        
+        .price-section .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .discount-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        .stock-info {
+            color: #27ae60;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .stock-info.out {
+            color: #e74c3c;
         }
         
         .add-detail-btn {
-            background-color: #8B0000;
+            background: linear-gradient(135deg, #8B0000, #A52A2A);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 4px;
+            padding: 18px 30px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
             width: 100%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .add-detail-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139,0,0,0.3);
+        }
+        
+        .add-detail-btn:active {
+            transform: translateY(0);
+        }
+        
+        .add-detail-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Notificaciones */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background: #e74c3c;
+        }
+        
+        .notification.warning {
+            background: #e67e22;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .product-detail-layout {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .detail-image {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .product-detail-page {
+                padding: 25px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Parrilladas Familiares</h1>
-    </div>
-    
-    <div class="container">
-        <!-- Escenario 1: Agregar desde catálogo -->
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-image">COSTILLAR</div>
-                <button class="add-to-cart-btn">Agregar al Carrito</button>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">PRODUCTO 2</div>
-                <button class="add-to-cart-btn">Agregar al Carrito</button>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">PRODUCTO 3</div>
-                <button class="add-to-cart-btn">Agregar al Carrito</button>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">PRODUCTO 4</div>
-                <button class="add-to-cart-btn">Agregar al Carrito</button>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">PRODUCTO 5</div>
-                <button class="add-to-cart-btn">Agregar al Carrito</button>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">PRODUCTO 6</div>
-                <button class="add-to-cart-btn">Agregar al Carrito</button>
-            </div>
-        </div>
 
-        <!-- Escenario 2: Agregar desde ficha con cantidad -->
-        <!-- 
-        <div class="product-detail-page">
-            <div class="product-detail-layout">
-                <div class="detail-image">
-                    IMAGEN DE PRODUCTO
-                </div>
-                
-                <div class="product-info">
-                    <h1>POLLO ASADO</h1>
-                    
-                    <div class="product-specs">
-                        <div class="spec-item">- 1.6 kg</div>
-                        <div class="spec-item">- Para 3-4 personas</div>
-                        <div class="spec-item">- Sin sugerencias</div>
-                    </div>
-                    
-                    <div class="quantity-selector">
-                        <label for="quantity">Cantidad:</label>
-                        <input type="number" id="quantity" class="quantity-input" value="1" min="1">
-                    </div>
-                    
-                    <div class="price-section">
-                        $16.000
-                    </div>
-                    
-                    <button class="add-detail-btn">Agregar al Carrito</button>
+
+    <!-- Escenario 1: Agregar desde catálogo -->
+    <div id="escenario-catalogo" class="escenario activo">
+        <div class="header">
+            <div class="nav">
+                <div class="logo">🥩 Parrilladas Familiares</div>
+                <div class="nav-links">
+                    <a href="index.html">Inicio</a>
+                    <a href="carrito.html">
+                        Carrito 
+                        <span class="cart-counter" id="cartCounter">0</span>
+                    </a>
+                    <a href="perfil.html">Mi Perfil</a>
                 </div>
             </div>
         </div>
-        -->
+        
+        <div class="container">
+            <h1 style="text-align: center; color: #8B0000; margin-bottom: 30px;">Nuestros Productos</h1>
+            
+            <div class="products-grid" id="productsGrid">
+                <!-- Los productos se cargan dinámicamente -->
+            </div>
+        </div>
     </div>
+
+    <!-- Escenario 2: Agregar desde ficha con cantidad -->
+    <div id="escenario-detalle" class="escenario">
+        <div class="header">
+            <div class="nav">
+                <div class="logo">🥩 Parrilladas Familiares</div>
+                <div class="nav-links">
+                    <a href="catalogo.html">← Volver al Catálogo</a>
+                    <a href="carrito.html">
+                        Carrito 
+                        <span class="cart-counter" id="cartCounterDetail">0</span>
+                    </a>
+                    <a href="perfil.html">Mi Perfil</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="product-detail-page">
+                <div class="product-detail-layout">
+                    <div class="detail-image">
+                        POLLO ASADO PREMIUM
+                    </div>
+                    
+                    <div class="product-info">
+                        <div class="product-category-detail">POLLO Y AVES</div>
+                        <h1>Pollo Asado Premium</h1>
+                        
+                        <div class="product-rating">
+                            <div class="stars">★★★★☆</div>
+                            <div class="rating-count">(36 reseñas)</div>
+                        </div>
+                        
+                        <div class="product-specs">
+                            <div class="spec-item">
+                                <span class="spec-label">Peso:</span>
+                                <span class="spec-value">1.6 kg</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Para:</span>
+                                <span class="spec-value">3-4 personas</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Marinado:</span>
+                                <span class="spec-value">24 horas con hierbas</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Tiempo cocción:</span>
+                                <span class="spec-value">45-60 minutos</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stock-info">✓ En stock (12 disponibles)</div>
+                        
+                        <div class="quantity-selector">
+                            <label for="quantity">Cantidad:</label>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="cambiarCantidadDetalle(-1)">-</button>
+                                <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="12">
+                                <button class="quantity-btn" onclick="cambiarCantidadDetalle(1)">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="price-section">$16.000</div>
+                        
+                        <button class="add-detail-btn" onclick="agregarDesdeDetalle()">
+                            🛒 Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Los otros escenarios usarían estructuras similares con diferentes estados -->
+
+    <!-- Notificación -->
+    <div class="notification" id="notification">
+        <span>✅ Producto agregado al carrito correctamente!</span>
+    </div>
+
+    <script>
+        // Base de datos de productos
+        const productos = [
+            { id: 1, nombre: "Costillar de Cerdo", categoria: "Carnes", precio: 45000, stock: 8, imagen: "COSTILLAR" },
+            { id: 2, nombre: "Crusho de Res", categoria: "Carnes", precio: 38000, stock: 12, imagen: "CRUSHO" },
+            { id: 3, nombre: "Punta de Anca", categoria: "Carnes", precio: 52000, stock: 5, imagen: "PUNTA ANCA" },
+            { id: 4, nombre: "Pollo Asado", categoria: "Aves", precio: 16000, stock: 15, imagen: "POLLO" },
+            { id: 5, nombre: "Chorizos Caseros", categoria: "Embutidos", precio: 18000, stock: 20, imagen: "CHORIZOS" },
+            { id: 6, nombre: "Papas a la Parrilla", categoria: "Acompañamientos", precio: 12000, stock: 25, imagen: "PAPAS" }
+        ];
+
+        // Estado del carrito
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        let cantidadDetalle = 1;
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            mostrarProductosCatalogo();
+            actualizarContadorCarrito();
+        });
+
+        // Función para mostrar productos en el catálogo
+        function mostrarProductosCatalogo() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            productos.forEach(producto => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                let stockClass = '';
+                let stockText = `${producto.stock} disponibles`;
+                
+                if (producto.stock === 0) {
+                    stockClass = 'out';
+                    stockText = 'Agotado';
+                } else if (producto.stock < 5) {
+                    stockClass = 'low';
+                    stockText = `Solo ${producto.stock}`;
+                }
+                
+                card.innerHTML = `
+                    <div class="product-stock ${stockClass}">${stockText}</div>
+                    <div class="product-image">${producto.imagen}</div>
+                    <div class="product-name">${producto.nombre}</div>
+                    <div class="product-category">${producto.categoria}</div>
+                    <div class="product-price">$${producto.precio.toLocaleString()}</div>
+                    <button class="add-to-cart-btn" onclick="agregarDesdeCatalogo(${producto.id})" ${producto.stock === 0 ? 'disabled' : ''}>
+                        ${producto.stock === 0 ? '✗ Agotado' : '🛒 Agregar al Carrito'}
+                    </button>
+                `;
+                
+                if (producto.stock === 0) {
+                    card.querySelector('.add-to-cart-btn').style.background = '#bdc3c7';
+                    card.querySelector('.add-to-cart-btn').style.cursor = 'not-allowed';
+                }
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Función para agregar producto desde catálogo
+        function agregarDesdeCatalogo(idProducto) {
+            const producto = productos.find(p => p.id === idProducto);
+            
+            if (producto.stock === 0) {
+                mostrarNotificacion('Este producto está agotado', 'error');
+                return;
+            }
+
+            // Verificar si el producto ya está en el carrito
+            const itemExistente = carrito.find(item => item.id === idProducto);
+            
+            if (itemExistente) {
+                if (itemExistente.cantidad >= producto.stock) {
+                    mostrarNotificacion('No hay más stock disponible de este producto', 'warning');
+                    return;
+                }
+                itemExistente.cantidad += 1;
+            } else {
+                carrito.push({
+                    id: producto.id,
+                    nombre: producto.nombre,
+                    precio: producto.precio,
+                    cantidad: 1,
+                    imagen: producto.imagen
+                });
+            }
+
+            // Actualizar localStorage
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            
+            // Actualizar interfaz
+            actualizarContadorCarrito();
+            mostrarNotificacion(`✅ ${producto.nombre} agregado al carrito`);
+            
+            // Efecto visual en el botón
+            const boton = event.target;
+            boton.classList.add('added');
+            boton.innerHTML = '✓ Agregado';
+            
+            setTimeout(() => {
+                boton.classList.remove('added');
+                boton.innerHTML = '🛒 Agregar al Carrito';
+            }, 2000);
+        }
+
+        // Función para agregar producto desde detalle
+        function agregarDesdeDetalle() {
+            const producto = {
+                id: 4,
+                nombre: "Pollo Asado Premium",
+                precio: 16000,
+                imagen: "POLLO"
+            };
+
+            // Verificar stock
+            if (cantidadDetalle > 12) {
+                mostrarNotificacion('No hay suficiente stock disponible', 'error');
+                return;
+            }
+
+            // Verificar si el producto ya está en el carrito
+            const itemExistente = carrito.find(item => item.id === producto.id);
+            
+            if (itemExistente) {
+                itemExistente.cantidad += cantidadDetalle;
+            } else {
+                carrito.push({
+                    id: producto.id,
+                    nombre: producto.nombre,
+                    precio: producto.precio,
+                    cantidad: cantidadDetalle,
+                    imagen: producto.imagen
+                });
+            }
+
+            // Actualizar localStorage
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            
+            // Actualizar interfaz
+            actualizarContadorCarrito();
+            mostrarNotificacion(`✅ ${cantidadDetalle} ${producto.nombre} agregado(s) al carrito`);
+            
+            // Resetear cantidad
+            cantidadDetalle = 1;
+            document.getElementById('quantity').value = 1;
+        }
+
+        // Función para cambiar cantidad en detalle
+        function cambiarCantidadDetalle(delta) {
+            cantidadDetalle += delta;
+            if (cantidadDetalle < 1) cantidadDetalle = 1;
+            if (cantidadDetalle > 12) cantidadDetalle = 12;
+            document.getElementById('quantity').value = cantidadDetalle;
+        }
+
+        // Función para actualizar contador del carrito
+        function actualizarContadorCarrito() {
+            const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
+            document.querySelectorAll('.cart-counter').forEach(counter => {
+                counter.textContent = totalItems;
+            });
+        }
+
+        // Función para mostrar notificación
+        function mostrarNotificacion(mensaje, tipo = 'success') {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `<span>${mensaje}</span>`;
+            notification.className = `notification ${tipo} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Función para cambiar entre escenarios
+        function mostrarEscenario(escenario) {
+            document.querySelectorAll('.escenario').forEach(e => e.classList.remove('activo'));
+            document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`escenario-${escenario}`).classList.add('activo');
+            document.querySelector(`.scenario-btn[onclick="mostrarEscenario('${escenario}')"]`).classList.add('active');
+            
+            // Configurar estados específicos para cada escenario
+            if (escenario === 'agotado') {
+                // Simular producto agotado
+                const productoAgotado = productos.find(p => p.id === 3);
+                if (productoAgotado) {
+                    productoAgotado.stock = 0;
+                    mostrarProductosCatalogo();
+                }
+            } else if (escenario === 'oferta') {
+                // Simular producto en oferta
+                document.querySelector('.price-section').innerHTML = `
+                    <span class="original-price">$19.000</span> 
+                    $16.000
+                    <span class="discount-badge">15% OFF</span>
+                `;
+            } else {
+                // Restaurar estado normal
+                productos.forEach(p => {
+                    if (p.id === 3) p.stock = 5;
+                });
+                mostrarProductosCatalogo();
+            }
+        }
+    </script>
 </body>
 </html>
