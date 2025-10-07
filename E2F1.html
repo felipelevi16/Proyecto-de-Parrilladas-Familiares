@@ -5,383 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo - Parrilladas Familiares</title>
     <style>
-        /* Estilos generales */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f8f9fa; color: #333; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         
-        body {
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }
+        .header { background: linear-gradient(135deg, #8B0000, #A52A2A); color: white; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; max-width: 1200px; margin: 0 auto; }
+        .logo { font-size: 24px; font-weight: bold; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav a { color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; transition: background 0.3s; }
+        .nav a:hover { background: rgba(255,255,255,0.1); }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .catalog-controls { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; flex-wrap: wrap; gap: 15px; }
+        .search-box { flex: 1; min-width: 250px; position: relative; }
+        .search-box input { width: 100%; padding: 12px 40px 12px 15px; border: 2px solid #ddd; border-radius: 25px; font-size: 16px; transition: border-color 0.3s; }
+        .search-box input:focus { border-color: #8B0000; outline: none; }
+        .search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #666; }
+        .filters { display: flex; gap: 10px; flex-wrap: wrap; }
+        .filter-select { padding: 10px 15px; border: 2px solid #ddd; border-radius: 25px; background: white; cursor: pointer; transition: border-color 0.3s; }
+        .filter-select:focus { border-color: #8B0000; outline: none; }
         
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #8B0000, #A52A2A);
-            color: white;
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+        .catalog-title { text-align: center; margin: 30px 0; font-size: 32px; color: #8B0000; position: relative; }
+        .catalog-title:after { content: ''; display: block; width: 100px; height: 3px; background: #8B0000; margin: 10px auto; }
         
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-top: 20px; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .product-image { width: 100%; height: 200px; background: linear-gradient(45deg, #f8f9fa, #e9ecef); display: flex; align-items: center; justify-content: center; color: #8B0000; font-weight: bold; font-size: 18px; position: relative; overflow: hidden; }
+        .product-image:before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(rgba(139,0,0,0.1), rgba(139,0,0,0.05)); }
+        .product-info { padding: 20px; }
+        .product-name { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #333; }
+        .product-description { color: #666; font-size: 14px; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-price { color: #8B0000; font-weight: bold; font-size: 20px; margin-bottom: 15px; }
+        .product-meta { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #666; }
+        .product-rating { color: #FFD700; }
+        .add-to-cart { background: #8B0000; color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: background 0.3s; width: 100%; margin-top: 10px; }
+        .add-to-cart:hover { background: #A52A2A; }
         
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
+        .pagination { display: flex; justify-content: center; align-items: center; margin: 40px 0 20px; gap: 10px; }
+        .page-btn { padding: 10px 15px; border: 2px solid #ddd; background: white; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .page-btn:hover { border-color: #8B0000; color: #8B0000; }
+        .page-btn.active { background: #8B0000; color: white; border-color: #8B0000; }
+        .page-info { margin: 0 15px; font-weight: bold; color: #666; }
         
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
+        .empty-state { text-align: center; padding: 60px 20px; background: white; border-radius: 12px; margin-top: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .empty-state h2 { color: #666; margin-bottom: 15px; font-size: 24px; }
+        .empty-state p { color: #888; margin-bottom: 25px; }
+        .back-button { display: inline-block; padding: 12px 30px; background: linear-gradient(135deg, #8B0000, #A52A2A); color: white; text-decoration: none; border-radius: 25px; font-weight: bold; transition: transform 0.3s; }
+        .back-button:hover { transform: translateY(-2px); }
         
-        .nav a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
+        .scenario-selector { display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+        .scenario-btn { padding: 8px 16px; background: #f8f9fa; border: 2px solid #ddd; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-size: 14px; }
+        .scenario-btn.active { background: #8B0000; color: white; border-color: #8B0000; }
         
-        .nav a:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
+        .hidden { display: none; }
+        .notification { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 20px; border-radius: 4px; display: none; z-index: 1000; }
         
-        /* Controles del catálogo */
-        .catalog-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .search-box {
-            flex: 1;
-            min-width: 250px;
-            position: relative;
-        }
-        
-        .search-box input {
-            width: 100%;
-            padding: 12px 40px 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .search-box input:focus {
-            border-color: #8B0000;
-            outline: none;
-        }
-        
-        .search-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #666;
-        }
-        
-        .filters {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-select {
-            padding: 10px 15px;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-            background: white;
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-        
-        .filter-select:focus {
-            border-color: #8B0000;
-            outline: none;
-        }
-        
-        /* Catálogo */
-        .catalog-title {
-            text-align: center;
-            margin: 30px 0;
-            font-size: 32px;
-            color: #8B0000;
-            position: relative;
-        }
-        
-        .catalog-title:after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 3px;
-            background: #8B0000;
-            margin: 10px auto;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-        
-        .product-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        .product-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #8B0000;
-            font-weight: bold;
-            font-size: 18px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .product-image:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(rgba(139,0,0,0.1), rgba(139,0,0,0.05));
-        }
-        
-        .product-info {
-            padding: 20px;
-        }
-        
-        .product-name {
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 8px;
-            color: #333;
-        }
-        
-        .product-description {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 12px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .product-price {
-            color: #8B0000;
-            font-weight: bold;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .product-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .product-rating {
-            color: #FFD700;
-        }
-        
-        .add-to-cart {
-            background: #8B0000;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        .add-to-cart:hover {
-            background: #A52A2A;
-        }
-        
-        /* Paginación */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 40px 0 20px;
-            gap: 10px;
-        }
-        
-        .page-btn {
-            padding: 10px 15px;
-            border: 2px solid #ddd;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .page-btn:hover {
-            border-color: #8B0000;
-            color: #8B0000;
-        }
-        
-        .page-btn.active {
-            background: #8B0000;
-            color: white;
-            border-color: #8B0000;
-        }
-        
-        .page-info {
-            margin: 0 15px;
-            font-weight: bold;
-            color: #666;
-        }
-        
-        /* Estados vacíos */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 12px;
-            margin-top: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .empty-state h2 {
-            color: #666;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-        
-        .empty-state p {
-            color: #888;
-            margin-bottom: 25px;
-        }
-        
-        .back-button {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #8B0000, #A52A2A);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
-            transition: transform 0.3s;
-        }
-        
-        .back-button:hover {
-            transform: translateY(-2px);
-        }
-        
-        /* Responsive */
         @media (max-width: 768px) {
-            .nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .catalog-controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .search-box {
-                min-width: 100%;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
+            .nav { flex-direction: column; gap: 15px; }
+            .catalog-controls { flex-direction: column; align-items: stretch; }
+            .search-box { min-width: 100%; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
         }
-        
         @media (max-width: 480px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
-                padding: 10px;
-            }
-        }
-        
-        /* Selector de escenarios */
-        .scenario-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        
-        .scenario-btn {
-            padding: 8px 16px;
-            background: #f8f9fa;
-            border: 2px solid #ddd;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-        
-        .scenario-btn.active {
-            background: #8B0000;
-            color: white;
-            border-color: #8B0000;
+            .products-grid { grid-template-columns: 1fr; }
+            .container { padding: 10px; }
         }
     </style>
 </head>
 <body>
-
+    <div class="notification" id="notification"></div>
+    
+    <!-- Selector de escenarios -->
+    <div class="scenario-selector">
+        <button class="scenario-btn active" onclick="mostrarEscenario('con-productos')">Con Productos</button>
+        <button class="scenario-btn" onclick="mostrarEscenario('sin-productos')">Sin Productos</button>
+        <button class="scenario-btn" onclick="mostrarEscenario('busqueda-vacia')">Búsqueda Vacía</button>
+    </div>
 
     <!-- Escenario 1: Con productos -->
-    <div id="escenario-con-productos" class="escenario activo">
+    <div id="escenario-con-productos" class="escenario">
         <div class="header">
             <div class="nav">
                 <div class="logo">🥩 Parrilladas Familiares</div>
                 <div class="nav-links">
-                    <a href="index.html">Inicio</a>
-                    <a href="perfil.html">Mi Perfil</a>
-                    <a href="carrito.html">Carrito (3)</a>
+                    <a href="#" onclick="showNotification('Navegando a Inicio')">Inicio</a>
+                    <a href="#" onclick="showNotification('Navegando a Perfil')">Mi Perfil</a>
+                    <a href="#" onclick="showNotification('Ver carrito')">Carrito (<span id="cartCount">0</span>)</a>
                 </div>
             </div>
         </div>
@@ -414,25 +124,21 @@
                 </div>
             </div>
             
-            <div class="products-grid" id="productsGrid">
-                <!-- Los productos se cargan dinámicamente con JavaScript -->
-            </div>
+            <div class="products-grid" id="productsGrid"></div>
             
-            <div class="pagination" id="pagination">
-                <!-- La paginación se genera dinámicamente -->
-            </div>
+            <div class="pagination" id="pagination"></div>
         </div>
     </div>
 
     <!-- Escenario 2: Sin productos -->
-    <div id="escenario-sin-productos" class="escenario">
+    <div id="escenario-sin-productos" class="escenario hidden">
         <div class="header">
             <div class="nav">
                 <div class="logo">🥩 Parrilladas Familiares</div>
                 <div class="nav-links">
-                    <a href="index.html">Inicio</a>
-                    <a href="perfil.html">Mi Perfil</a>
-                    <a href="carrito.html">Carrito (0)</a>
+                    <a href="#" onclick="mostrarEscenario('con-productos')">Inicio</a>
+                    <a href="#" onclick="showNotification('Navegando a Perfil')">Mi Perfil</a>
+                    <a href="#" onclick="showNotification('Ver carrito')">Carrito (0)</a>
                 </div>
             </div>
         </div>
@@ -441,20 +147,20 @@
             <div class="empty-state">
                 <h2>No hay productos disponibles</h2>
                 <p>Actualmente no tenemos productos en nuestro catálogo. Vuelve pronto para ver nuestras novedades.</p>
-                <a href="index.html" class="back-button">Volver al Inicio</a>
+                <button class="back-button" onclick="mostrarEscenario('con-productos')">Volver al Inicio</button>
             </div>
         </div>
     </div>
 
     <!-- Escenario 3: Búsqueda vacía -->
-    <div id="escenario-busqueda-vacia" class="escenario">
+    <div id="escenario-busqueda-vacia" class="escenario hidden">
         <div class="header">
             <div class="nav">
                 <div class="logo">🥩 Parrilladas Familiares</div>
                 <div class="nav-links">
-                    <a href="index.html">Inicio</a>
-                    <a href="perfil.html">Mi Perfil</a>
-                    <a href="carrito.html">Carrito (0)</a>
+                    <a href="#" onclick="mostrarEscenario('con-productos')">Inicio</a>
+                    <a href="#" onclick="showNotification('Navegando a Perfil')">Mi Perfil</a>
+                    <a href="#" onclick="showNotification('Ver carrito')">Carrito (0)</a>
                 </div>
             </div>
         </div>
@@ -464,16 +170,16 @@
             
             <div class="catalog-controls">
                 <div class="search-box">
-                    <input type="text" placeholder="Buscar productos..." value="Producto que no existe">
+                    <input type="text" placeholder="Buscar productos..." value="Producto que no existe" readonly>
                     <span class="search-icon">🔍</span>
                 </div>
                 
                 <div class="filters">
-                    <select class="filter-select">
+                    <select class="filter-select" disabled>
                         <option value="">Todas las categorías</option>
                     </select>
                     
-                    <select class="filter-select">
+                    <select class="filter-select" disabled>
                         <option value="">Todos los precios</option>
                     </select>
                 </div>
@@ -488,99 +194,41 @@
     </div>
 
     <script>
+        // Sistema de notificaciones
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
         // Base de datos de productos
         const productos = [
-            {
-                id: 1,
-                nombre: "Costillar de Cerdo",
-                descripcion: "Costillar premium marinado por 24 horas con especias secretas",
-                precio: 45000,
-                categoria: "carnes",
-                imagen: "Costillar",
-                rating: 4.8,
-                disponible: true
-            },
-            {
-                id: 2,
-                nombre: "Crusho de Res",
-                descripcion: "Corte especial de res, jugoso y tierno, ideal para parrilla",
-                precio: 38000,
-                categoria: "carnes",
-                imagen: "Crusho",
-                rating: 4.6,
-                disponible: true
-            },
-            {
-                id: 3,
-                nombre: "Punta de Anca",
-                descripcion: "Corte premium de res, perfecto para asados familiares",
-                precio: 52000,
-                categoria: "carnes",
-                imagen: "Punta de Anca",
-                rating: 4.9,
-                disponible: true
-            },
-            {
-                id: 4,
-                nombre: "Chorizos Caseros",
-                descripcion: "Chorizos artesanales con receta tradicional",
-                precio: 18000,
-                categoria: "carnes",
-                imagen: "Chorizos",
-                rating: 4.5,
-                disponible: true
-            },
-            {
-                id: 5,
-                nombre: "Papas a la Parrilla",
-                descripcion: "Papas asadas con hierbas y aceite de oliva",
-                precio: 12000,
-                categoria: "acompañamientos",
-                imagen: "Papas",
-                rating: 4.3,
-                disponible: true
-            },
-            {
-                id: 6,
-                nombre: "Ensalada Mixta",
-                descripcion: "Ensalada fresca con vegetales de temporada",
-                precio: 10000,
-                categoria: "acompañamientos",
-                imagen: "Ensalada",
-                rating: 4.4,
-                disponible: true
-            },
-            {
-                id: 7,
-                nombre: "Combo Familiar",
-                descripcion: "Incluye costillar, crusho, chorizos y acompañamientos",
-                precio: 120000,
-                categoria: "combos",
-                imagen: "Combo Familiar",
-                rating: 4.9,
-                disponible: true
-            },
-            {
-                id: 8,
-                nombre: "Refrescos Naturales",
-                descripcion: "Jugos naturales de frutas de temporada",
-                precio: 8000,
-                categoria: "bebidas",
-                imagen: "Refrescos",
-                rating: 4.2,
-                disponible: true
-            }
+            { id: 1, nombre: "Costillar de Cerdo", descripcion: "Costillar premium marinado por 24 horas con especias secretas", precio: 45000, categoria: "carnes", imagen: "🍖 Costillar", rating: 4.8, disponible: true },
+            { id: 2, nombre: "Crusho de Res", descripcion: "Corte especial de res, jugoso y tierno, ideal para parrilla", precio: 38000, categoria: "carnes", imagen: "🥩 Crusho", rating: 4.6, disponible: true },
+            { id: 3, nombre: "Punta de Anca", descripcion: "Corte premium de res, perfecto para asados familiares", precio: 52000, categoria: "carnes", imagen: "🥓 Punta de Anca", rating: 4.9, disponible: true },
+            { id: 4, nombre: "Chorizos Caseros", descripcion: "Chorizos artesanales con receta tradicional", precio: 18000, categoria: "carnes", imagen: "🌭 Chorizos", rating: 4.5, disponible: true },
+            { id: 5, nombre: "Papas a la Parrilla", descripcion: "Papas asadas con hierbas y aceite de oliva", precio: 12000, categoria: "acompañamientos", imagen: "🥔 Papas", rating: 4.3, disponible: true },
+            { id: 6, nombre: "Ensalada Mixta", descripcion: "Ensalada fresca con vegetales de temporada", precio: 10000, categoria: "acompañamientos", imagen: "🥗 Ensalada", rating: 4.4, disponible: true },
+            { id: 7, nombre: "Combo Familiar", descripcion: "Incluye costillar, crusho, chorizos y acompañamientos", precio: 120000, categoria: "combos", imagen: "📦 Combo Familiar", rating: 4.9, disponible: true },
+            { id: 8, nombre: "Refrescos Naturales", descripcion: "Jugos naturales de frutas de temporada", precio: 8000, categoria: "bebidas", imagen: "🥤 Refrescos", rating: 4.2, disponible: true }
         ];
 
         // Variables de estado
         let productosFiltrados = [...productos];
         let paginaActual = 1;
         const productosPorPagina = 6;
+        let carrito = [];
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
             mostrarProductos();
             actualizarPaginacion();
+            actualizarCarrito();
         });
 
         // Función para mostrar productos
@@ -591,6 +239,11 @@
             const productosPagina = productosFiltrados.slice(inicio, fin);
 
             grid.innerHTML = '';
+
+            if (productosPagina.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><h2>No hay productos que mostrar</h2></div>';
+                return;
+            }
 
             productosPagina.forEach(producto => {
                 const card = document.createElement('div');
@@ -685,19 +338,25 @@
         // Función para agregar al carrito
         function agregarAlCarrito(idProducto) {
             const producto = productos.find(p => p.id === idProducto);
-            alert(`✅ ${producto.nombre} agregado al carrito\nPrecio: $${producto.precio.toLocaleString()}`);
-            // Aquí iría la lógica real para agregar al carrito
+            carrito.push(producto);
+            actualizarCarrito();
+            showNotification(`✅ ${producto.nombre} agregado al carrito`);
+        }
+
+        // Función para actualizar contador del carrito
+        function actualizarCarrito() {
+            document.getElementById('cartCount').textContent = carrito.length;
         }
 
         // Función para cambiar entre escenarios
         function mostrarEscenario(escenario) {
             // Ocultar todos los escenarios
             document.querySelectorAll('.escenario').forEach(e => {
-                e.classList.remove('activo');
+                e.classList.add('hidden');
             });
             
             // Mostrar el escenario seleccionado
-            document.getElementById(`escenario-${escenario}`).classList.add('activo');
+            document.getElementById(`escenario-${escenario}`).classList.remove('hidden');
             
             // Actualizar botones activos
             document.querySelectorAll('.scenario-btn').forEach(b => {
@@ -714,6 +373,12 @@
                 actualizarPaginacion();
             }
         }
+
+        // Demo: Comandos para probar
+        console.log('Comandos disponibles:');
+        console.log('- mostrarEscenario("con-productos") - Catálogo normal');
+        console.log('- mostrarEscenario("sin-productos") - Sin productos');
+        console.log('- mostrarEscenario("busqueda-vacia") - Búsqueda sin resultados');
     </script>
 </body>
 </html>
