@@ -36,26 +36,6 @@
             font-size: 28px;
         }
         
-        /* Carrusel de ofertas */
-        .offers-carousel {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        .carousel-slide {
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .carousel-title {
-            color: #8B0000;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        
         /* Grid de ofertas */
         .offers-grid {
             display: grid;
@@ -126,6 +106,11 @@
             background-color: #A52A2A;
         }
         
+        .add-to-cart-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
         /* Estados especiales */
         .expired-offer {
             position: relative;
@@ -162,6 +147,19 @@
             display: inline-block;
             margin-top: 15px;
         }
+        
+        .cart-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -172,14 +170,12 @@
     <div class="container">
         <h2 class="page-title">Ofertas del Día</h2>
         
-        <!-- Escenario 1: Ofertas activas -->
-        <div class="offers-carousel">
-            <div class="carousel-slide">
-                <h3 class="carousel-title">Ofertas del día</h3>
-                <!-- Aquí iría el carrusel real -->
-            </div>
+        <!-- Notificación de producto agregado al carrito -->
+        <div class="cart-notification" id="cartNotification">
+            Producto agregado al carrito
         </div>
         
+        <!-- Escenario 1: Ofertas activas -->
         <div class="offers-grid">
             <!-- Oferta 1 -->
             <div class="offer-card">
@@ -188,7 +184,7 @@
                     <div class="offer-name">Bife a lo Pobre</div>
                     <div class="offer-description">Delicioso bife acompañado de huevo frito, cebolla caramelizada y papas fritas</div>
                     <div class="offer-price">$10.000</div>
-                    <button class="add-to-cart-btn">Agregar al Carrito</button>
+                    <button class="add-to-cart-btn" data-product="Bife a lo Pobre" data-price="10000">Agregar al Carrito</button>
                 </div>
             </div>
             
@@ -199,7 +195,7 @@
                     <div class="offer-name">Pollo Asado</div>
                     <div class="offer-description">Pollo entero asado a la parrilla con especias especiales de la casa</div>
                     <div class="offer-price">$8.000</div>
-                    <button class="add-to-cart-btn">Agregar al Carrito</button>
+                    <button class="add-to-cart-btn" data-product="Pollo Asado" data-price="8000">Agregar al Carrito</button>
                 </div>
             </div>
             
@@ -210,12 +206,12 @@
                     <div class="offer-name">Costillar Especial</div>
                     <div class="offer-description">Costillar de cerdo BBQ con salsa secreta de la casa</div>
                     <div class="offer-price">$12.000</div>
-                    <button class="add-to-cart-btn">Agregar al Carrito</button>
+                    <button class="add-to-cart-btn" data-product="Costillar Especial" data-price="12000">Agregar al Carrito</button>
                 </div>
             </div>
         </div>
 
-        <!-- Escenario 2: Oferta expirada -->
+        <!-- Escenario 2: Oferta expirada (comentado por defecto) -->
         <!-- 
         <div class="offers-grid">
             <div class="offer-card expired-offer">
@@ -236,5 +232,78 @@
         </div>
         -->
     </div>
+
+    <script>
+        // Funcionalidad para agregar productos al carrito
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+            const cartNotification = document.getElementById('cartNotification');
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Obtener datos del producto
+                    const productName = this.getAttribute('data-product');
+                    const productPrice = this.getAttribute('data-price');
+                    
+                    // Mostrar notificación
+                    cartNotification.textContent = `${productName} agregado al carrito`;
+                    cartNotification.style.display = 'block';
+                    
+                    // Ocultar notificación después de 3 segundos
+                    setTimeout(() => {
+                        cartNotification.style.display = 'none';
+                    }, 3000);
+                    
+                    // Aquí podrías agregar lógica para guardar en localStorage o enviar a un servidor
+                    console.log(`Producto agregado: ${productName}, Precio: $${productPrice}`);
+                    
+                    // Simular agregar al carrito (en una implementación real, esto se conectaría con tu sistema de carrito)
+                    addToCart(productName, productPrice);
+                });
+            });
+            
+            // Función para simular agregar al carrito
+            function addToCart(product, price) {
+                // Obtener carrito actual de localStorage o crear uno nuevo
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                
+                // Verificar si el producto ya está en el carrito
+                const existingProductIndex = cart.findIndex(item => item.name === product);
+                
+                if (existingProductIndex !== -1) {
+                    // Si ya existe, incrementar cantidad
+                    cart[existingProductIndex].quantity += 1;
+                } else {
+                    // Si no existe, agregar nuevo producto
+                    cart.push({
+                        name: product,
+                        price: parseInt(price),
+                        quantity: 1
+                    });
+                }
+                
+                // Guardar carrito actualizado en localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+                // Actualizar contador de carrito si existe
+                updateCartCounter();
+            }
+            
+            // Función para actualizar el contador del carrito
+            function updateCartCounter() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                
+                // Si hay un elemento para mostrar el contador, actualizarlo
+                const cartCounter = document.getElementById('cartCounter');
+                if (cartCounter) {
+                    cartCounter.textContent = totalItems;
+                }
+            }
+            
+            // Inicializar contador del carrito al cargar la página
+            updateCartCounter();
+        });
+    </script>
 </body>
 </html>
