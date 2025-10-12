@@ -1,497 +1,160 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Parrilladas Familiares</title>
-    <style>
-    /* === RESET GENERAL === */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARRILLADAS FAMILIARES</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #f6f5f3, #042490);
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh; margin: 0;
+  }
+  .form-box {
+    background: #fff; padding: 25px; border-radius: 12px;
+    width: 320px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  .form-box h1 {
+  color: #042490;
+  margin-bottom: 10px;
+  }
 
-    body {
-      background: linear-gradient(135deg, #ff8a00, #e52e71);
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
+  .form-box p {
+    margin-bottom: 20px;
+    color: #555;
+  }
 
-    .container {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-      width: 95%;
-      max-width: 420px;
-      overflow: hidden;
-    }
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 
-    /* === NAV DE ESCENARIOS === */
-    .selector-escenarios {
-      display: flex;
-      justify-content: space-around;
-      background: #f4f4f4;
-      border-bottom: 2px solid #ddd;
-    }
+  input[type="email"],
+  input[type="password"] {
+    width: 85%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center; 
+    box-sizing: border-box;
+  }
 
-    .btn-escenario {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      font-weight: 600;
-      color: #888;
-      transition: 0.3s;
-      font-size: 12px;
-      text-align: center;
-    }
+  label {
+    width: 85%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #444;
+  }
 
-    .btn-escenario.activo,
-    .btn-escenario:hover {
-      background: #ffe5c0;
-      color: #d35400;
-    }
+  button {
+    width: 85%;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #06048a;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #0eabc7;
+  }
+  small {
+    color: #e74c3c;
+    display: block;
+    height: 14px;
+    text-align: left;
+    width: 85%;
+    margin-bottom: 5px;
+  }
+  .mensaje {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: none;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-    /* === ESCENARIOS === */
-    .escenario {
-      display: none;
-      padding: 25px;
-      text-align: center;
-      opacity: 0;
-      transform: scale(0.98);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
+  .exito {
+    background: #2ecc71; color: #fff;
+  }
 
-    .escenario.activo {
-      display: block;
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    /* === FORMULARIO === */
-    .header h1 {
-      color: #d35400;
-      margin-bottom: 5px;
-      font-size: 24px;
-    }
-
-    .header h2 {
-      color: #666;
-      font-size: 18px;
-      margin-bottom: 25px;
-      font-weight: 500;
-    }
-
-    .formulario .campo {
-      margin-bottom: 15px;
-      text-align: left;
-    }
-
-    .formulario input[type="email"],
-    .formulario input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      outline: none;
-      font-size: 15px;
-      transition: 0.3s;
-    }
-
-    .formulario input:focus {
-      border-color: #d35400;
-      box-shadow: 0 0 5px rgba(211,84,0,0.3);
-    }
-
-    .checkbox {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 15px 0 20px;
-      font-size: 14px;
-      color: #555;
-      text-align: left;
-    }
-
-    .checkbox input {
-      width: auto;
-    }
-
-    /* === BOTONES === */
-    .btn-primario {
-      background: #d35400;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 12px 25px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: 0.3s;
-      margin-top: 10px;
-    }
-
-    .btn-primario:hover {
-      background: #e67e22;
-    }
-
-    /* === MENSAJES === */
-    .mensaje-exito, .mensaje-error {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .icono {
-      font-size: 60px;
-      margin-bottom: 15px;
-    }
-
-    .mensaje-exito .icono {
-      color: #27ae60;
-    }
-
-    .mensaje-error .icono {
-      color: #c0392b;
-    }
-
-    .email-destacado {
-      font-weight: 600;
-      color: #d35400;
-      margin: 10px 0 15px;
-      font-size: 16px;
-      word-break: break-all;
-    }
-
-    .footer-form {
-      margin-top: 20px;
-      font-size: 14px;
-    }
-
-    .footer-form a {
-      color: #d35400;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .footer-form a:hover {
-      text-decoration: underline;
-    }
-
-    /* === MENSAJES DE ERROR === */
-    .mensaje-error-campo {
-      color: #e74c3c;
-      font-size: 12px;
-      margin-top: 5px;
-      text-align: left;
-      display: none;
-    }
-
-    /* === BOTONES DOBLES === */
-    .botones-dobles {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .botones-dobles button {
-      flex: 1;
-    }
-
-    /* === RESPONSIVE === */
-    @media (max-width: 500px) {
-      .container {
-        border-radius: 12px;
-        max-width: 100%;
-      }
-
-      .btn-escenario {
-        font-size: 11px;
-        padding: 8px 4px;
-      }
-      
-      .escenario {
-        padding: 20px 15px;
-      }
-      
-      .botones-dobles {
-        flex-direction: column;
-      }
-    }
-  </style>
+  .error {
+    background: #e74c3c; color: #fff;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
+<div class="form-box">
+  <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
+  <p>Registro de usuario</p>
+  <form id="registroForm">
+    <input type="email" id="email" placeholder="Correo electrónico" required>
+    <small id="error-email"></small>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <small id="error-password"></small>
+    <input type="password" id="confirm" placeholder="Confirmar contraseña" required>
+    <small id="error-confirm"></small>
+    <label><input type="checkbox" id="terminos"> Acepto términos y condiciones</label>
+    <small id="error-terminos"></small>
+    <button type="submit">Registrarme</button>
+  </form>
+  <div id="mensaje" class="mensaje"></div>
+</div>
 
-    <!-- Escenario 1: Formulario de Registro -->
-    <div id="escenario-formulario" class="escenario activo">
-      <header class="header">
-        <h1>PARRILLADAS FAMILIARES</h1>
-        <h2>CREAR CUENTA NUEVA</h2>
-      </header>
 
-      <form class="formulario" id="registroForm">
-        <div class="campo">
-          <input type="email" id="email" placeholder="Correo electrónico" required>
-          <div class="mensaje-error-campo" id="error-email"></div>
-        </div>
-        
-        <div class="campo">
-          <input type="password" id="password" placeholder="Contraseña" required>
-          <div class="mensaje-error-campo" id="error-password"></div>
-        </div>
-        
-        <div class="campo">
-          <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" required>
-          <div class="mensaje-error-campo" id="error-confirmPassword"></div>
-        </div>
 
-        <div class="checkbox">
-          <input type="checkbox" id="terminos">
-          <label for="terminos">Acepto términos y condiciones</label>
-        </div>
-        <div class="mensaje-error-campo" id="error-terminos"></div>
+<script>
+let correos = ["eduardo@ejemplo.com","maria@ejemplo.com"];
+const form = document.getElementById("registroForm");
+const msj = document.getElementById("mensaje");
 
-        <button type="submit" class="btn-primario">
-          REGISTRARME
-        </button>
-      </form>
+function validarEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function validarPass(p){return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(p);}
+function err(id,txt){document.getElementById(id).textContent=txt;}
+function limpiarErrores(){["email","password","confirm","terminos"].forEach(c=>err("error-"+c,""));}
 
-      <footer class="footer-form">
-        <p>¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
-      </footer>
-    </div>
+form.addEventListener("submit",e=>{
+  e.preventDefault(); limpiarErrores(); msj.style.display="none";
+  const email=emailInput.value.trim(), pass=password.value, conf=confirm.value, term=terminos.checked;
+  let errores=false;
 
-    <!-- Escenario 2: Registro Exitoso -->
-    <div id="escenario-exito" class="escenario">
-      <div class="mensaje-exito">
-        <div class="icono">✓</div>
-        <h2>REGISTRO EXITOSO</h2>
-        <p>¡Cuenta creada exitosamente!</p>
-        <p>Hemos enviado un correo de verificación a:</p>
-        <p class="email-destacado" id="correoExito"></p>
-        <div class="botones-dobles">
-          <button class="btn-primario" onclick="mostrarEscenario('formulario')">
-            VOLVER AL REGISTRO
-          </button>
-          <button class="btn-primario" onclick="irACorreo()">
-            IR A MI CORREO
-          </button>
-        </div>
-      </div>
-    </div>
+  if(!email||!validarEmail(email)){err("error-email","Correo inválido"); errores=true;}
+  else if(correos.includes(email)){msj.textContent="Correo ya registrado"; msj.className="mensaje error"; msj.style.display="block"; return;}
+  if(!pass||!validarPass(pass)){err("error-password","Contraseña no cunple con requisitos"); errores=true;}
+  if(conf!==pass){err("error-confirm","No coinciden"); errores=true;}
+  if(!term){err("error-terminos","Debes aceptar los términos y condiciones"); errores=true;}
+  if(errores)return;
 
-    <!-- Escenario 3: Correo Ya Registrado -->
-    <div id="escenario-error-correo" class="escenario">
-      <div class="mensaje-error">
-        <div class="icono">✗</div>
-        <h2>CORREO EN USO</h2>
-        <p>Este correo ya está en uso dentro del sistema</p>
-        <p>¿Olvidaste tu contraseña?</p>
-        <div class="botones-dobles">
-          <button class="btn-primario" onclick="mostrarEscenario('formulario')">
-            INTENTAR CON OTRO CORREO
-          </button>
-          <button class="btn-primario" onclick="irARecuperacion()">
-            RECUPERAR CONTRASEÑA
-          </button>
-        </div>
-      </div>
-    </div>
+  msj.textContent="¡Registro exitoso! Se envió correo a: "+email;
+  msj.className="mensaje exito"; 
+  msj.style.display="block";
+  correos.push(email); // <-- Guarda el nuevo correo registrado
+  form.reset();
+});
 
-    <!-- Escenario 4: Contraseña Inválida -->
-    <div id="escenario-error-password" class="escenario">
-      <div class="mensaje-error">
-        <div class="icono">⚠</div>
-        <h2>CONTRASEÑA INVÁLIDA</h2>
-        <p>La contraseña no cumple con los requisitos mínimos:</p>
-        <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
-          <li>Mínimo 8 caracteres</li>
-          <li>Al menos una letra mayúscula</li>
-          <li>Al menos un número</li>
-          <li>Al menos un carácter especial</li>
-        </ul>
-        <button class="btn-primario" onclick="mostrarEscenario('formulario')">
-          CORREGIR CONTRASEÑA
-        </button>
-      </div>
-    </div>
-  </div>
-  <script>
-    // Función para cambiar de escenario
-    function mostrarEscenario(nombre) {
-      // Ocultar todos los escenarios
-      document.querySelectorAll('.escenario').forEach(e => {
-        e.classList.remove('activo');
-      });
-      
-      // Mostrar el escenario seleccionado
-      const escenario = document.getElementById(`escenario-${nombre}`);
-      if (escenario) {
-        escenario.classList.add('activo');
-      }
-      
-      // Actualizar botones activos
-      document.querySelectorAll('.btn-escenario').forEach(b => {
-        b.classList.remove('activo');
-      });
-      
-      const botonActivo = document.querySelector(`.btn-escenario[onclick="mostrarEscenario('${nombre}')"]`);
-      if (botonActivo) {
-        botonActivo.classList.add('activo');
-      }
-    }
-
-    // Simulación de registros existentes
-    const correosRegistrados = ["eduardo@ejemplo.com", "maria@ejemplo.com"];
-
-    // Función para validar email
-    function validarEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return re.test(email);
-    }
-
-    // Función para validar contraseña
-    function validarPassword(password) {
-      // Mínimo 8 caracteres, al menos una mayúscula, un número y un carácter especial
-      const re = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      return re.test(password);
-    }
-
-    // Función para mostrar errores en campos
-    function mostrarError(campoId, mensaje) {
-      const errorElement = document.getElementById(`error-${campoId}`);
-      if (errorElement) {
-        errorElement.textContent = mensaje;
-        errorElement.style.display = 'block';
-      }
-    }
-
-    // Función para ocultar errores en campos
-    function ocultarError(campoId) {
-      const errorElement = document.getElementById(`error-${campoId}`);
-      if (errorElement) {
-        errorElement.style.display = 'none';
-      }
-    }
-
-    // Validación en tiempo real
-    document.getElementById("email").addEventListener("blur", function() {
-      const email = this.value.trim();
-      if (email && !validarEmail(email)) {
-        mostrarError('email', 'Por favor, introduce un correo electrónico válido');
-      } else {
-        ocultarError('email');
-      }
-    });
-
-    document.getElementById("password").addEventListener("blur", function() {
-      const password = this.value;
-      if (password && !validarPassword(password)) {
-        mostrarError('password', 'La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial');
-      } else {
-        ocultarError('password');
-      }
-    });
-
-    document.getElementById("confirmPassword").addEventListener("blur", function() {
-      const password = document.getElementById("password").value;
-      const confirm = this.value;
-      if (confirm && password !== confirm) {
-        mostrarError('confirmPassword', 'Las contraseñas no coinciden');
-      } else {
-        ocultarError('confirmPassword');
-      }
-    });
-
-    // Manejo del envío del formulario
-    document.getElementById("registroForm").addEventListener("submit", e => {
-      e.preventDefault();
-
-      // Ocultar todos los errores previos
-      ocultarError('email');
-      ocultarError('password');
-      ocultarError('confirmPassword');
-      ocultarError('terminos');
-
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      const confirm = document.getElementById("confirmPassword").value;
-      const terminos = document.getElementById("terminos").checked;
-
-      let hayErrores = false;
-
-      // Validar email
-      if (!email) {
-        mostrarError('email', 'El correo electrónico es obligatorio');
-        hayErrores = true;
-      } else if (!validarEmail(email)) {
-        mostrarError('email', 'Por favor, introduce un correo electrónico válido');
-        hayErrores = true;
-      } else if (correosRegistrados.includes(email)) {
-        mostrarEscenario("error-correo");
-        return;
-      }
-
-      // Validar contraseña
-      if (!password) {
-        mostrarError('password', 'La contraseña es obligatoria');
-        hayErrores = true;
-      } else if (!validarPassword(password)) {
-        mostrarEscenario("error-password");
-        return;
-      }
-
-      // Validar confirmación de contraseña
-      if (!confirm) {
-        mostrarError('confirmPassword', 'Debes confirmar tu contraseña');
-        hayErrores = true;
-      } else if (password !== confirm) {
-        mostrarError('confirmPassword', 'Las contraseñas no coinciden');
-        hayErrores = true;
-      }
-
-      // Validar términos y condiciones
-      if (!terminos) {
-        mostrarError('terminos', 'Debes aceptar los términos y condiciones');
-        hayErrores = true;
-      }
-
-      // Si hay errores, detener el proceso
-      if (hayErrores) {
-        return;
-      }
-
-      // Registro exitoso
-      document.getElementById("correoExito").textContent = email;
-      mostrarEscenario("exito");
-    });
-
-    // Funciones auxiliares
-    function irACorreo() {
-      alert("Redirigiendo a tu cliente de correo...");
-      // En una implementación real, esto redirigiría al cliente de correo
-    }
-
-    function irARecuperacion() {
-      alert("Redirigiendo a recuperación de contraseña...");
-      // En una implementación real, esto redirigiría a la página de recuperación
-    }
-
-    // Inicialización
-    document.addEventListener('DOMContentLoaded', function() {
-      // Asegurarse de que el escenario correcto esté activo al cargar
-      mostrarEscenario('formulario');
-    });
-  </script>
+const emailInput=document.getElementById("email"),
+password=document.getElementById("password"),
+confirm=document.getElementById("confirm"),
+terminos=document.getElementById("terminos");
+</script>
 </body>
 </html>

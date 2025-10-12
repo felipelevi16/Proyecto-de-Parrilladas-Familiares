@@ -1,345 +1,247 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Parrilladas Familiares</title>
-    <style>
-        /* Estilos generales */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 500px;
-            margin: 2rem auto;
-            padding: 1rem;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Selector de escenarios */
-        .selector-escenarios {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .btn-escenario {
-            flex: 1;
-            min-width: 120px;
-            padding: 0.5rem;
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-escenario:hover {
-            background-color: #e0e0e0;
-        }
-        
-        .btn-escenario.activo {
-            background-color: #d32f2f;
-            color: white;
-            border-color: #b71c1c;
-        }
-        
-        /* Escenarios */
-        .escenario {
-            display: none;
-        }
-        
-        .escenario.activo {
-            display: block;
-        }
-        
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .header h1 {
-            color: #d32f2f;
-            font-size: 1.8rem;
-        }
-        
-        /* Formulario */
-        .formulario {
-            margin-bottom: 1.5rem;
-        }
-        
-        .campo {
-            margin-bottom: 1rem;
-        }
-        
-        .campo input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        
-        .checkbox {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .checkbox input {
-            margin-right: 0.5rem;
-        }
-        
-        /* Botones */
-        .btn-primario, .btn-secundario {
-            display: block;
-            width: 100%;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        .btn-primario {
-            background-color: #d32f2f;
-            color: white;
-        }
-        
-        .btn-primario:hover {
-            background-color: #b71c1c;
-        }
-        
-        .btn-secundario {
-            background-color: #f5f5f5;
-            color: #333;
-            border: 1px solid #ddd;
-        }
-        
-        .btn-secundario:hover {
-            background-color: #e0e0e0;
-        }
-        
-        .botones-dobles {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .botones-dobles button {
-            flex: 1;
-        }
-        
-        /* Footer del formulario */
-        .footer-form {
-            text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
-        }
-        
-        .footer-form a {
-            color: #d32f2f;
-            text-decoration: none;
-        }
-        
-        .footer-form a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Mensajes de estado */
-        .mensaje-error, .mensaje-exito {
-            text-align: center;
-            padding: 2rem 1rem;
-        }
-        
-        .icono {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .mensaje-error h2 {
-            color: #d32f2f;
-            margin-bottom: 1rem;
-        }
-        
-        .mensaje-exito h2 {
-            color: #388e3c;
-            margin-bottom: 1rem;
-        }
-        
-        .timer {
-            margin: 1rem 0;
-            font-size: 1.2rem;
-        }
-        
-        /* Responsive */
-        @media (max-width: 480px) {
-            .selector-escenarios {
-                flex-direction: column;
-            }
-            
-            .botones-dobles {
-                flex-direction: column;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARRILLADAS FAMILIARES</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #f6f5f3, #042490);
+    height: 100vh; 
+    margin: 0;
+  }
+  .form-box {
+    background: #fff; 
+    padding: 25px; 
+    border-radius: 12px;
+    width: 320px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  .form-box h1 {
+    color: #042490;
+    margin-bottom: 10px;
+  }
+  .form-box p {
+    margin-bottom: 20px;
+    color: #555;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  input[type="email"],
+  input[type="password"] {
+    width: 85%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center; 
+    box-sizing: border-box;
+  }
+  label {
+    width: 85%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #444;
+  }
+  button {
+    width: 85%;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #06048a;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #0eabc7;
+  }
+  small {
+    color: #e74c3c;
+    display: block;
+    height: 14px;
+    text-align: left;
+    width: 85%;
+    margin-bottom: 5px;
+  }
+  .mensaje {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: none;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .exito {
+    background: #2ecc71; 
+    color: #fff;
+  }
+  .error {
+    background: #e74c3c; 
+    color: #fff;
+  }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+  .nav-btn {
+    flex: 1;
+    padding: 8px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    background: #ddd;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .nav-btn.activo {
+    background: #06048a;
+    color: white;
+  }
+  .formulario {
+    display: none;
+  }
+  .formulario.activo {
+    display: block;
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-
-        <!-- Escenario 1: Formulario de Login -->
-        <div id="escenario-formulario" class="escenario activo">
-            <header class="header">
-                <h1>INICIAR SESIÓN</h1>
-            </header>
-
-            <form class="formulario" id="loginForm">
-                <div class="campo">
-                    <input type="email" id="email" placeholder="Correo electrónico" value="eduardo@ejemplo.com" required>
-                </div>
-                
-                <div class="campo">
-                    <input type="password" id="password" placeholder="Contraseña" value="Contraseña1622" required>
-                </div>
-
-                <div class="checkbox">
-                    <input type="checkbox" id="recordar">
-                    <label for="recordar">Mantener sesión iniciada</label>
-                </div>
-
-                <button type="submit" class="btn-primario">
-                    INGRESAR
-                </button>
-            </form>
-
-            <footer class="footer-form">
-                <p><a href="recuperacion.html">Olvidé mi contraseña</a></p>
-                <p>¿No tienes cuenta? <a href="registro.html">Registrarse</a></p>
-            </footer>
-        </div>
-
-        <!-- Escenario 2: Cuenta Bloqueada -->
-        <div id="escenario-bloqueado" class="escenario">
-            <div class="mensaje-error">
-                <div class="icono">🔒</div>
-                <h2>CUENTA BLOQUEADA</h2>
-                <p>Por seguridad, tu cuenta ha sido bloqueada tras 5 intentos fallidos</p>
-                <p class="timer">Tiempo restante: <strong id="tiempo-restante">59:45</strong></p>
-                <div class="botones-dobles">
-                    <button class="btn-secundario">RECIBIR AYUDA</button>
-                    <button class="btn-primario">CONTACTAR SOPORTE</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Escenario 3: Sesión Expirada -->
-        <div id="escenario-expirada" class="escenario">
-            <div class="mensaje-error">
-                <div class="icono">⏰</div>
-                <h2>SESIÓN EXPIRADA</h2>
-                <p>Por seguridad, tu sesión ha caducado después de 30 minutos sin actividad</p>
-                <button class="btn-primario" onclick="mostrarEscenario('formulario')">
-                    VOLVER A INICIAR SESIÓN
-                </button>
-            </div>
-        </div>
-
-        <!-- Escenario 4: Login Exitoso -->
-        <div id="escenario-exito" class="escenario">
-            <div class="mensaje-exito">
-                <div class="icono">✓</div>
-                <h2>SESIÓN INICIADA</h2>
-                <p>Se inició correctamente la sesión</p>
-                <div class="botones-dobles">
-                    <button class="btn-secundario">IR AL CATÁLOGO</button>
-                    <button class="btn-primario">VER MI PERFIL</button>
-                </div>
-            </div>
-        </div>
+<div class="form-box">
+  <div class="nav">
+    <button class="nav-btn activo" onclick="mostrarForm('login')">Login</button>
+    <button class="nav-btn" onclick="mostrarForm('registro')">Registro</button>
+  </div>
+  
+  <div id="login" class="formulario activo">
+    <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
+    <p>Iniciar sesión</p>
+    
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+      <input type="password" id="loginPassword" placeholder="Contraseña" required>
+      <label><input type="checkbox" id="recordar"> Mantener sesión iniciada</label>
+      <button type="submit">Ingresar</button>
+    </form>
+    
+    <div style="margin-top: 15px; font-size: 14px;">
+      <p><a href="E1F3.html" style="color: #06048a; text-decoration: none;">¿Olvidaste tu contraseña?</a></p>
     </div>
+  </div>
 
-    <script>
-        // Función para mostrar el escenario seleccionado
-        function mostrarEscenario(escenarioId) {
-            // Ocultar todos los escenarios
-            const escenarios = document.querySelectorAll('.escenario');
-            escenarios.forEach(escenario => {
-                escenario.classList.remove('activo');
-            });
-            
-            // Mostrar el escenario seleccionado
-            const escenarioActivo = document.getElementById(`escenario-${escenarioId}`);
-            if (escenarioActivo) {
-                escenarioActivo.classList.add('activo');
-            }
-            
-            // Actualizar botones activos
-            const botones = document.querySelectorAll('.btn-escenario');
-            botones.forEach(boton => {
-                boton.classList.remove('activo');
-            });
-            
-            const botonActivo = document.querySelector(`.btn-escenario[onclick="mostrarEscenario('${escenarioId}')"]`);
-            if (botonActivo) {
-                botonActivo.classList.add('activo');
-            }
-        }
-        
-        // Manejar el envío del formulario
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Aquí iría la lógica de autenticación real
-            // Por ahora, simplemente mostramos el escenario de éxito
-            mostrarEscenario('exito');
-        });
-        
-        // Simular cuenta bloqueada con temporizador
-        function iniciarTemporizadorBloqueo() {
-            let tiempoRestante = 59 * 60 + 45; // 59 minutos y 45 segundos en segundos
-            
-            const actualizarTemporizador = () => {
-                const minutos = Math.floor(tiempoRestante / 60);
-                const segundos = tiempoRestante % 60;
-                
-                const tiempoFormateado = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-                
-                const elemento = document.getElementById('tiempo-restante');
-                if (elemento) {
-                    elemento.textContent = tiempoFormateado;
-                }
-                
-                if (tiempoRestante > 0) {
-                    tiempoRestante--;
-                    setTimeout(actualizarTemporizador, 1000);
-                }
-            };
-            
-            actualizarTemporizador();
-        }
-        
-        // Iniciar el temporizador cuando se muestre el escenario de cuenta bloqueada
-        document.querySelector('.btn-escenario[onclick="mostrarEscenario(\'bloqueado\')"]').addEventListener('click', function() {
-            setTimeout(iniciarTemporizadorBloqueo, 100);
-        });
-    </script>
+  <div id="registro" class="formulario">
+    <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
+    <p>Crear cuenta nueva</p>
+    
+    <form id="registroForm">
+      <input type="email" id="regEmail" placeholder="Correo electrónico" required>
+      <small id="error-email"></small>
+      <input type="password" id="regPassword" placeholder="Contraseña" required>
+      <small id="error-password"></small>
+      <input type="password" id="regConfirm" placeholder="Confirmar contraseña" required>
+      <small id="error-confirm"></small>
+      <label><input type="checkbox" id="regTerminos"> Acepto términos y condiciones</label>
+      <small id="error-terminos"></small>
+      <button type="submit">Registrarme</button>
+    </form>
+  </div>
+  
+  <div id="mensaje" class="mensaje"></div>
+</div>
+
+<script>
+let usuarios = [
+  {email: "eduardo@ejemplo.com", password: "Contraseña1622"},
+  {email: "maria@ejemplo.com", password: "Maria123!"}
+];
+
+function mostrarForm(tipo) {
+  document.querySelectorAll('.formulario').forEach(f => f.classList.remove('activo'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('activo'));
+  document.getElementById(tipo).classList.add('activo');
+  document.querySelector(`.nav-btn[onclick="mostrarForm('${tipo}')"]`).classList.add('activo');
+  document.getElementById('mensaje').style.display = 'none';
+}
+
+function validarEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function validarPass(p){return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(p);}
+function err(id,txt){document.getElementById(id).textContent=txt;}
+function limpiarErrores(){["email","password","confirm","terminos"].forEach(c=>err("error-"+c,""));}
+
+document.getElementById("loginForm").addEventListener("submit",e=>{
+  e.preventDefault(); 
+  const msj = document.getElementById('mensaje');
+  msj.style.display = 'none';
+  
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const usuario = usuarios.find(u => u.email === email);
+  
+  if (!usuario) {
+    msj.textContent = "Correo no registrado";
+    msj.className = "mensaje error";
+    msj.style.display = "block";
+    return;
+  }
+  
+  if (usuario.password !== password) {
+    msj.textContent = "Contraseña incorrecta";
+    msj.className = "mensaje error";
+    msj.style.display = "block";
+    return;
+  }
+  
+  msj.textContent = "¡Sesión iniciada correctamente!";
+  msj.className = "mensaje exito";
+  msj.style.display = "block";
+});
+
+document.getElementById("registroForm").addEventListener("submit",e=>{
+  e.preventDefault(); 
+  limpiarErrores(); 
+  const msj = document.getElementById('mensaje');
+  msj.style.display="none";
+  
+  const email=document.getElementById("regEmail").value.trim(), 
+        pass=document.getElementById("regPassword").value, 
+        conf=document.getElementById("regConfirm").value, 
+        term=document.getElementById("regTerminos").checked;
+  let errores=false;
+
+  if(!email||!validarEmail(email)){err("error-email","Correo inválido"); errores=true;}
+  else if(usuarios.find(u => u.email === email)){msj.textContent="Correo ya registrado"; msj.className="mensaje error"; msj.style.display="block"; return;}
+  if(!pass||!validarPass(pass)){err("error-password","Contraseña no cumple requisitos"); errores=true;}
+  if(conf!==pass){err("error-confirm","No coinciden"); errores=true;}
+  if(!term){err("error-terminos","Debes aceptar los términos"); errores=true;}
+  if(errores)return;
+
+  msj.textContent="¡Registro exitoso! Se envió correo a: "+email;
+  msj.className="mensaje exito"; 
+  msj.style.display="block";
+  usuarios.push({email: email, password: pass});
+  document.getElementById("registroForm").reset();
+});
+</script>
 </body>
 </html>
