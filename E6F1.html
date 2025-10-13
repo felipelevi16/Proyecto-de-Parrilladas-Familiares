@@ -7,18 +7,18 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
         body { background-color: #f8f9fa; }
-        .header { background: #8B0000; color: white; padding: 15px; text-align: center; }
+        .header { background: #042490; color: white; padding: 15px; text-align: center; }
         .admin-nav { background: #343a40; padding: 15px; }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; gap: 30px; }
         .nav-item { color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; transition: background 0.3s; }
-        .nav-item:hover, .nav-item.active { background: #8B0000; }
+        .nav-item:hover, .nav-item.active { background: #042490; }
         .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
         .dashboard-title { text-align: center; margin-bottom: 30px; color: #333; }
         
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 40px; }
-        .dashboard-card { background: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 4px solid #8B0000; }
+        .dashboard-card { background: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 4px solid #042490; }
         .card-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 15px; }
-        .stat-number { font-size: 32px; font-weight: bold; color: #8B0000; margin-bottom: 10px; }
+        .stat-number { font-size: 32px; font-weight: bold; color: #042490; margin-bottom: 10px; }
         .stat-description { color: #666; font-size: 14px; }
         
         .data-section { background: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
@@ -33,7 +33,7 @@
         .status-cancelled { background: #f8d7da; color: #721c24; }
         
         .action-btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; margin-right: 5px; }
-        .btn-primary { background: #8B0000; color: white; }
+        .btn-primary { background: #042490; color: white; }
         .btn-secondary { background: #6c757d; color: white; }
         .btn-success { background: #28a745; color: white; }
         
@@ -47,11 +47,10 @@
     
     <div class="admin-nav">
         <div class="nav-container">
-            <a href="#" class="nav-item active">Dashboard</a>
+            <a href="E6F1.html" class="nav-item active">Dashboard</a>
             <a href="#" class="nav-item">Administrar Pedidos</a>
-            <a href="#" class="nav-item">Administrar Reservas</a>
-            <a href="#" class="nav-item">Administrar Promociones</a>
-            <a href="#" class="nav-item">Administrar Catálogo</a>
+            <a href="E6F2.html" class="nav-item">Administrar Reservas</a>
+            <a href="E6F3.html" class="nav-item">Administrar Catálogo</a>
         </div>
     </div>
     
@@ -173,7 +172,6 @@
     </div>
 
     <script>
-        // Funcionalidad para notificaciones
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
@@ -185,67 +183,32 @@
             }, 3000);
         }
 
-        // Funciones para pedidos
         function viewOrder(orderId) {
             showNotification(`Viendo detalles del pedido #${orderId}`);
-            console.log(`Abriendo detalles del pedido: ${orderId}`);
         }
 
         function confirmOrder(orderId) {
             showNotification(`Pedido #${orderId} confirmado exitosamente`);
-            console.log(`Confirmando pedido: ${orderId}`);
-            
-            // Aquí iría la lógica para actualizar el estado en la base de datos
-            setTimeout(() => {
-                location.reload(); // Recargar para ver cambios
-            }, 1000);
         }
 
-        // Funciones para reservas
         function viewReservation(reservationId) {
             showNotification(`Viendo detalles de la reserva ${reservationId}`);
-            console.log(`Abriendo detalles de reserva: ${reservationId}`);
         }
 
         function confirmReservation(reservationId) {
             showNotification(`Reserva ${reservationId} confirmada exitosamente`);
-            console.log(`Confirmando reserva: ${reservationId}`);
-            
-            // Aquí iría la lógica para actualizar el estado en la base de datos
-            setTimeout(() => {
-                location.reload(); // Recargar para ver cambios
-            }, 1000);
         }
 
-        // Navegación entre secciones
         document.addEventListener('DOMContentLoaded', function() {
             const navItems = document.querySelectorAll('.nav-item');
             
             navItems.forEach(item => {
                 item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remover clase active de todos los items
                     navItems.forEach(nav => nav.classList.remove('active'));
-                    
-                    // Agregar clase active al item clickeado
                     this.classList.add('active');
-                    
-                    // Mostrar notificación de cambio de sección
-                    const sectionName = this.textContent;
-                    showNotification(`Cambiando a sección: ${sectionName}`);
                 });
             });
-
-            // Cargar datos iniciales del dashboard
-            loadDashboardData();
         });
-
-        // Simulación de carga de datos
-        function loadDashboardData() {
-            console.log('Cargando datos del dashboard...');
-            // Aquí iría la lógica para cargar datos reales desde una API
-        }
     </script>
 </body>
 </html>

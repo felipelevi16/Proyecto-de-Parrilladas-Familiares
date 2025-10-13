@@ -7,11 +7,11 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
         body { background-color: #f8f9fa; }
-        .header { background: #8B0000; color: white; padding: 15px; text-align: center; }
+        .header { background: #042490; color: white; padding: 15px; text-align: center; }
         .admin-nav { background: #343a40; padding: 15px; }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; gap: 30px; }
         .nav-item { color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; transition: background 0.3s; }
-        .nav-item:hover, .nav-item.active { background: #8B0000; }
+        .nav-item:hover, .nav-item.active { background: #042490; }
         .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
         .page-title { text-align: center; margin-bottom: 30px; color: #333; }
         
@@ -33,7 +33,7 @@
         
         .action-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
         .btn { padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; text-align: center; min-width: 150px; }
-        .btn-primary { background: #8B0000; color: white; }
+        .btn-primary { background: #042490; color: white; }
         .btn-success { background: #28a745; color: white; }
         .btn-secondary { background: #6c757d; color: white; }
         .btn-warning { background: #ffc107; color: #212529; }
@@ -51,11 +51,10 @@
     
     <div class="admin-nav">
         <div class="nav-container">
-            <a href="#" class="nav-item">Dashboard</a>
+            <a href="E6F1.html" class="nav-item">Dashboard</a>
             <a href="#" class="nav-item">Administrar Pedidos</a>
-            <a href="#" class="nav-item active">Administrar Reservas</a>
-            <a href="#" class="nav-item">Administrar Promociones</a>
-            <a href="#" class="nav-item">Administrar Catálogo</a>
+            <a href="E6F2.html" class="nav-item active">Administrar Reservas</a>
+            <a href="E6F3.html" class="nav-item">Administrar Catálogo</a>
         </div>
     </div>
     
@@ -195,7 +194,6 @@
     </div>
 
     <script>
-        // Sistema de notificaciones
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
@@ -207,7 +205,6 @@
             }, 3000);
         }
 
-        // Funcionalidad de horarios alternativos
         document.addEventListener('DOMContentLoaded', function() {
             const timeSlots = document.querySelectorAll('.time-slot');
             timeSlots.forEach(slot => {
@@ -218,74 +215,31 @@
             });
         });
 
-        // Funciones de navegación entre escenarios
         function goBack() {
-            showNotification('Volviendo al panel de administración');
-            // En una implementación real, redirigiría al dashboard
-            console.log('Navegando al panel de administración');
+            window.location.href = 'E6F1.html';
         }
 
         function confirmReservation() {
             showNotification('Reserva confirmada exitosamente');
-            
-            // Simular transición al escenario 3
             document.getElementById('scenario1').classList.add('hidden');
             document.getElementById('scenario3').classList.remove('hidden');
-            
-            // En una implementación real, enviaría los datos al servidor
-            const reservationData = {
-                client: 'Eduardo Díaz',
-                phone: '+56 9 1234 5678',
-                date: '16 de agosto',
-                time: '22:00 hrs',
-                people: 8,
-                branch: 'Las Condes',
-                table: 'Mesa #12 (Terraza)'
-            };
-            
-            console.log('Reserva confirmada:', reservationData);
         }
 
         function proposeAlternative() {
             const selectedTime = document.querySelector('.time-slot.selected').textContent;
             showNotification(`Horario alternativo propuesto: ${selectedTime}`);
-            
-            // Simular transición al escenario 3 con horario alternativo
             document.getElementById('scenario2').classList.add('hidden');
             document.getElementById('scenario3').classList.remove('hidden');
-            
-            // Actualizar la hora en el escenario 3
             document.querySelector('#scenario3 .detail-value:nth-child(3)').textContent = 
                 `16 de agosto, ${selectedTime}`;
-            
-            console.log(`Proponiendo horario alternativo: ${selectedTime}`);
         }
 
-        // Simulación: Cambiar entre escenarios para demo
-        function switchScenario(scenario) {
-            // Ocultar todos los escenarios
-            document.querySelectorAll('.reservation-details').forEach(el => {
-                el.classList.add('hidden');
-            });
-            
-            // Mostrar el escenario seleccionado
-            document.getElementById(`scenario${scenario}`).classList.remove('hidden');
-            
-            showNotification(`Mostrando escenario ${scenario}`);
-        }
-
-        // Navegación del menú
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function(e) {
-                e.preventDefault();
                 document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
                 this.classList.add('active');
-                showNotification(`Navegando a: ${this.textContent}`);
             });
         });
-
-        // Demo: Permitir cambiar entre escenarios desde la consola
-        console.log('Para cambiar entre escenarios, usa: switchScenario(1), switchScenario(2) o switchScenario(3)');
     </script>
 </body>
 </html>
