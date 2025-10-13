@@ -1,259 +1,104 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle Producto - Parrilladas Familiares</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background: #f8f9fa; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        
-        .header { background: #8B0000; color: white; padding: 15px; }
-        .nav { display: flex; justify-content: space-between; align-items: center; }
-        
-        .product-detail { background: white; border-radius: 8px; padding: 20px; margin-top: 20px; }
-        .product-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        
-        .main-image { width: 100%; height: 300px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #8B0000; font-weight: bold; margin-bottom: 10px; }
-        .thumbnails { display: flex; gap: 10px; }
-        .thumbnail { width: 50px; height: 50px; background: #e0e0e0; border-radius: 4px; cursor: pointer; }
-        
-        .product-info h1 { color: #8B0000; margin-bottom: 10px; }
-        .product-price { font-size: 24px; font-weight: bold; color: #8B0000; margin: 15px 0; }
-        
-        .specs { background: #f9f9f9; padding: 15px; border-radius: 6px; margin: 15px 0; }
-        .spec { display: flex; justify-content: space-between; margin: 8px 0; }
-        
-        .quantity { display: flex; align-items: center; gap: 15px; margin: 20px 0; }
-        .quantity-controls { display: flex; align-items: center; gap: 10px; border: 1px solid #ddd; border-radius: 4px; padding: 5px; }
-        .quantity-btn { background: none; border: none; cursor: pointer; padding: 5px 10px; }
-        .quantity-input { width: 40px; text-align: center; border: none; }
-        
-        .actions { display: flex; gap: 10px; margin-top: 20px; }
-        .btn { padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; flex: 1; }
-        .btn-primary { background: #8B0000; color: white; }
-        .btn-secondary { background: #f0f0f0; color: #333; }
-        
-        .recommendations { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
-        .rec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 15px; }
-        .rec-card { border: 1px solid #eee; padding: 15px; border-radius: 6px; text-align: center; cursor: pointer; }
-        
-        .notification { position: fixed; top: 20px; right: 20px; background: #27ae60; color: white; padding: 15px; border-radius: 4px; display: none; }
-        
-        .hidden { display: none; }
-        
-        @media (max-width: 768px) {
-            .product-layout { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARRILLADAS FAMILIARES</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #f6f5f3, #042490); margin: 0; min-height: 100vh; display: flex; justify-content: center; }
+  .form-box { background: #fff; border-radius: 12px; width: 95%; max-width: 800px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); margin: 20px 0; }
+  .nav { display: flex; justify-content: space-around; background: #042490; padding: 10px; }
+  .nav-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #fff; cursor: pointer; font-weight: bold; }
+  .nav-btn.activo { background: rgba(255,255,255,0.1); }
+  h1 { text-align: center; color: #042490; margin-top: 20px; }
+  .detalle { padding: 20px; }
+  .producto-imagen { width: 100%; height: 200px; background: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #042490; font-weight: bold; font-size: 24px; margin-bottom: 20px; }
+  .precio { font-size: 24px; font-weight: bold; color: #042490; margin: 15px 0; }
+  .especificaciones { background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+  .especificacion { display: flex; justify-content: space-between; margin: 8px 0; }
+  button { width: 100%; padding: 12px; background: #042490; color: white; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+</style>
 </head>
 <body>
-    <div class="notification" id="notification">Producto agregado al carrito!</div>
+
+<div class="form-box">
+  <div class="nav">
+    <button class="nav-btn" onclick="location.href='E2F1.html'">INICIO</button>
+    <button class="nav-btn" onclick="location.href='E2F2.html'">CATÁLOGO</button>
+    <button class="nav-btn activo" onclick="location.href='E2F3.html'">DETALLE</button>
+  </div>
+
+  <div class="detalle" id="detalleProducto">
+    <!-- El detalle se carga dinámicamente -->
+  </div>
+</div>
+
+<script>
+const productos = [
+  { 
+    id: 1, 
+    nombre: "Lomo Vetado Premium", 
+    descripcion: "Corte premium de res marmoleado, perfectamente seleccionado para máxima jugosidad y sabor.", 
+    precio: 160000, 
+    categoria: "carnes", 
+    imagen: "🥩 LOMO VETADO",
+    especificaciones: [
+      { nombre: "Peso", valor: "12 kg" },
+      { nombre: "Para", valor: "4-5 personas" },
+      { nombre: "Tipo", valor: "Carne Angus" },
+      { nombre: "Origen", valor: "Argentina" }
+    ]
+  },
+  { 
+    id: 2, 
+    nombre: "Costillar de Cerdo", 
+    descripcion: "Costillar marinado por 24 horas con nuestra salsa BBQ especial de la casa.", 
+    precio: 45000, 
+    categoria: "carnes", 
+    imagen: "🍖 COSTILLAR",
+    especificaciones: [
+      { nombre: "Peso", valor: "8 kg" },
+      { nombre: "Para", valor: "3-4 personas" },
+      { nombre: "Marinado", valor: "24 horas" }
+    ]
+  }
+  // ... otros productos
+];
+
+// Cargar producto seleccionado
+document.addEventListener('DOMContentLoaded', function() {
+  const productoId = localStorage.getItem('productoSeleccionado') || 1;
+  const producto = productos.find(p => p.id == productoId) || productos[0];
+  mostrarDetalle(producto);
+});
+
+function mostrarDetalle(producto) {
+  const detalle = document.getElementById('detalleProducto');
+  
+  let especificacionesHTML = '';
+  producto.especificaciones.forEach(esp => {
+    especificacionesHTML += `<div class="especificacion"><span>${esp.nombre}:</span> <span>${esp.valor}</span></div>`;
+  });
+
+  detalle.innerHTML = `
+    <h1>${producto.nombre}</h1>
+    <div class="producto-imagen">${producto.imagen}</div>
+    <div class="precio">$${producto.precio.toLocaleString()}</div>
+    <p style="color:#666; text-align:center;">${producto.descripcion}</p>
     
-    <!-- Escenario 1: Producto normal -->
-    <div id="escenario1">
-        <div class="header">
-            <div class="nav">
-                <div class="logo">🥩 Parrilladas</div>
-                <div>Carrito (0)</div>
-            </div>
-        </div>
-        
-        <div class="container">
-            <div class="product-detail">
-                <div class="product-layout">
-                    <div>
-                        <div class="main-image" id="mainImage">LOMO VETADO</div>
-                        <div class="thumbnails">
-                            <div class="thumbnail" onclick="cambiarImagen(0)">1</div>
-                            <div class="thumbnail" onclick="cambiarImagen(1)">2</div>
-                            <div class="thumbnail" onclick="cambiarImagen(2)">3</div>
-                        </div>
-                    </div>
-                    
-                    <div class="product-info">
-                        <h1>Lomo Vetado - 12 kg</h1>
-                        <div style="color:#666; margin-bottom:10px;">Carne de Res Premium</div>
-                        <div class="product-price">$160.000</div>
-                        
-                        <p style="color:#555; margin-bottom:15px;">Corte premium de lomo vetado, perfectamente marmoleado para máxima jugosidad y sabor.</p>
-                        
-                        <div class="specs">
-                            <div class="spec"><span>Peso:</span> <span>12 kg</span></div>
-                            <div class="spec"><span>Para:</span> <span>4-5 personas</span></div>
-                            <div class="spec"><span>Tipo:</span> <span>Carne Angus</span></div>
-                        </div>
-                        
-                        <div class="quantity">
-                            <div class="quantity-controls">
-                                <button class="quantity-btn" onclick="cambiarCantidad(-1)">-</button>
-                                <input type="text" class="quantity-input" id="quantity" value="1" readonly>
-                                <button class="quantity-btn" onclick="cambiarCantidad(1)">+</button>
-                            </div>
-                            <div style="color:#27ae60;">✓ En stock</div>
-                        </div>
-                        
-                        <div class="actions">
-                            <button class="btn btn-primary" onclick="agregarAlCarrito()">🛒 Agregar al Carrito</button>
-                            <button class="btn btn-secondary" onclick="agregarFavoritos()">❤️ Favoritos</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="recommendations">
-                    <h3 style="color:#8B0000; margin-bottom:15px;">Acompañamientos Recomendados</h3>
-                    <div class="rec-grid">
-                        <div class="rec-card" onclick="mostrarDetalle(1)">
-                            <div style="font-weight:bold;">Papas Rusticas</div>
-                            <div style="color:#8B0000;">$12.000</div>
-                        </div>
-                        <div class="rec-card" onclick="mostrarDetalle(2)">
-                            <div style="font-weight:bold;">Ensalada César</div>
-                            <div style="color:#8B0000;">$15.000</div>
-                        </div>
-                        <div class="rec-card" onclick="mostrarDetalle(3)">
-                            <div style="font-weight:bold;">Salsas</div>
-                            <div style="color:#8B0000;">$8.000</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Escenario 2: Producto agotado -->
-    <div id="escenario2" class="hidden">
-        <div class="header">
-            <div class="nav">
-                <div class="logo">🥩 Parrilladas</div>
-                <div>Carrito (0)</div>
-            </div>
-        </div>
-        
-        <div class="container">
-            <div class="product-detail">
-                <div class="product-layout">
-                    <div>
-                        <div class="main-image">COSTILLAR BBQ</div>
-                    </div>
-                    
-                    <div class="product-info">
-                        <h1>Costillar BBQ - 8 kg</h1>
-                        <div style="color:#666; margin-bottom:10px;">Cerdo Premium</div>
-                        <div class="product-price">$120.000</div>
-                        
-                        <p style="color:#555; margin-bottom:15px;">Costillar de cerdo con salsa BBQ especial, marinado por 24 horas.</p>
-                        
-                        <div class="specs">
-                            <div class="spec"><span>Peso:</span> <span>8 kg</span></div>
-                            <div class="spec"><span>Para:</span> <span>3-4 personas</span></div>
-                        </div>
-                        
-                        <div class="quantity">
-                            <div style="color:#e74c3c;">✗ Agotado</div>
-                        </div>
-                        
-                        <div class="actions">
-                            <button class="btn btn-primary" style="background:#666;" disabled>Agotado</button>
-                            <button class="btn btn-secondary">📧 Notificar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Escenario 3: Sin recomendaciones -->
-    <div id="escenario3" class="hidden">
-        <div class="header">
-            <div class="nav">
-                <div class="logo">🥩 Parrilladas</div>
-                <div>Carrito (0)</div>
-            </div>
-        </div>
-        
-        <div class="container">
-            <div class="product-detail">
-                <div class="product-layout">
-                    <div>
-                        <div class="main-image">POLLO ASADO</div>
-                    </div>
-                    
-                    <div class="product-info">
-                        <h1>Pollo Asado Entero</h1>
-                        <div style="color:#666; margin-bottom:10px;">Pollo Marinado</div>
-                        <div class="product-price">$25.000</div>
-                        
-                        <p style="color:#555; margin-bottom:15px;">Pollo entero asado con especias especiales de la casa.</p>
-                        
-                        <div class="specs">
-                            <div class="spec"><span>Peso:</span> <span>2 kg</span></div>
-                            <div class="spec"><span>Para:</span> <span>2-3 personas</span></div>
-                        </div>
-                        
-                        <div class="quantity">
-                            <div class="quantity-controls">
-                                <button class="quantity-btn" onclick="cambiarCantidad(-1)">-</button>
-                                <input type="text" class="quantity-input" value="1" readonly>
-                                <button class="quantity-btn" onclick="cambiarCantidad(1)">+</button>
-                            </div>
-                            <div style="color:#27ae60;">✓ En stock</div>
-                        </div>
-                        
-                        <div class="actions">
-                            <button class="btn btn-primary" onclick="agregarAlCarrito()">🛒 Agregar al Carrito</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="recommendations">
-                    <div style="text-align:center; color:#666; padding:20px;">
-                        No hay recomendaciones disponibles
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="especificaciones">
+      ${especificacionesHTML}
     </div>
     
+    <button onclick="agregarAlCarrito(${producto.id})">🛒 Agregar al Carrito</button>
+    <button onclick="location.href='E2F2.html'" style="background:#666;">← Volver al Catálogo</button>
+  `;
+}
 
-
-    <script>
-        let cantidad = 1;
-        const imagenes = ["LOMO VETADO", "VISTA LATERAL", "DETALLE CORTE"];
-
-        function cambiarImagen(index) {
-            document.getElementById('mainImage').textContent = imagenes[index];
-        }
-
-        function cambiarCantidad(delta) {
-            cantidad += delta;
-            if (cantidad < 1) cantidad = 1;
-            document.getElementById('quantity').value = cantidad;
-        }
-
-        function agregarAlCarrito() {
-            const notif = document.getElementById('notification');
-            notif.style.display = 'block';
-            setTimeout(() => notif.style.display = 'none', 2000);
-        }
-
-        function agregarFavoritos() {
-            alert('Agregado a favoritos');
-        }
-
-        function mostrarDetalle(id) {
-            alert('Mostrando producto ' + id);
-        }
-
-        function mostrarEscenario(num) {
-            document.getElementById('escenario1').classList.toggle('hidden', num !== 1);
-            document.getElementById('escenario2').classList.toggle('hidden', num !== 2);
-            document.getElementById('escenario3').classList.toggle('hidden', num !== 3);
-        }
-
-        // Inicializar
-        cambiarImagen(0);
-    </script>
+function agregarAlCarrito(id) {
+  const producto = productos.find(p => p.id === id);
+  alert(`✅ ${producto.nombre} agregado al carrito`);
+}
+</script>
 </body>
 </html>
