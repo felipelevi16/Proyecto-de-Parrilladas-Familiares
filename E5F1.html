@@ -3,160 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ofertas del Día - Parrilladas Familiares</title>
+    <title>Ofertas del Día - Parrilladas</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f5f5f5; }
+        .header { background: #042490; color: white; padding: 15px; text-align: center; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .page-title { text-align: center; margin: 20px 0; color: #042490; }
         
-        body {
-            background-color: #f5f5f5;
-        }
+        .offers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .offer-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .offer-image { width: 100%; height: 160px; background: #eee; display: flex; align-items: center; justify-content: center; color: #666; }
+        .offer-content { padding: 15px; }
+        .offer-name { font-weight: bold; margin-bottom: 8px; }
+        .offer-description { color: #666; margin-bottom: 10px; font-size: 14px; }
+        .offer-price { color: #042490; font-weight: bold; margin-bottom: 10px; }
+        .add-to-cart-btn { background: #042490; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; width: 100%; }
+        .add-to-cart-btn:disabled { background: #ccc; cursor: not-allowed; }
         
-        .header {
-            background-color: #8B0000;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .page-title {
-            text-align: center;
-            margin: 20px 0 30px 0;
-            color: #8B0000;
-            font-size: 28px;
-        }
-        
-        /* Grid de ofertas */
-        .offers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-        
-        .offer-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        
-        .offer-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .offer-image {
-            width: 100%;
-            height: 200px;
-            background-color: #eee;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .offer-content {
-            padding: 20px;
-        }
-        
-        .offer-name {
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .offer-description {
-            color: #666;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-        
-        .offer-price {
-            color: #8B0000;
-            font-weight: bold;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .add-to-cart-btn {
-            background-color: #8B0000;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-        }
-        
-        .add-to-cart-btn:hover {
-            background-color: #A52A2A;
-        }
-        
-        .add-to-cart-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        
-        /* Estados especiales */
-        .expired-offer {
-            position: relative;
-            opacity: 0.7;
-        }
-        
-        .expired-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #dc3545;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            background: white;
-            border-radius: 8px;
-            color: #666;
-        }
-        
-        .back-btn {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 15px;
-        }
+        .expired-offer { opacity: 0.7; }
+        .expired-badge { background: #dc3545; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; margin: 10px; }
         
         .cart-notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #28a745;
+            background: #28a745;
             color: white;
-            padding: 15px 20px;
+            padding: 15px;
             border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             display: none;
             z-index: 1000;
         }
@@ -164,146 +39,95 @@
 </head>
 <body>
     <div class="header">
-        <h1>Parrilladas Familiares</h1>
+        <h1>🥩 Parrilladas</h1>
     </div>
     
     <div class="container">
         <h2 class="page-title">Ofertas del Día</h2>
         
-        <!-- Notificación de producto agregado al carrito -->
-        <div class="cart-notification" id="cartNotification">
-            Producto agregado al carrito
-        </div>
+        <div class="cart-notification" id="cartNotification"></div>
         
-        <!-- Escenario 1: Ofertas activas -->
         <div class="offers-grid">
-            <!-- Oferta 1 -->
             <div class="offer-card">
                 <div class="offer-image">Bife a lo Pobre</div>
                 <div class="offer-content">
                     <div class="offer-name">Bife a lo Pobre</div>
-                    <div class="offer-description">Delicioso bife acompañado de huevo frito, cebolla caramelizada y papas fritas</div>
+                    <div class="offer-description">Bife con huevo frito, cebolla caramelizada y papas fritas</div>
                     <div class="offer-price">$10.000</div>
                     <button class="add-to-cart-btn" data-product="Bife a lo Pobre" data-price="10000">Agregar al Carrito</button>
                 </div>
             </div>
             
-            <!-- Oferta 2 -->
             <div class="offer-card">
                 <div class="offer-image">Pollo Asado</div>
                 <div class="offer-content">
                     <div class="offer-name">Pollo Asado</div>
-                    <div class="offer-description">Pollo entero asado a la parrilla con especias especiales de la casa</div>
+                    <div class="offer-description">Pollo entero asado a la parrilla con especias</div>
                     <div class="offer-price">$8.000</div>
                     <button class="add-to-cart-btn" data-product="Pollo Asado" data-price="8000">Agregar al Carrito</button>
                 </div>
             </div>
             
-            <!-- Oferta 3 -->
             <div class="offer-card">
-                <div class="offer-image">Oferta del Día Lunes</div>
+                <div class="offer-image">Costillar Especial</div>
                 <div class="offer-content">
                     <div class="offer-name">Costillar Especial</div>
-                    <div class="offer-description">Costillar de cerdo BBQ con salsa secreta de la casa</div>
+                    <div class="offer-description">Costillar de cerdo BBQ con salsa secreta</div>
                     <div class="offer-price">$12.000</div>
                     <button class="add-to-cart-btn" data-product="Costillar Especial" data-price="12000">Agregar al Carrito</button>
                 </div>
             </div>
         </div>
-
-        <!-- Escenario 2: Oferta expirada (comentado por defecto) -->
-        <!-- 
-        <div class="offers-grid">
-            <div class="offer-card expired-offer">
-                <div class="expired-badge">Expirada</div>
-                <div class="offer-image">Bife a lo Pobre</div>
-                <div class="offer-content">
-                    <div class="offer-name">Bife a lo Pobre</div>
-                    <div class="offer-description">Delicioso bife acompañado de huevo frito, cebolla caramelizada y papas fritas</div>
-                    <div class="offer-price">$10.000</div>
-                    <button class="add-to-cart-btn" disabled>Oferta Expirada</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="empty-state">
-            <h3>Esta oferta ya expiró</h3>
-            <button class="back-btn">Volver a Ofertas</button>
-        </div>
-        -->
     </div>
 
     <script>
-        // Funcionalidad para agregar productos al carrito
         document.addEventListener('DOMContentLoaded', function() {
-            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-            const cartNotification = document.getElementById('cartNotification');
+            const addButtons = document.querySelectorAll('.add-to-cart-btn');
+            const notification = document.getElementById('cartNotification');
             
-            addToCartButtons.forEach(button => {
+            addButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // Obtener datos del producto
-                    const productName = this.getAttribute('data-product');
-                    const productPrice = this.getAttribute('data-price');
+                    const product = this.getAttribute('data-product');
+                    const price = this.getAttribute('data-price');
                     
-                    // Mostrar notificación
-                    cartNotification.textContent = `${productName} agregado al carrito`;
-                    cartNotification.style.display = 'block';
+                    addToCart(product, price);
                     
-                    // Ocultar notificación después de 3 segundos
+                    notification.textContent = `${product} agregado al carrito`;
+                    notification.style.display = 'block';
+                    
                     setTimeout(() => {
-                        cartNotification.style.display = 'none';
+                        notification.style.display = 'none';
                     }, 3000);
-                    
-                    // Aquí podrías agregar lógica para guardar en localStorage o enviar a un servidor
-                    console.log(`Producto agregado: ${productName}, Precio: $${productPrice}`);
-                    
-                    // Simular agregar al carrito (en una implementación real, esto se conectaría con tu sistema de carrito)
-                    addToCart(productName, productPrice);
                 });
             });
-            
-            // Función para simular agregar al carrito
-            function addToCart(product, price) {
-                // Obtener carrito actual de localStorage o crear uno nuevo
-                let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                
-                // Verificar si el producto ya está en el carrito
-                const existingProductIndex = cart.findIndex(item => item.name === product);
-                
-                if (existingProductIndex !== -1) {
-                    // Si ya existe, incrementar cantidad
-                    cart[existingProductIndex].quantity += 1;
-                } else {
-                    // Si no existe, agregar nuevo producto
-                    cart.push({
-                        name: product,
-                        price: parseInt(price),
-                        quantity: 1
-                    });
-                }
-                
-                // Guardar carrito actualizado en localStorage
-                localStorage.setItem('cart', JSON.stringify(cart));
-                
-                // Actualizar contador de carrito si existe
-                updateCartCounter();
-            }
-            
-            // Función para actualizar el contador del carrito
-            function updateCartCounter() {
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-                
-                // Si hay un elemento para mostrar el contador, actualizarlo
-                const cartCounter = document.getElementById('cartCounter');
-                if (cartCounter) {
-                    cartCounter.textContent = totalItems;
-                }
-            }
-            
-            // Inicializar contador del carrito al cargar la página
-            updateCartCounter();
         });
+        
+        function addToCart(product, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            const existingIndex = cart.findIndex(item => item.name === product);
+            if (existingIndex !== -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    name: product,
+                    price: parseInt(price),
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCounter();
+        }
+        
+        function updateCartCounter() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            const counter = document.getElementById('cartCounter');
+            if (counter) counter.textContent = totalItems;
+        }
+        
+        updateCartCounter();
     </script>
 </body>
 </html>
