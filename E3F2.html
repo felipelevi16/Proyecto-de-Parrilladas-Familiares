@@ -3,147 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito - Parrilladas Familiares</title>
+    <title>Carrito - Parrilladas</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #f8f9fa; color: #333; line-height: 1.6; }
-        .header { background: linear-gradient(135deg, #8B0000, #A52A2A); color: white; padding: 20px 0; }
+        body { background: #f8f9fa; color: #333; }
+        .header { background:#042490; color: white; padding: 20px 0; }
         .nav { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; max-width: 1200px; margin: 0 auto; }
         .logo { font-size: 24px; font-weight: bold; }
         .nav-links { display: flex; gap: 20px; align-items: center; }
         .nav a { color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; transition: background-color 0.3s; }
         .nav a:hover { background-color: rgba(255,255,255,0.1); }
-        .cart-counter { background: #FFD700; color: #8B0000; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; margin-left: 5px; }
+        .cart-counter { background: #FFD700; color: #042490; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; margin-left: 5px; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .scenario-selector { display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
-        .scenario-btn { padding: 8px 16px; background: #f8f9fa; border: 2px solid #ddd; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-size: 14px; }
-        .scenario-btn.active { background: #8B0000; color: white; border-color: #8B0000; }
-        .cart-title { text-align: center; margin: 30px 0; color: #8B0000; font-size: 32px; }
         .cart-layout { display: grid; grid-template-columns: 1fr 350px; gap: 30px; margin-top: 20px; }
         .cart-table { width: 100%; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .cart-table th { background: linear-gradient(135deg, #8B0000, #A52A2A); color: white; padding: 20px; text-align: left; }
+        .cart-table th { background: #042490; color: white; padding: 20px; text-align: left; }
         .cart-table td { padding: 20px; border-bottom: 1px solid #eee; vertical-align: middle; }
         .cart-table tr:last-child td { border-bottom: none; }
-        .product-image { width: 70px; height: 70px; background: linear-gradient(45deg, #f8f9fa, #e9ecef); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #8B0000; font-weight: bold; border-radius: 8px; }
-        .product-info { display: flex; flex-direction: column; gap: 5px; }
-        .product-name { font-weight: bold; font-size: 16px; }
-        .product-category { color: #666; font-size: 14px; }
-        .product-price { color: #8B0000; font-weight: bold; font-size: 18px; }
+        .product-image { width: 70px; height: 70px; background: linear-gradient(45deg, #f8f9fa, #e9ecef); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #042490; font-weight: bold; border-radius: 8px; }
         .quantity-controls { display: flex; align-items: center; gap: 12px; }
-        .quantity-btn { width: 36px; height: 36px; border: 2px solid #ddd; background: white; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold; transition: all 0.3s; color: #8B0000; }
-        .quantity-btn:hover { border-color: #8B0000; background: #8B0000; color: white; }
-        .quantity-btn:disabled { border-color: #eee; background: #f8f9fa; color: #ccc; cursor: not-allowed; }
+        .quantity-btn { width: 36px; height: 36px; border: 2px solid #ddd; background: white; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold; transition: all 0.3s; color: #042490; }
+        .quantity-btn:hover { border-color: #042490; background: #042490; color: white; }
         .quantity-input { width: 60px; text-align: center; padding: 8px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; font-weight: bold; }
-        .quantity-input:focus { border-color: #8B0000; outline: none; }
-        .subtotal { font-weight: bold; font-size: 18px; }
         .remove-btn { background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 14px; padding: 8px 12px; border-radius: 6px; transition: all 0.3s; display: flex; align-items: center; gap: 5px; }
         .remove-btn:hover { background: #ffeaea; }
-        .cart-summary { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: fit-content; position: sticky; top: 20px; }
-        .summary-title { color: #8B0000; font-size: 20px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; }
+        .cart-summary { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: fit-content; }
+        .summary-title { color: #042490; font-size: 20px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
-        .summary-label { color: #666; }
-        .summary-value { font-weight: 600; }
-        .total-price { font-size: 28px; font-weight: bold; color: #8B0000; text-align: center; margin: 25px 0; padding: 20px; background: #f9f9f9; border-radius: 8px; border-left: 4px solid #8B0000; }
+        .total-price { font-size: 28px; font-weight: bold; color: #042490; text-align: center; margin: 25px 0; padding: 20px; background: #f9f9f9; border-radius: 8px; border-left: 4px solid #042490; }
         .action-buttons { display: flex; flex-direction: column; gap: 15px; }
         .btn { padding: 16px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: all 0.3s; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-primary { background: linear-gradient(135deg, #8B0000, #A52A2A); color: white; }
+        .btn-primary { background: #042490; color: white; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(139,0,0,0.3); }
         .btn-secondary { background: #f8f9fa; color: #333; border: 2px solid #ddd; }
-        .btn-secondary:hover { border-color: #8B0000; color: #8B0000; }
-        .btn:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; box-shadow: none; }
-        .empty-cart { text-align: center; padding: 60px 40px; background: white; border-radius: 12px; color: #666; box-shadow: 0 4px 15px rgba(0,0,0,0.1); grid-column: 1 / -1; }
-        .product-removed { text-align: center; padding: 20px; background: #ffeaea; border-radius: 8px; margin-bottom: 20px; color: #e74c3c; border-left: 4px solid #e74c3c; display: none; }
-        .notification { position: fixed; top: 20px; right: 20px; background: #27ae60; color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transform: translateX(150%); transition: transform 0.3s ease; z-index: 1000; display: flex; align-items: center; gap: 10px; }
+        .btn-secondary:hover { border-color: #042490; color: #042490; }
+        .notification { position: fixed; top: 20px; right: 20px; background: #27ae60; color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transform: translateX(150%); transition: transform 0.3s; z-index: 1000; }
         .notification.show { transform: translateX(0); }
         .notification.error { background: #e74c3c; }
-        @media (max-width: 968px) { .cart-layout { grid-template-columns: 1fr; } .cart-summary { position: static; } }
-        @media (max-width: 768px) { .cart-table { display: block; overflow-x: auto; } .nav { flex-direction: column; gap: 15px; } .container { padding: 10px; } }
-        @media (max-width: 480px) { .quantity-controls { flex-direction: column; gap: 8px; } .quantity-input { width: 100%; } .action-buttons { gap: 10px; } .btn { padding: 12px 20px; } }
+        @media (max-width: 968px) { .cart-layout { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .cart-table { display: block; overflow-x: auto; } .nav { flex-direction: column; gap: 15px; } }
     </style>
 </head>
 <body>
-    <div class="scenario-selector">
-        <button class="scenario-btn active" onclick="mostrarEscenario('con-productos')">Carrito con Productos</button>
-        <button class="scenario-btn" onclick="mostrarEscenario('cantidad-cero')">Cantidad en Cero</button>
-        <button class="scenario-btn" onclick="mostrarEscenario('vacio')">Carrito Vacío</button>
-        <button class="scenario-btn" onclick="mostrarEscenario('un-producto')">Un Solo Producto</button>
-    </div>
-
-    <div id="escenario-con-productos" class="escenario activo">
-        <div class="header">
-            <div class="nav">
-                <div class="logo">🥩 Parrilladas Familiares</div>
-                <div class="nav-links">
-                    <a href="catalogo.html">← Seguir Comprando</a>
-                    <a href="carrito.html">Carrito <span class="cart-counter" id="cartCounter">2</span></a>
-                    <a href="perfil.html">Mi Perfil</a>
-                </div>
+    <div class="header">
+        <div class="nav">
+            <div class="logo">🥩 Parrilladas</div>
+            <div class="nav-links">
+                <a href="E3F1.html">← Seguir Comprando</a>
+                <a href="E3F2.html">Carrito <span class="cart-counter" id="cartCounter">0</span></a>
             </div>
         </div>
+    </div>
+    
+    <div class="container">
+        <h2 style="text-align:center; color:#042490; margin:30px 0; font-size:32px;">MI CARRITO DE COMPRAS</h2>
         
-        <div class="container">
-            <h2 class="cart-title">MI CARRITO DE COMPRAS</h2>
+        <div class="cart-layout">
+            <div class="cart-content">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartTableBody"></tbody>
+                </table>
+                
+                <div class="action-buttons" style="margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="vaciarCarrito()">🗑️ Vaciar Carrito</button>
+                </div>
+            </div>
             
-            <div class="product-removed" id="productRemoved">✅ Producto eliminado del carrito</div>
-            
-            <div class="cart-layout">
-                <div class="cart-content">
-                    <table class="cart-table">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Precio</th>
-                                <th>Cantidad</th>
-                                <th>Subtotal</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="cartTableBody"></tbody>
-                    </table>
-                    
-                    <div class="action-buttons" style="margin-top: 20px;">
-                        <button class="btn btn-secondary" onclick="vaciarCarrito()">🗑️ Vaciar Carrito</button>
-                    </div>
+            <div class="cart-summary">
+                <h3 class="summary-title">RESUMEN DE COMPRA</h3>
+                
+                <div class="summary-row">
+                    <span class="summary-label">Subtotal:</span>
+                    <span class="summary-value" id="subtotal">$0</span>
                 </div>
                 
-                <div class="cart-summary">
-                    <h3 class="summary-title">RESUMEN DE COMPRA</h3>
-                    
-                    <div class="summary-row">
-                        <span class="summary-label">Subtotal:</span>
-                        <span class="summary-value" id="subtotal">$34.000</span>
-                    </div>
-                    
-                    <div class="summary-row">
-                        <span class="summary-label">Envío:</span>
-                        <span class="summary-value" id="shipping">$5.000</span>
-                    </div>
-                    
-                    <div class="summary-row">
-                        <span class="summary-label">Descuento:</span>
-                        <span class="summary-value" id="discount">-$2.000</span>
-                    </div>
-                    
-                    <div class="total-price" id="totalPrice">TOTAL: $37.000</div>
-                    
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="procederPago()">🛒 Proceder al Pago</button>
-                        <a href="catalogo.html" class="btn btn-secondary">← Seguir Comprando</a>
-                    </div>
+                <div class="summary-row">
+                    <span class="summary-label">Envío:</span>
+                    <span class="summary-value" id="shipping">$0</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span class="summary-label">Descuento:</span>
+                    <span class="summary-value" id="discount">$0</span>
+                </div>
+                
+                <div class="total-price" id="totalPrice">TOTAL: $0</div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="procederPago()">Proceder al Pago</button>
+                    <a href="E3F1.html" class="btn btn-secondary">← Seguir Comprando</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="notification" id="notification"><span>✅ Carrito actualizado correctamente!</span></div>
+    <div class="notification" id="notification">✅ Carrito actualizado!</div>
 
     <script>
-        let carrito = [
-            { id: 1, nombre: "Costillar de Cerdo Premium", categoria: "Carnes", precio: 18000, cantidad: 1, imagen: "COSTILLAR", subtotal: 18000 },
-            { id: 2, nombre: "Chorizos Caseros", categoria: "Embutidos", precio: 8000, cantidad: 2, imagen: "CHORIZOS", subtotal: 16000 },
-            { id: 3, nombre: "Papas Rusticas", categoria: "Acompañamientos", precio: 12000, cantidad: 1, imagen: "PAPAS", subtotal: 12000 }
-        ];
-
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
         const envio = 5000;
         const descuento = 2000;
 
@@ -167,14 +133,11 @@
                 fila.innerHTML = `
                     <td>
                         <div style="display: flex; align-items: center; gap: 15px;">
-                            <div class="product-image">${producto.imagen}</div>
-                            <div class="product-info">
-                                <div class="product-name">${producto.nombre}</div>
-                                <div class="product-category">${producto.categoria}</div>
-                            </div>
+                            <div class="product-image">${producto.nombre.substring(0,3).toUpperCase()}</div>
+                            <div style="font-weight: bold;">${producto.nombre}</div>
                         </div>
                     </td>
-                    <td><div class="product-price">$${producto.precio.toLocaleString()}</div></td>
+                    <td><div style="color:#8B0000; font-weight:bold;">$${producto.precio.toLocaleString()}</div></td>
                     <td>
                         <div class="quantity-controls">
                             <button class="quantity-btn" onclick="cambiarCantidad(${index}, -1)" ${producto.cantidad <= 1 ? 'disabled' : ''}>-</button>
@@ -182,7 +145,7 @@
                             <button class="quantity-btn" onclick="cambiarCantidad(${index}, 1)">+</button>
                         </div>
                     </td>
-                    <td><div class="subtotal">$${producto.subtotal.toLocaleString()}</div></td>
+                    <td><div style="font-weight:bold;">$${(producto.precio * producto.cantidad).toLocaleString()}</div></td>
                     <td><button class="remove-btn" onclick="eliminarProducto(${index})">🗑️ Eliminar</button></td>
                 `;
                 tbody.appendChild(fila);
@@ -192,55 +155,52 @@
         function cambiarCantidad(index, delta) {
             carrito[index].cantidad += delta;
             if (carrito[index].cantidad < 1) carrito[index].cantidad = 1;
-            carrito[index].subtotal = carrito[index].precio * carrito[index].cantidad;
+            localStorage.setItem('carrito', JSON.stringify(carrito));
             mostrarCarrito();
             actualizarResumen();
             actualizarContadorCarrito();
-            mostrarNotificacion('Cantidad actualizada correctamente');
+            mostrarNotificacion('Cantidad actualizada');
         }
 
         function actualizarCantidadManual(index, nuevaCantidad) {
             const cantidad = parseInt(nuevaCantidad);
             if (isNaN(cantidad) || cantidad < 1) { mostrarCarrito(); return; }
             carrito[index].cantidad = cantidad;
-            carrito[index].subtotal = carrito[index].precio * cantidad;
+            localStorage.setItem('carrito', JSON.stringify(carrito));
             mostrarCarrito();
             actualizarResumen();
             actualizarContadorCarrito();
-            mostrarNotificacion('Cantidad actualizada correctamente');
+            mostrarNotificacion('Cantidad actualizada');
         }
 
         function eliminarProducto(index) {
-            const productoEliminado = carrito[index];
             carrito.splice(index, 1);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
             mostrarCarrito();
             actualizarResumen();
             actualizarContadorCarrito();
-            const mensajeEliminado = document.getElementById('productRemoved');
-            mensajeEliminado.textContent = `✅ ${productoEliminado.nombre} eliminado del carrito`;
-            mensajeEliminado.style.display = 'block';
-            setTimeout(() => { mensajeEliminado.style.display = 'none'; }, 3000);
+            mostrarNotificacion('Producto eliminado');
         }
 
         function vaciarCarrito() {
             if (carrito.length === 0) return;
             if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
                 carrito = [];
+                localStorage.setItem('carrito', JSON.stringify(carrito));
                 mostrarCarrito();
                 actualizarResumen();
                 actualizarContadorCarrito();
-                mostrarNotificacion('Carrito vaciado correctamente');
+                mostrarNotificacion('Carrito vaciado');
             }
         }
 
         function actualizarResumen() {
-            const subtotal = carrito.reduce((total, producto) => total + producto.subtotal, 0);
+            const subtotal = carrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0);
             const total = subtotal + envio - descuento;
             document.getElementById('subtotal').textContent = `$${subtotal.toLocaleString()}`;
             document.getElementById('shipping').textContent = `$${envio.toLocaleString()}`;
             document.getElementById('discount').textContent = `-$${descuento.toLocaleString()}`;
             document.getElementById('totalPrice').textContent = `TOTAL: $${total.toLocaleString()}`;
-            localStorage.setItem('carrito', JSON.stringify(carrito));
         }
 
         function actualizarContadorCarrito() {
@@ -249,39 +209,18 @@
         }
 
         function procederPago() {
-            if (carrito.length === 0) { mostrarNotificacion('Tu carrito está vacío', 'error'); return; }
-            mostrarNotificacion('Redirigiendo al proceso de pago...');
+            if (carrito.length === 0) { 
+                mostrarNotificacion('Tu carrito está vacío', 'error'); 
+                return; 
+            }
+            window.location.href = 'E3F3.html';
         }
 
         function mostrarNotificacion(mensaje, tipo = 'success') {
             const notification = document.getElementById('notification');
-            notification.innerHTML = `<span>${mensaje}</span>`;
+            notification.textContent = mensaje;
             notification.className = `notification ${tipo} show`;
             setTimeout(() => { notification.classList.remove('show'); }, 3000);
-        }
-
-        function mostrarEscenario(escenario) {
-            document.querySelectorAll('.escenario').forEach(e => e.classList.remove('activo'));
-            document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`escenario-${escenario}`).classList.add('activo');
-            document.querySelector(`.scenario-btn[onclick="mostrarEscenario('${escenario}')"]`).classList.add('active');
-            
-            if (escenario === 'cantidad-cero') {
-                carrito = [{ id: 1, nombre: "Costillar de Cerdo", categoria: "Carnes", precio: 18000, cantidad: 0, imagen: "COSTILLAR", subtotal: 0 }];
-            } else if (escenario === 'vacio') {
-                carrito = [];
-            } else if (escenario === 'un-producto') {
-                carrito = [{ id: 1, nombre: "Costillar de Cerdo Premium", categoria: "Carnes", precio: 18000, cantidad: 1, imagen: "COSTILLAR", subtotal: 18000 }];
-            } else {
-                carrito = [
-                    { id: 1, nombre: "Costillar de Cerdo Premium", categoria: "Carnes", precio: 18000, cantidad: 1, imagen: "COSTILLAR", subtotal: 18000 },
-                    { id: 2, nombre: "Chorizos Caseros", categoria: "Embutidos", precio: 8000, cantidad: 2, imagen: "CHORIZOS", subtotal: 16000 }
-                ];
-            }
-            
-            mostrarCarrito();
-            actualizarResumen();
-            actualizarContadorCarrito();
         }
     </script>
 </body>
