@@ -3,74 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva Eventos - Parrilladas Familiares</title>
+    <title>Reserva Eventos - Parrilladas</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
         body { background: #f5f5f5; }
-        .header { background: #8B0000; color: white; padding: 15px; text-align: center; }
+        .header { background: #042490; color: white; padding: 15px; text-align: center; }
         .container { max-width: 600px; margin: 20px auto; padding: 20px; }
         
-        .scenario-selector { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
-        .scenario-btn { padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; }
-        .scenario-btn.active { background: #8B0000; color: white; }
+        .page-title { text-align: center; margin: 20px 0; color: #042490; }
         
-        .page-title { text-align: center; margin: 20px 0; color: #8B0000; }
-        
-        .reservation-types { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-        .reservation-type { background: white; padding: 20px; border-radius: 8px; text-align: center; cursor: pointer; border: 2px solid #ddd; }
-        .reservation-type:hover { border-color: #8B0000; }
+        .reservation-types { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .reservation-type { background: white; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; border: 2px solid #ddd; }
+        .reservation-type:hover { border-color: #042490; }
         
         .event-form, .event-confirmation { 
-            background: white; padding: 30px; border-radius: 8px; margin: 20px 0; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            background: white; padding: 20px; border-radius: 8px; margin: 20px 0; 
         }
         .event-confirmation { border-left: 4px solid #28a745; }
         
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; }
-        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
         
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         
-        .btn { padding: 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-primary { background: #8B0000; color: white; width: 100%; }
+        .btn { padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-primary { background: #042490; color: white; width: 100%; }
         .btn-secondary { background: #6c757d; color: white; margin: 5px; }
         
-        .confirmation-details { background: #f9f9f9; padding: 20px; border-radius: 4px; margin: 20px 0; }
-        .detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .confirmation-details { background: #f9f9f9; padding: 15px; border-radius: 4px; margin: 15px 0; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
         
-        .special-note { background: #fff3cd; padding: 15px; border-radius: 4px; margin: 15px 0; border-left: 4px solid #ffc107; }
+        .special-note { background: #fff3cd; padding: 10px; border-radius: 4px; margin: 10px 0; }
         
-        .action-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+        .action-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🥩 Parrilladas Familiares</h1>
+        <h1>🥩 Parrilladas</h1>
     </div>
 
-  
-
     <div class="container">
-        <!-- Escenario 1: Selección de tipo -->
         <div id="seleccion" class="escenario">
             <h2 class="page-title">Tipo de Reserva</h2>
             <div class="reservation-types">
-                <div class="reservation-type" onclick="mostrarEscenario('formulario')">
+                <div class="reservation-type" onclick="mostrarFormulario('normal')">
                     <h3>Reserva Normal</h3>
                     <p>Hasta 12 personas</p>
-                    <p style="color: #28a745; margin-top: 10px;">✓ Confirmación inmediata</p>
                 </div>
-                <div class="reservation-type" onclick="mostrarEscenario('formulario')">
+                <div class="reservation-type" onclick="mostrarFormulario('evento')">
                     <h3>Evento Especial</h3>
                     <p>15+ personas</p>
-                    <p style="color: #e67e22; margin-top: 10px;">📞 Coordinación personal</p>
                 </div>
             </div>
         </div>
 
-        <!-- Escenario 2: Formulario evento -->
-        <div id="formulario" class="escenario" style="display: none;">
+        <!-- Formulario para Reserva Normal -->
+        <div id="formulario-normal" class="escenario" style="display: none;">
+            <h2 class="page-title">Reserva Normal</h2>
+            <div class="event-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Asistentes:</label>
+                        <input type="number" class="form-control" value="4" min="1" max="12">
+                        <small style="color: #666;">Máximo 12 personas</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Menú:</label>
+                        <select class="form-control">
+                            <option>Parrillada Premium</option>
+                            <option>Parrillada Deluxe</option>
+                            <option>Parrillada Familiar</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Sucursal:</label>
+                        <select class="form-control">
+                            <option>África</option>
+                            <option>Vitacura</option>
+                            <option>Las Condes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha y Hora:</label>
+                        <input type="text" class="form-control" value="18 Septiembre - 20:00 hrs" readonly>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="mostrarConfirmacion('normal')">Confirmar Reserva</button>
+                <button class="btn btn-secondary" onclick="mostrarEscenario('seleccion')">← Volver</button>
+            </div>
+        </div>
+
+        <!-- Formulario para Evento Especial -->
+        <div id="formulario-evento" class="escenario" style="display: none;">
             <h2 class="page-title">Reserva para Eventos</h2>
             <div class="event-form">
                 <div class="form-row">
@@ -104,16 +134,38 @@
                     </div>
                 </div>
                 
-                <button class="btn btn-primary" onclick="mostrarEscenario('confirmacion')">Continuar</button>
+                <button class="btn btn-primary" onclick="mostrarConfirmacion('evento')">Continuar</button>
+                <button class="btn btn-secondary" onclick="mostrarEscenario('seleccion')">← Volver</button>
             </div>
         </div>
 
-        <!-- Escenario 3: Confirmación -->
-        <div id="confirmacion" class="escenario" style="display: none;">
+        <!-- Confirmación para Reserva Normal -->
+        <div id="confirmacion-normal" class="escenario" style="display: none;">
+            <div class="event-confirmation">
+                <h2 style="color: #28a745; text-align: center;">¡Reserva Confirmada! ✅</h2>
+                
+                <div class="confirmation-details">
+                    <div class="detail-row"><span>Tipo:</span> <span>Reserva Normal</span></div>
+                    <div class="detail-row"><span>Sucursal:</span> <span>África</span></div>
+                    <div class="detail-row"><span>Asistentes:</span> <span>4 personas</span></div>
+                    <div class="detail-row"><span>Fecha:</span> <span>18 Septiembre</span></div>
+                    <div class="detail-row"><span>Hora:</span> <span>20:00 hrs</span></div>
+                    <div class="detail-row"><span>Menú:</span> <span>Parrillada Premium</span></div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="mostrarEscenario('seleccion')">Nueva Reserva</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmación para Evento Especial -->
+        <div id="confirmacion-evento" class="escenario" style="display: none;">
             <div class="event-confirmation">
                 <h2 style="color: #28a745; text-align: center;">¡Solicitud Enviada! 🎉</h2>
                 
                 <div class="confirmation-details">
+                    <div class="detail-row"><span>Tipo:</span> <span>Evento Especial</span></div>
                     <div class="detail-row"><span>Sucursal:</span> <span>África</span></div>
                     <div class="detail-row"><span>Asistentes:</span> <span>20 personas</span></div>
                     <div class="detail-row"><span>Fecha:</span> <span>18 Septiembre</span></div>
@@ -127,7 +179,7 @@
                 </div>
                 
                 <div class="action-buttons">
-                    <button class="btn btn-secondary" onclick="mostrarEscenario('formulario')">Modificar</button>
+                    <button class="btn btn-secondary" onclick="mostrarEscenario('formulario-evento')">Modificar</button>
                     <button class="btn btn-primary" onclick="mostrarEscenario('seleccion')">Inicio</button>
                 </div>
             </div>
@@ -135,27 +187,67 @@
     </div>
 
     <script>
+        let tipoReserva = '';
+
         function mostrarEscenario(escenario) {
-            // Ocultar todos los escenarios
             document.querySelectorAll('.escenario').forEach(e => e.style.display = 'none');
-            
-            // Mostrar escenario seleccionado
             document.getElementById(escenario).style.display = 'block';
-            
-            // Actualizar botones activos
-            document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
         }
 
-        // Validación básica
+        function mostrarFormulario(tipo) {
+            tipoReserva = tipo;
+            if (tipo === 'normal') {
+                mostrarEscenario('formulario-normal');
+            } else {
+                mostrarEscenario('formulario-evento');
+            }
+        }
+
+        function mostrarConfirmacion(tipo) {
+            if (tipo === 'normal') {
+                // Validar reserva normal (1-12 personas)
+                const inputAsistentes = document.querySelector('#formulario-normal input[type="number"]');
+                const asistentes = parseInt(inputAsistentes.value);
+                
+                if (asistentes < 1 || asistentes > 12) {
+                    alert('La reserva normal permite entre 1 y 12 personas');
+                    return;
+                }
+                mostrarEscenario('confirmacion-normal');
+            } else {
+                // Validar evento especial (mínimo 15 personas)
+                const inputAsistentes = document.querySelector('#formulario-evento input[type="number"]');
+                const asistentes = parseInt(inputAsistentes.value);
+                
+                if (asistentes < 15) {
+                    alert('Los eventos especiales requieren mínimo 15 personas');
+                    return;
+                }
+                mostrarEscenario('confirmacion-evento');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            const formulario = document.querySelector('.event-form');
-            if (formulario) {
-                const inputAsistentes = formulario.querySelector('input[type="number"]');
-                inputAsistentes.addEventListener('change', function() {
+            // Validación para formulario de eventos
+            const inputEventos = document.querySelector('#formulario-evento input[type="number"]');
+            if (inputEventos) {
+                inputEventos.addEventListener('change', function() {
                     if (this.value < 15) {
                         alert('Mínimo 15 personas para eventos');
                         this.value = 15;
+                    }
+                });
+            }
+
+            // Validación para formulario normal
+            const inputNormal = document.querySelector('#formulario-normal input[type="number"]');
+            if (inputNormal) {
+                inputNormal.addEventListener('change', function() {
+                    if (this.value < 1) {
+                        this.value = 1;
+                    } else if (this.value > 12) {
+                        alert('Máximo 12 personas para reserva normal');
+                        this.value = 12;
                     }
                 });
             }

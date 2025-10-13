@@ -3,56 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva Grupos - Parrilladas Familiares</title>
+    <title>Reserva Grupos - Parrilladas</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
         body { background: #f5f5f5; }
-        .header { background: #8B0000; color: white; padding: 15px; text-align: center; }
+        .header { background: #042490; color: white; padding: 15px; text-align: center; }
         .container { max-width: 600px; margin: 20px auto; padding: 20px; }
         
-        .scenario-selector { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
-        .scenario-btn { padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; }
-        .scenario-btn.active { background: #8B0000; color: white; }
-        
-        .page-title { text-align: center; margin: 20px 0; color: #8B0000; }
+        .page-title { text-align: center; margin: 20px 0; color: #042490; }
         
         .reservation-form, .success-message, .error-message { 
-            background: white; padding: 30px; border-radius: 8px; margin: 20px 0; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            background: white; padding: 20px; border-radius: 8px; margin: 20px 0; 
         }
         .success-message { border-left: 4px solid #28a745; }
         .error-message { border-left: 4px solid #dc3545; }
         
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; }
-        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
         
-        .people-counter { display: flex; align-items: center; gap: 15px; margin: 10px 0; }
-        .counter-btn { width: 40px; height: 40px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; }
-        .counter-input { width: 80px; text-align: center; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        .people-counter { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+        .counter-btn { width: 35px; height: 35px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; }
+        .counter-input { width: 70px; text-align: center; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
         
-        .capacity-info { color: #666; font-size: 14px; margin: 10px 0; }
+        .capacity-info { color: #666; font-size: 14px; margin: 5px 0; }
         .capacity-error { color: #dc3545; }
         
-        .table-suggestions { background: #e7f3ff; padding: 15px; border-radius: 4px; margin: 15px 0; border-left: 4px solid #007bff; }
+        .table-suggestions { background: #e7f3ff; padding: 10px; border-radius: 4px; margin: 10px 0; }
         
-        .btn { padding: 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; }
-        .btn-primary { background: #8B0000; color: white; }
+        .btn { padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-primary { background: #042490; color: white; }
         .btn-secondary { background: #6c757d; color: white; margin-top: 10px; }
         
-        .reservation-details { background: #f9f9f9; padding: 20px; border-radius: 4px; margin: 20px 0; }
-        .detail-item { margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .reservation-details { background: #f9f9f9; padding: 15px; border-radius: 4px; margin: 15px 0; }
+        .detail-item { margin-bottom: 8px; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🥩 Parrilladas Familiares</h1>
+        <h1>🥩 Parrilladas</h1>
     </div>
 
-
-
     <div class="container">
-        <!-- Escenario 1: Formulario -->
         <div id="formulario" class="escenario">
             <h2 class="page-title">Reserva para Grupos</h2>
             <div class="reservation-form">
@@ -86,7 +78,6 @@
             </div>
         </div>
 
-        <!-- Escenario 2: Grupo Grande -->
         <div id="grupo-grande" class="escenario" style="display: none;">
             <div class="success-message">
                 <h2 style="color: #28a745; text-align: center;">¡Reserva Exitosa! 🎉</h2>
@@ -100,17 +91,15 @@
                         • Menú especial para grupos
                     </div>
                     <div class="detail-item"><span>N° Reserva:</span> <span>#3945</span></div>
-                    <div class="detail-item"><span>Fecha:</span> <span>Sábado 16/09 - 22:00</span></div>
                 </div>
                 <button class="btn btn-secondary" onclick="mostrarEscenario('formulario')">Nueva Reserva</button>
             </div>
         </div>
 
-        <!-- Escenario 3: Error -->
         <div id="error" class="escenario" style="display: none;">
             <div class="error-message">
                 <h2 style="color: #dc3545; text-align: center;">Capacidad Excedida</h2>
-                <p style="text-align: center; margin: 20px 0;">La cantidad de personas excede la capacidad de la sucursal.</p>
+                <p style="text-align: center;">La cantidad de personas excede la capacidad.</p>
                 <button class="btn btn-secondary" onclick="mostrarEscenario('formulario')">Ajustar Reserva</button>
             </div>
         </div>
@@ -123,8 +112,6 @@
         function mostrarEscenario(escenario) {
             document.querySelectorAll('.escenario').forEach(e => e.style.display = 'none');
             document.getElementById(escenario).style.display = 'block';
-            document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
         }
 
         function cambiarPersonas(delta) {
@@ -153,13 +140,13 @@
             const texto = document.getElementById('sugerenciaTexto');
             
             if (cantidadPersonas > capacidad) {
-                texto.innerHTML = '❌ Capacidad excedida. Elige otra sucursal o reduce personas.';
+                texto.innerHTML = '❌ Capacidad excedida. Elige otra sucursal.';
                 document.getElementById('capacityInfo').className = 'capacity-info capacity-error';
             } else if (cantidadPersonas > 8) {
                 texto.innerHTML = '✅ Mesa grande asignada automáticamente';
                 document.getElementById('capacityInfo').className = 'capacity-info';
             } else {
-                texto.innerHTML = '✅ Mesa estándar perfecta para tu grupo';
+                texto.innerHTML = '✅ Mesa estándar asignada automáticamente';
                 document.getElementById('capacityInfo').className = 'capacity-info';
             }
             sugerencias.style.display = 'block';
@@ -178,7 +165,6 @@
             }
         }
 
-        // Inicializar
         document.addEventListener('DOMContentLoaded', actualizarSugerencias);
     </script>
 </body>
