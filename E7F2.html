@@ -146,19 +146,15 @@
     </div>
 
     <script>
-        // Sistema de notificaciones
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.style.display = 'block';
             notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
+            setTimeout(() => { notification.style.display = 'none'; }, 3000);
         }
 
-        // Gestión del modal de ayuda
+        // Modal de ayuda
         function showHelpModal() {
             document.getElementById('helpModal').style.display = 'flex';
         }
@@ -177,36 +173,23 @@
             
             showNotification(`Ayuda solicitada: ${problems[type]}`);
             hideHelpModal();
-            
-            // En implementación real, redirigiría al formulario correspondiente
-            console.log(`Problema seleccionado: ${type}`);
         }
 
-        // Simulación de progreso del pedido
+        // Progreso del pedido
         let currentStep = 2;
         const steps = ['Confirmado', 'En preparación', 'Listo', 'Entregado'];
         const progressWidths = ['25%', '50%', '75%', '100%'];
-        const statusColors = ['#28a745', '#28a745', '#007bff', '#6f42c1'];
 
         function updateProgress(step) {
-            // Actualizar barra de progreso
             document.getElementById('progressBar').style.width = progressWidths[step - 1];
-            
-            // Actualizar estado del pedido
             document.getElementById('orderStatus').textContent = steps[step - 1];
-            document.getElementById('orderStatus').style.color = statusColors[step - 1];
             
-            // Actualizar pasos
             document.querySelectorAll('.progress-step').forEach((stepEl, index) => {
                 stepEl.classList.remove('step-completed', 'step-active');
-                if (index + 1 < step) {
-                    stepEl.classList.add('step-completed');
-                } else if (index + 1 === step) {
-                    stepEl.classList.add('step-active');
-                }
+                if (index + 1 < step) stepEl.classList.add('step-completed');
+                else if (index + 1 === step) stepEl.classList.add('step-active');
             });
             
-            // Actualizar tiempo estimado
             if (step === 3) {
                 document.getElementById('estimatedTime').textContent = 'LISTO';
                 document.getElementById('estimatedTime').style.color = '#28a745';
@@ -224,29 +207,17 @@
             }
         }
 
-        // Simular actualización en tiempo real
+        // Cerrar modal al hacer click fuera
+        document.getElementById('helpModal').addEventListener('click', function(e) {
+            if (e.target === this) hideHelpModal();
+        });
+
+        // Simulación de actualización
         setInterval(() => {
-            // En implementación real, haría una petición al servidor
-            // para obtener el estado actual del pedido
-            console.log('Verificando estado del pedido...');
-            
-            // Simular actualización aleatoria ocasional
             if (Math.random() < 0.1 && currentStep < 4) {
                 simulateProgress();
             }
         }, 30000);
-
-        // Cerrar modal al hacer click fuera
-        document.getElementById('helpModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                hideHelpModal();
-            }
-        });
-
-        // Demo: Comandos para probar
-        console.log('Comandos disponibles:');
-        console.log('- simulateProgress() - Avanzar al siguiente estado');
-        console.log('- updateProgress(2) - Ir a un estado específico (1-4)');
     </script>
 </body>
 </html>

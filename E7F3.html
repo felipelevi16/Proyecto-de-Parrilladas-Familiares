@@ -56,7 +56,7 @@
     <div class="container">
         <div class="notification" id="notification"></div>
         
-        <!-- Perfil del usuario -->
+        <!-- Perfil -->
         <div class="profile-section" id="profileSection">
             <div class="user-info">
                 <div class="user-avatar">ED</div>
@@ -88,7 +88,7 @@
             </div>
         </div>
 
-        <!-- Sección de reseñas -->
+        <!-- Reseñas -->
         <div id="reviewSection" class="review-section hidden">
             <button class="quick-call" onclick="backToProfile()" style="background: #6c757d; margin-bottom: 20px;">← Volver al Perfil</button>
             <h3 class="section-title">Déjanos tu Reseña</h3>
@@ -103,7 +103,7 @@
             
             <div class="review-form">
                 <div class="form-group">
-                    <textarea class="form-control" id="reviewText" placeholder="Comparte tu experiencia... Ej: Excelente comida, atención cordial"></textarea>
+                    <textarea class="form-control" id="reviewText" placeholder="Comparte tu experiencia..."></textarea>
                 </div>
                 <button class="submit-btn" onclick="submitReview()">Enviar Reseña</button>
             </div>
@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        <!-- Sección de contacto -->
+        <!-- Contacto -->
         <div id="contactSection" class="contact-section hidden">
             <button class="quick-call" onclick="backToProfile()" style="background: #6c757d; margin-bottom: 20px;">← Volver al Perfil</button>
             <h3 class="section-title">Servicio al Cliente</h3>
@@ -162,28 +162,22 @@
     </div>
 
     <script>
-        // Sistema de notificaciones
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.style.display = 'block';
             notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
+            setTimeout(() => { notification.style.display = 'none'; }, 3000);
         }
 
-        // Navegación entre secciones
+        // Navegación
         function showReviewSection() {
             document.getElementById('profileSection').classList.add('hidden');
             document.getElementById('reviewSection').classList.remove('hidden');
-            document.getElementById('contactSection').classList.add('hidden');
         }
 
         function showContactSection() {
             document.getElementById('profileSection').classList.add('hidden');
-            document.getElementById('reviewSection').classList.add('hidden');
             document.getElementById('contactSection').classList.remove('hidden');
         }
 
@@ -194,7 +188,7 @@
             showNotification('Volviendo al perfil');
         }
 
-        // Sistema de reseñas
+        // Reseñas
         let currentRating = 0;
 
         function setRating(rating) {
@@ -219,22 +213,18 @@
                 return;
             }
             
-            // Simular envío exitoso
             document.getElementById('reviewSuccess').classList.remove('hidden');
             showNotification('¡Reseña enviada exitosamente!');
             
             setTimeout(() => {
                 document.getElementById('reviewSuccess').classList.add('hidden');
                 backToProfile();
-                // Resetear formulario
                 setRating(0);
                 document.getElementById('reviewText').value = '';
             }, 2000);
-            
-            console.log('Reseña enviada:', { rating: currentRating, text: reviewText });
         }
 
-        // Funciones de contacto
+        // Contacto
         function makeCall() {
             if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
                 window.location.href = 'tel:+56223456789';
@@ -250,8 +240,6 @@
 
         function startChat() {
             showNotification('Iniciando chat en vivo...');
-            // En implementación real, abriría un widget de chat
-            console.log('Iniciando chat de soporte');
         }
 
         function submitProblem() {
@@ -269,31 +257,21 @@
             }
             
             showNotification('Reporte enviado. Te contactaremos pronto.');
-            console.log('Problema reportado:', { type: problemType, description });
-            
-            // Resetear formulario
             document.getElementById('problemType').selectedIndex = 0;
             document.getElementById('problemDescription').value = '';
             
             setTimeout(backToProfile, 2000);
         }
 
-        // Funciones adicionales
+        // Logout
         function logout() {
             if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
                 showNotification('Cerrando sesión...');
                 setTimeout(() => {
-                    // En implementación real, redirigiría al login
                     console.log('Sesión cerrada');
                 }, 1500);
             }
         }
-
-        // Demo: Comandos para probar
-        console.log('Comandos disponibles:');
-        console.log('- showReviewSection() - Ver sección de reseñas');
-        console.log('- showContactSection() - Ver sección de contacto');
-        console.log('- backToProfile() - Volver al perfil');
     </script>
 </body>
 </html>

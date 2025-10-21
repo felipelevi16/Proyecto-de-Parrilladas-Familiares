@@ -3,21 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parrilladas Familiares - Diseño Responsivo</title>
+    <title>Parrilladas Familiares - Catálogo</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background: #f5f5f5; min-height: 100vh; }
-        
+        body { background: #f5f5f5; }
         .header { background: #8B0000; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 20px; font-weight: bold; }
         .mobile-menu-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; display: none; }
-        
         .nav { display: flex; gap: 20px; }
         .nav a { color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: background 0.3s; }
         .nav a:hover { background: rgba(255,255,255,0.2); }
         
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        
         .search-section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .search-bar { display: flex; gap: 10px; margin-bottom: 15px; }
         .search-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
@@ -77,13 +73,13 @@
     <div class="container">
         <div class="notification" id="notification"></div>
         
-        <!-- Escenario 1: Catálogo de productos -->
+        <!-- Vista Catálogo -->
         <div id="catalogView">
             <div class="search-section">
                 <div class="search-bar">
                     <input type="text" class="search-input" placeholder="Buscar productos..." id="searchInput">
                     <select class="filter-select" id="categoryFilter">
-                        <option>Filtrar por: Todos</option>
+                        <option>Todos</option>
                         <option>Carnes</option>
                         <option>Acompañamientos</option>
                         <option>Bebidas</option>
@@ -95,17 +91,17 @@
             <h2 style="margin-bottom: 20px; color: #333;">Catálogo de Productos</h2>
             
             <div class="products-grid">
-                <div class="product-card" onclick="showProductDetail('Costillar BBQ', 18000, 'Costillar de cerdo con salsa BBQ especial de la casa, para 4 personas')">
+                <div class="product-card" onclick="showProductDetail('Costillar BBQ', 18000, 'Costillar de cerdo con salsa BBQ especial')">
                     <div class="product-image">🍖 Costillar BBQ</div>
                     <div class="product-info">
                         <div class="product-name">Costillar BBQ</div>
-                        <div class="product-description">Costillar de cerdo con salsa BBQ especial de la casa, para 4 personas</div>
+                        <div class="product-description">Costillar de cerdo con salsa BBQ especial de la casa</div>
                         <div class="product-price">$18.000</div>
                         <button class="add-to-cart-btn" onclick="addToCart(event, 'Costillar BBQ', 18000)">Agregar al Carrito</button>
                     </div>
                 </div>
                 
-                <div class="product-card" onclick="showProductDetail('Lomo Vetado', 16000, 'Corte premium de lomo vetado, 400g aproximadamente')">
+                <div class="product-card" onclick="showProductDetail('Lomo Vetado', 16000, 'Corte premium de lomo vetado, 400g')">
                     <div class="product-image">🥩 Lomo Vetado</div>
                     <div class="product-info">
                         <div class="product-name">Lomo Vetado</div>
@@ -115,7 +111,7 @@
                     </div>
                 </div>
                 
-                <div class="product-card" onclick="showProductDetail('Pollo Asado', 8000, 'Pollo entero asado a la parrilla con especias especiales')">
+                <div class="product-card" onclick="showProductDetail('Pollo Asado', 8000, 'Pollo entero asado a la parrilla')">
                     <div class="product-image">🍗 Pollo Asado</div>
                     <div class="product-info">
                         <div class="product-name">Pollo Asado</div>
@@ -127,7 +123,7 @@
             </div>
         </div>
 
-        <!-- Escenario 2: Detalle del producto -->
+        <!-- Vista Detalle Producto -->
         <div class="product-detail hidden" id="productDetailView">
             <button class="report-btn" onclick="backToCatalog()" style="background: #6c757d; margin-bottom: 20px;">← Volver al Catálogo</button>
             <div class="detail-layout">
@@ -135,16 +131,13 @@
                 <div class="product-info">
                     <h1 style="color: #8B0000; margin-bottom: 15px;" id="detailName">Costillar BBQ</h1>
                     <div class="product-price" style="font-size: 24px;" id="detailPrice">$18.000</div>
-                    <div class="product-description" style="font-size: 16px; margin-bottom: 20px;" id="detailDescription">
-                        Costillar de cerdo con salsa BBQ especial de la casa, marinado por 24 horas. 
-                        Incluye papas fritas y ensalada. Para 4 personas.
-                    </div>
+                    <div class="product-description" style="font-size: 16px; margin-bottom: 20px;" id="detailDescription"></div>
                     <button class="add-to-cart-btn" style="font-size: 18px; padding: 15px;" onclick="addToCartFromDetail()">Agregar al Carrito</button>
                 </div>
             </div>
         </div>
 
-        <!-- Escenario 3: Error responsivo -->
+        <!-- Vista Error -->
         <div class="error-message hidden" id="errorView">
             <h3>Elemento no se muestra correctamente</h3>
             <p>Este componente no está respondiendo bien en tu dispositivo.</p>
@@ -158,16 +151,12 @@
     </div>
 
     <script>
-        // Sistema de notificaciones
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.style.display = 'block';
             notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
+            setTimeout(() => { notification.style.display = 'none'; }, 3000);
         }
 
         // Menú móvil
@@ -175,30 +164,23 @@
             document.querySelector('.nav').classList.toggle('active');
         });
         
-        // Funcionalidad de búsqueda y filtros
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            filterProducts(searchTerm);
-        });
+        // Búsqueda y filtros
+        document.getElementById('searchInput').addEventListener('input', filterProducts);
+        document.getElementById('categoryFilter').addEventListener('change', filterProducts);
         
-        document.getElementById('categoryFilter').addEventListener('change', function() {
-            const category = this.value;
-            filterProducts('', category);
-        });
-        
-        function filterProducts(searchTerm = '', category = 'Todos') {
+        function filterProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const products = document.querySelectorAll('.product-card');
+            
             products.forEach(product => {
                 const name = product.querySelector('.product-name').textContent.toLowerCase();
                 const description = product.querySelector('.product-description').textContent.toLowerCase();
                 const matchesSearch = name.includes(searchTerm) || description.includes(searchTerm);
-                const matchesCategory = category === 'Todos' || true; // En una implementación real, verificaría la categoría
-                
-                product.style.display = (matchesSearch && matchesCategory) ? 'block' : 'none';
+                product.style.display = matchesSearch ? 'block' : 'none';
             });
         }
         
-        // Navegación entre vistas
+        // Navegación
         function showProductDetail(name, price, description) {
             document.getElementById('catalogView').classList.add('hidden');
             document.getElementById('productDetailView').classList.remove('hidden');
@@ -208,9 +190,7 @@
             document.getElementById('detailDescription').textContent = description;
             document.getElementById('detailImage').textContent = `🍖 ${name}`;
             
-            // Guardar datos del producto para el botón de agregar
             window.currentProduct = { name, price, description };
-            
             showNotification(`Viendo detalle de: ${name}`);
         }
         
@@ -226,12 +206,11 @@
             setTimeout(backToCatalog, 2000);
         }
         
-        // Funcionalidad del carrito
+        // Carrito
         function addToCart(event, productName, price) {
-            event.stopPropagation(); // Evitar que se active el click de la tarjeta
+            event.stopPropagation();
             showNotification(`"${productName}" agregado al carrito`);
             
-            // Guardar en localStorage
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             cart.push({ name: productName, price: price, quantity: 1 });
             localStorage.setItem('cart', JSON.stringify(cart));
@@ -243,24 +222,17 @@
             }
         }
         
-        // Responsive behavior
+        // Responsive
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
                 document.querySelector('.nav').classList.remove('active');
             }
             
-            // Simular error en pantallas muy pequeñas
             if (window.innerWidth < 360) {
                 document.getElementById('errorView').classList.remove('hidden');
                 document.getElementById('catalogView').classList.add('hidden');
             }
         });
-        
-        // Demo: Simular diferentes escenarios
-        console.log('Para probar diferentes vistas:');
-        console.log('- showProductDetail() - Ver detalle de producto');
-        console.log('- backToCatalog() - Volver al catálogo');
-        console.log('- Cambiar tamaño de ventana < 360px para ver mensaje de error');
     </script>
 </body>
 </html>
