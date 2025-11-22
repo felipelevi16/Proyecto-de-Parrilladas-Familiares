@@ -11,95 +11,50 @@
     align-items: center;
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #f6f5f3, #042490);
-    display: flex; justify-content: center; align-items: center;
-    height: 100vh; margin: 0;
+    height: 100vh; 
+    margin: 0;
   }
   .form-box {
     background: #fff; padding: 25px; border-radius: 12px;
     width: 320px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     text-align: center;
   }
-  .form-box h1 {
-  color: #042490;
-  margin-bottom: 10px;
+  .form-box h1 { color: #042490; margin-bottom: 10px; }
+  .form-box p { margin-bottom: 20px; color: #555; }
+  form { display: flex; flex-direction: column; align-items: center; width: 100%; }
+  
+  input[type="email"], input[type="password"] {
+    width: 85%; padding: 10px; margin: 8px 0;
+    border: 2px solid #ccc; border-radius: 6px;
+    font-size: 14px; text-align: center; box-sizing: border-box;
   }
-
-  .form-box p {
-    margin-bottom: 20px;
-    color: #555;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-
-  input[type="email"],
-  input[type="password"] {
-    width: 85%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    text-align: center; 
-    box-sizing: border-box;
-  }
-
+  
   label {
-    width: 85%;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 8px;
-    font-size: 14px;
-    color: #444;
+    width: 85%; text-align: left; display: flex;
+    align-items: center; gap: 6px; margin-top: 8px;
+    font-size: 14px; color: #444;
   }
-
+  
   button {
-    width: 85%;
-    padding: 10px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 8px;
-    background: #06048a;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
+    width: 85%; padding: 10px; margin-top: 15px;
+    border: none; border-radius: 8px; background: #06048a;
+    color: #fff; font-weight: bold; cursor: pointer;
     transition: background 0.3s;
   }
-  button:hover {
-    background: #0eabc7;
-  }
+  button:hover { background: #0eabc7; }
+  
   small {
-    color: #e74c3c;
-    display: block;
-    height: 14px;
-    text-align: left;
-    width: 85%;
-    margin-bottom: 5px;
+    color: #e74c3c; display: block; height: 14px;
+    text-align: left; width: 85%; margin-bottom: 5px;
   }
+  
   .mensaje {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: 600;
-    display: none;
-    width: 85%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-top: 15px; padding: 10px; border-radius: 8px;
+    font-weight: 600; display: none; width: 85%;
+    margin-left: auto; margin-right: auto;
   }
-
-  .exito {
-    background: #2ecc71; color: #fff;
-  }
-
-  .error {
-    background: #e74c3c; color: #fff;
-  }
+  .exito { background: #2ecc71; color: #fff; }
+  .error { background: #e74c3c; color: #fff; }
 </style>
 </head>
 <body>
@@ -109,52 +64,90 @@
   <form id="registroForm">
     <input type="email" id="email" placeholder="Correo electrónico" required>
     <small id="error-email"></small>
+    
     <input type="password" id="password" placeholder="Contraseña" required>
     <small id="error-password"></small>
+    
     <input type="password" id="confirm" placeholder="Confirmar contraseña" required>
     <small id="error-confirm"></small>
+    
     <label><input type="checkbox" id="terminos"> Acepto términos y condiciones</label>
     <small id="error-terminos"></small>
+    
     <button type="submit">Registrarme</button>
   </form>
   <div id="mensaje" class="mensaje"></div>
 </div>
 
-
-
 <script>
-let correos = ["eduardo@ejemplo.com","maria@ejemplo.com"];
-const form = document.getElementById("registroForm");
-const msj = document.getElementById("mensaje");
+    // 1. Definimos las variables PRIMERO (Esto faltaba o estaba desordenado)
+    const form = document.getElementById("registroForm");
+    const msj = document.getElementById("mensaje");
+    const emailInput = document.getElementById("email");
+    const password = document.getElementById("password");
+    const confirm = document.getElementById("confirm");
+    const terminos = document.getElementById("terminos");
 
-function validarEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
-function validarPass(p){return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(p);}
-function err(id,txt){document.getElementById(id).textContent=txt;}
-function limpiarErrores(){["email","password","confirm","terminos"].forEach(c=>err("error-"+c,""));}
+    // 2. Funciones de validación
+    function validarEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+    function validarPass(p){return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(p);}
+    function err(id,txt){document.getElementById(id).textContent=txt;}
+    function limpiarErrores(){["email","password","confirm","terminos"].forEach(c=>err("error-"+c,""));}
 
-form.addEventListener("submit",e=>{
-  e.preventDefault(); limpiarErrores(); msj.style.display="none";
-  const email=emailInput.value.trim(), pass=password.value, conf=confirm.value, term=terminos.checked;
-  let errores=false;
+    // 3. El Event Listener CONECTADO al Backend
+    form.addEventListener("submit", async e => {
+        e.preventDefault(); 
+        limpiarErrores(); 
+        msj.style.display="none";
 
-  if(!email||!validarEmail(email)){err("error-email","Correo inválido"); errores=true;}
-  else if(correos.includes(email)){msj.textContent="Correo ya registrado"; msj.className="mensaje error"; msj.style.display="block"; return;}
-  if(!pass||!validarPass(pass)){err("error-password","Contraseña no cunple con requisitos"); errores=true;}
-  if(conf!==pass){err("error-confirm","No coinciden"); errores=true;}
-  if(!term){err("error-terminos","Debes aceptar los términos y condiciones"); errores=true;}
-  if(errores)return;
+        const emailVal = emailInput.value.trim();
+        const passVal = password.value;
+        const confVal = confirm.value;
+        const termVal = terminos.checked;
+        let errores = false;
 
-  msj.textContent="¡Registro exitoso! Se envió correo a: "+email;
-  msj.className="mensaje exito"; 
-  msj.style.display="block";
-  correos.push(email); // <-- Guarda el nuevo correo registrado
-  form.reset();
-});
+        // Validaciones locales (Frontend)
+        if(!emailVal || !validarEmail(emailVal)){ err("error-email","Correo inválido"); errores=true; }
+        if(!passVal || !validarPass(passVal)){ err("error-password","Contraseña no cumple requisitos"); errores=true; }
+        if(confVal !== passVal){ err("error-confirm","No coinciden"); errores=true; }
+        if(!termVal){ err("error-terminos","Debes aceptar los términos"); errores=true; }
+        
+        if(errores) return;
 
-const emailInput=document.getElementById("email"),
-password=document.getElementById("password"),
-confirm=document.getElementById("confirm"),
-terminos=document.getElementById("terminos");
+        // Comunicación con el Backend
+        try {
+            const response = await fetch('http://127.0.0.1:8000/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: emailVal,
+                    password: passVal,
+                    confirm: confVal,
+                    terminos: termVal
+                })
+            });
+
+            const resultado = await response.json();
+
+            if (response.ok) {
+                // Éxito: El backend creó el usuario
+                msj.textContent = "¡Registro REAL exitoso! ID: " + resultado._id;
+                msj.className = "mensaje exito"; 
+                msj.style.display = "block";
+                form.reset();
+            } else {
+                // Error del Backend (ej: correo duplicado)
+                msj.textContent = "Error: " + resultado.detail;
+                msj.className = "mensaje error"; 
+                msj.style.display = "block";
+            }
+        } catch (error) {
+            console.error(error);
+            msj.textContent = "Error de conexión: Asegúrate de que Uvicorn esté corriendo.";
+            msj.className = "mensaje error"; 
+            msj.style.display = "block";
+        }
+    });
 </script>
 </body>
 </html>

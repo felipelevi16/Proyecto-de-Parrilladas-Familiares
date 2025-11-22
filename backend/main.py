@@ -2,6 +2,7 @@
 from fastapi import FastAPI, HTTPException, status
 from typing import List, Optional
 from bson import ObjectId
+from fastapi.middleware.cors import CORSMiddleware
 
 # Importación de los componentes ya definidos
 from . import models
@@ -21,6 +22,20 @@ app = FastAPI(
     description="Backend para gestionar usuarios, productos y pedidos.",
     version="1.0.0"
 )
+
+
+app = FastAPI(title="API de Parrilladas", version="1.0.0")
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],
+)
+
+#
 
 # Eventos de inicio y apagado
 @app.on_event("startup")
