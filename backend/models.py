@@ -1,126 +1,91 @@
 # backend/models.py
 from pydantic import BaseModel, Field, EmailStr
-from typing import List, Optional, Any 
-from bson import ObjectId 
-from pydantic_core import core_schema 
+from typing import List, Optional, Any
+from bson import ObjectId
+from pydantic_core import core_schema
 
-# --- Clases Auxiliares ---
-
-class PyObjectId(ObjectId):
-    """ Clase personalizada para validar el ObjectId de MongoDB (Compatible con Pydantic v2) """
-
+# --- CLASE ESPECIAL PARA EL ID ---
+class PyObjectId(str):
+    """
+    Clase personalizada para que Pydantic v2 pueda manejar
+    los ObjectIds de MongoDB convertiéndolos a string.
+    """
     @classmethod
     def __get_pydantic_core_schema__(
-        cls, source_type: Any, handler: Any
+        cls, _source_type: Any, _handler: Any
     ) -> core_schema.CoreSchema:
-        """
-        Define el validador principal (reemplaza a __get_validators__).
-        Valida que el valor sea un ObjectId válido.
-        """
-        def validate_object_id(v: Any) -> ObjectId:
-            """Función de validación"""
-            if not ObjectId.is_valid(v):
-                raise ValueError("Invalid ObjectId")
-            return ObjectId(v)
-
-        # Usamos un validador "plain" que llama a nuestra función
-        return core_schema.with_info_plain_validator_function(
-            validate_object_id,
+        return core_schema.json_or_python_schema(
+            json_schema=core_schema.str_schema(),
+            python_schema=core_schema.union_schema([
+                core_schema.is_instance_schema(ObjectId),
+                core_schema.str_schema(),
+            ]),
+            serialization=core_schema.plain_serializer_function_ser_schema(
+                lambda x: str(x)
+            ),
         )
 
-    @classmethod
-    def __get_pydantic_json_schema__(
-        cls, core_schema: core_schema.CoreSchema, handler: Any
-    ) -> dict:
-        """
-        Define cómo se debe representar este tipo en el JSON Schema (Swagger/docs).
-        (Reemplaza a __modify_schema__)
-        Lo representamos como un 'string'.
-        """
-        return {"type": "string"}
-
-# --- Modelos de Usuario (Épica E01) ---
+# --- Modelos de Usuario ---
 
 class UserCreate(BaseModel):
-    """ Modelo para el registro de un nuevo usuario """
     email: EmailStr
-    password: str = Field(..., min_length=8, description="Debe tener min 8 caracteres, 1 mayúscula, 1 número y 1 símbolo especial")
-    confirm: str # Solo para validación, no se guarda en DB
+    password: str = Field(..., min_length=1)
+    confirm: str
     terminos: bool
 
 class UserLogin(BaseModel):
-    """ Modelo para el inicio de sesión """
     email: EmailStr
     password: str
 
 class UserInDB(BaseModel):
-    """ Modelo de cómo el usuario se guarda en la Base de Datos """
-    id: Optional[PyObjectId] = Field(alias="_id")
+    # Aquí usamos nuestra clase especial PyObjectId
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
     email: EmailStr
-    hashed_password: str # NUNCA guardamos la contraseña en texto plano
+    hashed_password: str
     terminos: bool
     is_active: bool = Field(default=True)
 
     class Config:
+        populate_by_name = True
         arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
 
-# --- Modelos de Producto (Épica E02) ---
+# --- Modelos de Producto ---
 
 class Especificacion(BaseModel):
-    """ Especificaciones del producto """
     nombre: str
     valor: str
 
 class Producto(BaseModel):
-    """ Modelo completo del producto en la Base de Datos """
-    id: Optional[PyObjectId] = Field(alias="_id")
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
     nombre: str
     descripcion: str
-    precio: float # Usamos float o int para precios
+    precio: float
     categoria: str
-    imagen: str # URL de la imagen
+    imagen: str
     especificaciones: Optional[List[Especificacion]] = []
 
     class Config:
+        populate_by_name = True
         arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
 
-# --- Modelos de Carrito y Pedido (Épica E03) ---
+# --- Modelos de Pedido ---
 
 class ProductoEnCarrito(BaseModel):
-    """ Un item dentro del carrito """
-    producto_id: str # Referencia al ID del Producto
+    producto_id: str
     cantidad: int
-    # El nombre y precio se pueden obtener de la DB al momento de mostrar
 
 class Pedido(BaseModel):
-    """ Modelo para el pedido final """
-    id: Optional[PyObjectId] = Field(alias="_id")
-    # user_id: str # Para vincular al usuario que hizo el pedido
-    
-    # Lista de productos comprados
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
     items: List[ProductoEnCarrito]
-    
-    # Resumen del carrito
     subtotal: float
     envio: float
     descuento: float
     total: float
-    
-    # Datos de Entrega
-    metodo_entrega: str # 'retiro' o 'delivery'
-    
-    # Opcional si es 'retiro'
+    metodo_entrega: str
     sucursal: Optional[str] = None
-    hora_retiro: Optional[str] = None
-    
-    # Opcional si es 'delivery'
     direccion: Optional[str] = None
-    comuna: Optional[str] = None
-    telefono: Optional[str] = None
-    horario_preferido: Optional[str] = None
+    estado: str
 
     class Config:
+        populate_by_name = True
         arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
