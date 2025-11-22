@@ -24,9 +24,6 @@ app = FastAPI(
 )
 
 
-app = FastAPI(title="API de Parrilladas", version="1.0.0")
-
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
