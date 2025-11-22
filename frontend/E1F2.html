@@ -171,68 +171,116 @@
 </div>
 
 <script>
-  // Referencias a los elementos
-  const loginForm = document.getElementById("loginForm");
-  const msj = document.getElementById("mensaje");
+// --- 1. LÓGICA DE PESTAÑAS (VISUAL) ---
+function mostrarForm(tipo) {
+  // Oculta todos los formularios y quita la clase activo de los botones
+  document.querySelectorAll('.formulario').forEach(f => f.classList.remove('activo'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('activo'));
+  
+  // Muestra el formulario seleccionado y activa el botón
+  document.getElementById(tipo).classList.add('activo');
+  document.querySelector(`.nav-btn[onclick="mostrarForm('${tipo}')"]`).classList.add('activo');
+  
+  // Limpia mensajes al cambiar
+  document.getElementById('mensaje').style.display = 'none';
+}
 
-  // Evento Submit
-  loginForm.addEventListener("submit", async e => {
-    e.preventDefault(); 
-    msj.style.display = 'none';
-    
-    const emailVal = document.getElementById("loginEmail").value.trim();
-    const passwordVal = document.getElementById("loginPassword").value;
+// --- 2. HERRAMIENTAS DE VALIDACIÓN ---
+function validarEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function validarPass(p){return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(p);}
+function err(id,txt){document.getElementById(id).textContent=txt;}
+function limpiarErrores(){["email","password","confirm","terminos"].forEach(c=>err("error-"+c,""));}
 
-    // Preparamos los datos
-    const datosLogin = {
-      email: emailVal,
-      password: passwordVal
-    };
+const msj = document.getElementById("mensaje");
 
-    try {
-      // 1. Enviamos los datos a la API /login
-      const response = await fetch('http://127.0.0.1:8000/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datosLogin)
-      });
+// --- 3. LÓGICA DE LOGIN (CONECTADO A API) ---
+document.getElementById("loginForm").addEventListener("submit", async e => {
+  e.preventDefault(); 
+  msj.style.display = 'none';
+  
+  const emailVal = document.getElementById("loginEmail").value.trim();
+  const passwordVal = document.getElementById("loginPassword").value;
 
-      const resultado = await response.json();
+  try {
+    const response = await fetch('http://127.0.0.1:8000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: emailVal, password: passwordVal })
+    });
 
-      if (response.ok) {
-        // 2. ÉXITO: El usuario existe y la contraseña es correcta
-        msj.textContent = resultado.message; // "¡Sesión iniciada correctamente!"
-        msj.className = "mensaje exito";
-        msj.style.display = "block";
-        
-        // Opcional: Redirigir al catálogo después de 1.5 segundos
-        setTimeout(() => {
-          // window.location.href = "E2F2.html"; // Descomenta esto cuando quieras que redirija solo
-        }, 1500);
+    const resultado = await response.json();
 
-      } else {
-        // 3. ERROR: Correo no existe o contraseña mala
-        msj.textContent = resultado.detail; // Ej: "Credenciales incorrectas"
-        msj.className = "mensaje error";
-        msj.style.display = "block";
-      }
-
-    } catch (error) {
-      console.error(error);
-      msj.textContent = "Error de conexión con el servidor.";
+    if (response.ok) {
+      msj.textContent = resultado.message; 
+      msj.className = "mensaje exito";
+      msj.style.display = "block";
+      // Aquí podrías redirigir al catálogo: window.location.href = "E2F2.html";
+    } else {
+      msj.textContent = resultado.detail;
       msj.className = "mensaje error";
       msj.style.display = "block";
     }
-  });
+  } catch (error) {
+    msj.textContent = "Error de conexión.";
+    msj.className = "mensaje error";
+    msj.style.display = "block";
+  }
+});
 
-  // Función para mostrar/ocultar formularios (Mantenemos tu lógica visual original)
-  function mostrarForm(tipo) {
-    document.querySelectorAll('.formulario').forEach(f => f.classList.remove('activo'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('activo'));
-    document.getElementById(tipo).classList.add('activo');
-    document.querySelector(`.nav-btn[onclick="mostrarForm('${tipo}')"]`).classList.add('activo');
-    document.getElementById('mensaje').style.display = 'none';
-}
+// --- 4. LÓGICA DE REGISTRO (CONECTADO A API) ---
+document.getElementById("registroForm").addEventListener("submit", async e => {
+  e.preventDefault(); 
+  limpiarErrores(); 
+  msj.style.display="none";
+
+  // Nota: Usamos los IDs que tiene tu HTML E1F2 (regEmail, regPassword...)
+  const emailVal = document.getElementById("regEmail").value.trim();
+  const passVal = document.getElementById("regPassword").value;
+  const confVal = document.getElementById("regConfirm").value;
+  const termVal = document.getElementById("regTerminos").checked;
+  
+  let errores = false;
+
+  if(!emailVal || !validarEmail(emailVal)){ err("error-email","Correo inválido"); errores=true; }
+  if(!passVal || !validarPass(passVal)){ err("error-password","Contraseña débil"); errores=true; }
+  if(confVal !== passVal){ err("error-confirm","No coinciden"); errores=true; }
+  if(!termVal){ err("error-terminos","Debes aceptar"); errores=true; }
+  
+  if(errores) return;
+
+  try {
+    const response = await fetch('http://127.0.0.1:8000/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: emailVal,
+        password: passVal,
+        confirm: confVal,
+        terminos: termVal
+      })
+    });
+
+    const resultado = await response.json();
+
+    if (response.ok) {
+      msj.textContent = "¡Cuenta creada! Ahora puedes iniciar sesión.";
+      msj.className = "mensaje exito"; 
+      msj.style.display = "block";
+      document.getElementById("registroForm").reset();
+      
+      // Opcional: Cambiar automáticamente a la pestaña de Login después de 2 seg
+      setTimeout(() => mostrarForm('login'), 2000);
+    } else {
+      msj.textContent = resultado.detail;
+      msj.className = "mensaje error"; 
+      msj.style.display = "block";
+    }
+  } catch (error) {
+    msj.textContent = "Error de conexión.";
+    msj.className = "mensaje error"; 
+    msj.style.display = "block";
+  }
+});
 </script>
 </body>
 </html>

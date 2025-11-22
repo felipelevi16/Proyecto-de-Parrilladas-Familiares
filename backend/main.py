@@ -90,4 +90,18 @@ async def login_user(form_data: models.UserLogin):
     
     return {"message": "¡Sesión iniciada correctamente!", "email": user_db["email"]}
 
-# (Aquí puedes agregar el resto de rutas de productos más adelante)
+@app.get("/products")
+async def get_products():
+    # 1. Conectamos a la colección de productos
+    product_collection = get_product_collection()
+    
+    # 2. Buscamos todos los productos (limitado a 100 para no saturar)
+    products_cursor = product_collection.find({})
+    products = await products_cursor.to_list(length=100)
+    
+    # 3. Convertimos los _id a string para que no den error
+    for product in products:
+        if "_id" in product:
+            product["_id"] = str(product["_id"])
+            
+    return products
