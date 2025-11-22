@@ -64,81 +64,59 @@
 </div>
 
 <script>
-const productos = [
-  { id: 1, nombre: "Lomo Vetado", descripcion: "Corte premium de res", precio: 160000, categoria: "carnes", imagen: " LOMO" },
-  { id: 2, nombre: "Costillar Cerdo", descripcion: "Marinado 24 horas", precio: 45000, categoria: "carnes", imagen: " COSTILLAR" },
-  { id: 3, nombre: "Punta de Anca", descripcion: "Corte especial", precio: 52000, categoria: "carnes", imagen: " PUNTA" },
-  { id: 4, nombre: "Longaniza", descripcion: "Receta tradicional", precio: 12000, categoria: "carnes", imagen: " LONGANIZA" },
-  { id: 5, nombre: "Pollo Brasas", descripcion: "Marinado hierbas", precio: 25000, categoria: "carnes", imagen: " POLLO" },
-  { id: 6, nombre: "Papas Rusticas", descripcion: "Asadas con hierbas", precio: 12000, categoria: "acompañamientos", imagen: " PAPAS" },
-  { id: 7, nombre: "Ensalada César", descripcion: "Fresca con aderezo", precio: 15000, categoria: "acompañamientos", imagen: " ENSALADA" },
-  { id: 8, nombre: "Refrescos", descripcion: "Jugos naturales", precio: 8000, categoria: "bebidas", imagen: " BEBIDA" }
-];
+// Referencias
+const grid = document.getElementById('listaProductos');
+const contador = document.getElementById('contadorProductos');
+let productos = []; // Aquí guardaremos los datos reales que lleguen de la API
 
-let productosFiltrados = [...productos];
+// 1. Cargar productos al iniciar la página
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const response = await fetch('http://127.0.0.1:8000/products');
+    productos = await response.json();
+    
+    mostrarProductos(productos);
+  } catch (error) {
+    console.error("Error cargando productos:", error);
+    grid.innerHTML = '<p style="color:red; text-align:center;">Error al cargar el catálogo. Revisa la conexión.</p>';
+  }
+});
 
-document.addEventListener('DOMContentLoaded', mostrarProductos);
-
-function mostrarEscenario(nombre) {
-  document.querySelectorAll('.escenario').forEach(e => e.classList.remove('activo'));
-  document.getElementById(nombre).classList.add('activo');
-}
-
-function mostrarProductos() {
-  const grid = document.getElementById('listaProductos');
-  const contador = document.getElementById('contadorProductos');
-  
+// 2. Función para dibujar los productos en pantalla
+function mostrarProductos(lista) {
   grid.innerHTML = '';
-  contador.textContent = `${productosFiltrados.length} productos`;
+  contador.textContent = `${lista.length} productos encontrados`;
 
-  if (productosFiltrados.length === 0) {
-    mostrarEscenario('sin-resultados');
+  if (lista.length === 0) {
+    grid.innerHTML = '<div class="sin-resultados"><h3>No hay productos disponibles</h3></div>';
     return;
   }
 
-  productosFiltrados.forEach(p => {
+  lista.forEach(p => {
+    // Usamos un emoji si no hay URL de imagen real
+    const imagen = p.imagen || "🥩"; 
+    
     grid.innerHTML += `
-      <div class="producto" onclick="verDetalle(${p.id})">
-        <div class="producto-imagen">${p.imagen}</div>
+      <div class="producto" onclick="verDetalle('${p._id}')">
+        <div class="producto-imagen" style="font-size: 40px;">${imagen}</div>
         <h3>${p.nombre}</h3>
         <p>${p.descripcion}</p>
         <div class="precio">$${p.precio.toLocaleString()}</div>
-        <button onclick="event.stopPropagation(); agregarAlCarrito(${p.id})">Agregar al Carrito</button>
+        <button onclick="event.stopPropagation(); agregarAlCarrito('${p._id}')">Agregar al Carrito</button>
       </div>
     `;
   });
 }
 
-function verDetalle(idProducto) {
-  // Guardar el producto seleccionado y redirigir
-  localStorage.setItem('productoSeleccionado', idProducto);
-  location.href = 'E2F3.html';
+// Funciones auxiliares (Búsqueda y filtros)
+function verDetalle(id) {
+  localStorage.setItem('productoSeleccionado', id);
+  // window.location.href = 'E2F3.html'; // Descomenta cuando conectes la página de detalle
+  alert("Ir a detalle del producto ID: " + id);
 }
 
 function agregarAlCarrito(id) {
-  const producto = productos.find(p => p.id === id);
-  alert(`✅ ${producto.nombre} agregado al carrito`);
-}
-
-function filtrarProductos() {
-  const busqueda = document.getElementById('buscarInput').value.toLowerCase();
-  const categoria = document.getElementById('categoriaFilter').value;
-
-  productosFiltrados = productos.filter(p => {
-    const coincideBusqueda = p.nombre.toLowerCase().includes(busqueda) || p.descripcion.toLowerCase().includes(busqueda);
-    const coincideCategoria = !categoria || p.categoria === categoria;
-    return coincideBusqueda && coincideCategoria;
-  });
-
-  mostrarProductos();
-}
-
-function limpiarFiltros() {
-  document.getElementById('buscarInput').value = '';
-  document.getElementById('categoriaFilter').value = '';
-  productosFiltrados = [...productos];
-  mostrarProductos();
-  mostrarEscenario('catalogo');
+  alert(`Producto ${id} agregado al carrito (Simulación)`);
 }
 </script>
 </body>
