@@ -23,7 +23,7 @@ app = FastAPI(
     description="Backend para gestionar usuarios, productos y pedidos.",
     version="1.0.0"
 )
-
+app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 # --- CONFIGURACIÓN DE CORS (PERMISOS) ---
 # Esto debe ir justo después de crear la 'app'
 origins = [
