@@ -1,6 +1,7 @@
 # backend/main.py
 from fastapi import FastAPI, HTTPException, status
-from fastapi.middleware.cors import CORSMiddleware # <--- ¡ESTA ES LA CLAVE!
+from fastapi.middleware.cors import CORSMiddleware 
+from fastapi.staticfiles import StaticFiles
 from typing import List, Optional
 from bson import ObjectId
 
