@@ -117,11 +117,10 @@ function mostrarProductos(lista) {
   });
 }
 
-// Funciones auxiliares (Búsqueda y filtros)
 function verDetalle(id) {
   localStorage.setItem('productoSeleccionado', id);
-  // window.location.href = 'E2F3.html'; // Descomenta cuando conectes la página de detalle
-  alert("Ir a detalle del producto ID: " + id);
+  // ¡Ahora sí redirigimos de verdad!
+  window.location.href = 'E2F3.html'; 
 }
 
 function agregarAlCarrito(id) {

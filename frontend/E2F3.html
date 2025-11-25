@@ -34,70 +34,78 @@
 </div>
 
 <script>
-const productos = [
-  { 
-    id: 1, 
-    nombre: "Lomo Vetado Premium", 
-    descripcion: "Corte premium de res marmoleado, perfectamente seleccionado para máxima jugosidad y sabor.", 
-    precio: 160000, 
-    categoria: "carnes", 
-    imagen: "🥩 LOMO VETADO",
-    especificaciones: [
-      { nombre: "Peso", valor: "12 kg" },
-      { nombre: "Para", valor: "4-5 personas" },
-      { nombre: "Tipo", valor: "Carne Angus" },
-      { nombre: "Origen", valor: "Argentina" }
-    ]
-  },
-  { 
-    id: 2, 
-    nombre: "Costillar de Cerdo", 
-    descripcion: "Costillar marinado por 24 horas con nuestra salsa BBQ especial de la casa.", 
-    precio: 45000, 
-    categoria: "carnes", 
-    imagen: "🍖 COSTILLAR",
-    especificaciones: [
-      { nombre: "Peso", valor: "8 kg" },
-      { nombre: "Para", valor: "3-4 personas" },
-      { nombre: "Marinado", valor: "24 horas" }
-    ]
-  }
-  // ... otros productos
-];
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Recuperamos el ID del producto que el usuario seleccionó en el catálogo
+  const productoId = localStorage.getItem('productoSeleccionado');
 
-// Cargar producto seleccionado
-document.addEventListener('DOMContentLoaded', function() {
-  const productoId = localStorage.getItem('productoSeleccionado') || 1;
-  const producto = productos.find(p => p.id == productoId) || productos[0];
-  mostrarDetalle(producto);
+  if (!productoId) {
+    alert("No se ha seleccionado ningún producto. Volviendo al catálogo.");
+    window.location.href = 'E2F2.html';
+    return;
+  }
+
+  try {
+    // 2. Pedimos a la API la información de ESE producto específico
+    const response = await fetch(`http://127.0.0.1:8000/products/${productoId}`);
+    
+    if (!response.ok) {
+        throw new Error("Producto no encontrado");
+    }
+
+    const producto = await response.json();
+    
+    // 3. Mostramos los datos en pantalla
+    mostrarDetalle(producto);
+
+  } catch (error) {
+    console.error(error);
+    document.getElementById('detalleProducto').innerHTML = 
+        '<div style="text-align:center; padding:50px;"><h2>Error al cargar el producto 😢</h2><button onclick="location.href=\'E2F2.html\'">Volver</button></div>';
+  }
 });
 
 function mostrarDetalle(producto) {
   const detalle = document.getElementById('detalleProducto');
   
+  // Lógica de Imagen vs Emoji (igual que en el catálogo)
+  let imagenHTML = "";
+  if (producto.imagen && producto.imagen.startsWith("http")) {
+      imagenHTML = `<img src="${producto.imagen}" alt="${producto.nombre}" style="max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain;">`;
+  } else {
+      imagenHTML = `<div style="font-size: 80px;">${producto.imagen || "🥩"}</div>`;
+  }
+
+  // Generamos el HTML de las especificaciones (si las tiene)
   let especificacionesHTML = '';
-  producto.especificaciones.forEach(esp => {
-    especificacionesHTML += `<div class="especificacion"><span>${esp.nombre}:</span> <span>${esp.valor}</span></div>`;
-  });
+  if (producto.especificaciones && producto.especificaciones.length > 0) {
+      producto.especificaciones.forEach(esp => {
+        especificacionesHTML += `<div class="especificacion"><span>${esp.nombre}:</span> <span>${esp.valor}</span></div>`;
+      });
+  } else {
+      especificacionesHTML = '<p style="color:#888; font-style:italic;">Sin especificaciones adicionales.</p>';
+  }
 
   detalle.innerHTML = `
     <h1>${producto.nombre}</h1>
-    <div class="producto-imagen">${producto.imagen}</div>
+    <div class="producto-imagen" style="background:transparent; height:auto; padding:20px;">
+        ${imagenHTML}
+    </div>
     <div class="precio">$${producto.precio.toLocaleString()}</div>
-    <p style="color:#666; text-align:center;">${producto.descripcion}</p>
+    <p style="color:#666; text-align:center; font-size: 1.1em; margin: 20px 0;">${producto.descripcion}</p>
     
-    <div class="especificaciones">
+    <div class="especificaciones" style="margin-bottom: 30px;">
+      <h3 style="color:#042490; border-bottom:1px solid #ddd; padding-bottom:5px;">Detalles</h3>
       ${especificacionesHTML}
     </div>
     
-    <button onclick="agregarAlCarrito(${producto.id})">🛒 Agregar al Carrito</button>
-    <button onclick="location.href='E2F2.html'" style="background:#666;">← Volver al Catálogo</button>
+    <button onclick="agregarAlCarrito('${producto._id}')" style="padding: 15px; font-size: 1.1em;">🛒 Agregar al Carrito</button>
+    <button onclick="location.href='E2F2.html'" style="background:#666; margin-top:10px;">← Volver al Catálogo</button>
   `;
 }
 
 function agregarAlCarrito(id) {
-  const producto = productos.find(p => p.id === id);
-  alert(`✅ ${producto.nombre} agregado al carrito`);
+  // Aquí más adelante conectaremos con la lógica real del carrito
+  alert(`¡Producto agregado al carrito! (ID: ${id})`);
 }
 </script>
 </body>
