@@ -26,10 +26,10 @@
     <button class="nav-btn" onclick="location.href='E2F1.html'">INICIO</button>
     <button class="nav-btn" onclick="location.href='E2F2.html'">CATÁLOGO</button>
     <button class="nav-btn activo" onclick="location.href='E2F3.html'">DETALLE</button>
-  </div>
-
-  <div class="detalle" id="detalleProducto">
-    <!-- El detalle se carga dinámicamente -->
+    
+    <button class="nav-btn" onclick="location.href='E3F2.html'" style="background: #FFD700; color: #042490; margin-left: 10px;">
+        🛒 IR AL CARRITO
+    </button>
   </div>
 </div>
 
@@ -64,7 +64,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
+let productoActual = null;
 function mostrarDetalle(producto) {
+  productoActual = producto;
   const detalle = document.getElementById('detalleProducto');
   
   // Lógica de Imagen vs Emoji (igual que en el catálogo)
@@ -104,8 +106,34 @@ function mostrarDetalle(producto) {
 }
 
 function agregarAlCarrito(id) {
-  // Aquí más adelante conectaremos con la lógica real del carrito
-  alert(`¡Producto agregado al carrito! (ID: ${id})`);
+  if (!productoActual) return;
+
+  // 1. Recuperar el carrito actual de la memoria (o crear uno vacío)
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+  // 2. Buscar si el producto ya estaba en el carrito
+  const indice = carrito.findIndex(item => item._id === id);
+
+  if (indice !== -1) {
+    // Si ya existe, aumentamos la cantidad
+    carrito[indice].cantidad += 1;
+  } else {
+    // Si es nuevo, lo agregamos con cantidad 1
+    // Guardamos solo lo necesario: ID, nombre, precio, imagen
+    carrito.push({
+      _id: productoActual._id,
+      nombre: productoActual.nombre,
+      precio: productoActual.precio,
+      imagen: productoActual.imagen,
+      cantidad: 1
+    });
+  }
+
+  // 3. Guardar el carrito actualizado en memoria
+  localStorage.setItem('carrito', JSON.stringify(carrito));
+
+  // 4. Feedback al usuario
+  alert(`¡${productoActual.nombre} agregado al carrito!`);
 }
 </script>
 </body>
