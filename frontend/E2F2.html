@@ -93,12 +93,21 @@ function mostrarProductos(lista) {
   }
 
   lista.forEach(p => {
-    // Usamos un emoji si no hay URL de imagen real
-    const imagen = p.imagen || "🥩"; 
+    let imagenHTML = "";
+    
+    if (p.imagen && p.imagen.startsWith("http")) {
+        // Si empieza con http, es una FOTO REAL
+        imagenHTML = `<img src="${p.imagen}" alt="${p.nombre}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;">`;
+    } else {
+        // Si no, asumimos que es un EMOJI
+        imagenHTML = `<div style="font-size: 40px; line-height: 150px;">${p.imagen || "🥩"}</div>`;
+    }
     
     grid.innerHTML += `
       <div class="producto" onclick="verDetalle('${p._id}')">
-        <div class="producto-imagen" style="font-size: 40px;">${imagen}</div>
+        <div class="producto-imagen" style="height: 150px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            ${imagenHTML}
+        </div>
         <h3>${p.nombre}</h3>
         <p>${p.descripcion}</p>
         <div class="precio">$${p.precio.toLocaleString()}</div>

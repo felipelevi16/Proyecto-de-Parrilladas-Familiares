@@ -106,3 +106,20 @@ async def get_products():
             product["_id"] = str(product["_id"])
             
     return products
+
+@app.get("/products/{id}")
+async def get_product_detail(id: str):
+    # 1. Validamos si el ID tiene el formato correcto de MongoDB
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=400, detail="ID de producto inválido")
+    
+    # 2. Buscamos el producto específico
+    product = await get_product_collection().find_one({"_id": ObjectId(id)})
+    
+    # 3. Si no existe, error 404
+    if not product:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+        
+    # 4. Convertimos el ID a texto para enviarlo
+    product["_id"] = str(product["_id"])
+    return product
