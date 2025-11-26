@@ -21,181 +21,162 @@
         .form-section.active{display:block}
         .form-group{margin-bottom:15px}
         .form-control{width:100%;padding:10px;border:1px solid #ddd;border-radius:4px}
-        .time-slots{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-        .time-slot{padding:10px;border:1px solid #ddd;border-radius:4px;text-align:center;cursor:pointer}
-        .time-slot.selected{background:#042490;color:white}
         .action-buttons{display:flex;gap:10px;margin-top:20px}
-        .btn{padding:12px 20px;border:none;border-radius:4px;cursor:pointer;flex:1;text-align:center;text-decoration:none}
-        .btn-primary{background:#042490;color:white}
-        .btn-secondary{background:#f8f9fa;color:#333;border:1px solid #ddd}
-        .notification{position:fixed;top:20px;right:20px;background:#27ae60;color:white;padding:10px 15px;border-radius:4px;display:none}
+        .btn{padding:12px 20px;border:none;border-radius:4px;cursor:pointer;flex:1;text-align:center;text-decoration:none;font-weight:bold;color:white;background:#042490;}
+        .btn:hover{background:#0eabc7;}
+        .btn-secondary{background:#6c757d;}
+        .notification{position:fixed;top:20px;right:20px;background:#27ae60;color:white;padding:15px;border-radius:8px;display:none;z-index:1000;}
     </style>
 </head>
 <body>
     <div class="header">
         <div class="nav">
             <div>🥩 Parrilladas</div>
-            <div>
-                <a href="E3F2.html">← Carrito</a>
-            </div>
+            <div><a href="E3F2.html">← Volver al Carrito</a></div>
         </div>
     </div>
     
     <div class="container">
-        <h2 style="text-align:center;color:#042490;margin:20px 0">Método de Entrega</h2>
-        
-        <div class="progress-bar">
-            <div style="text-align:center">
-                <div class="step-circle">1</div>
-                <div>Carrito</div>
-            </div>
-            <div style="text-align:center">
-                <div class="step-circle active">2</div>
-                <div style="color:#042490;font-weight:bold">Entrega</div>
-            </div>
-            <div style="text-align:center">
-                <div class="step-circle">3</div>
-                <div>Pago</div>
-            </div>
-        </div>
+        <h2 style="text-align:center;color:#042490;margin:20px 0">Finalizar Pedido</h2>
         
         <div class="delivery-options">
             <div style="margin-bottom:15px;font-weight:bold">Método de entrega:</div>
             
-            <div class="radio-option selected" onclick="selMetodo('retiro')">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <div>
-                        <div style="font-weight:bold">Retiro en Local</div>
-                        <div style="color:#666;font-size:14px">Recoge en sucursal</div>
-                        <div style="color:#042490;font-weight:bold">Gratis</div>
-                    </div>
-                </div>
+            <div class="radio-option selected" id="optRetiro" onclick="selMetodo('retiro')">
+                <div style="font-weight:bold">Retiro en Local (Gratis)</div>
             </div>
             
-            <div class="radio-option" onclick="selMetodo('delivery')">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <div>
-                        <div style="font-weight:bold">Delivery a Domicilio</div>
-                        <div style="color:#666;font-size:14px">Envío a tu casa</div>
-                        <div style="color:#042490;font-weight:bold">$5.000</div>
-                    </div>
-                </div>
+            <div class="radio-option" id="optDelivery" onclick="selMetodo('delivery')">
+                <div style="font-weight:bold">Delivery a Domicilio (+$5.000)</div>
             </div>
             
             <div id="pickupForm" class="form-section active">
                 <div class="form-group">
                     <label>Sucursal:</label>
-                    <select class="form-control" onchange="actualizarSucursal(this.value)">
-                        <option value="">Selecciona sucursal</option>
+                    <select class="form-control" id="sucursalInput">
                         <option value="vitacura">Vitacura</option>
                         <option value="las-condes">Las Condes</option>
-                        <option value="providencia">Providencia</option>
                     </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>Hora de retiro:</label>
-                    <div class="time-slots" id="timeSlots"></div>
                 </div>
             </div>
             
             <div id="deliveryForm" class="form-section">
                 <div class="form-group">
                     <label>Dirección:</label>
-                    <textarea class="form-control" rows="2" placeholder="Dirección completa"></textarea>
+                    <input type="text" class="form-control" id="direccionInput" placeholder="Calle y número">
                 </div>
-                
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-                    <div class="form-group">
-                        <label>Comuna:</label>
-                        <select class="form-control">
-                            <option value="">Selecciona comuna</option>
-                            <option value="vitacura">Vitacura</option>
-                            <option value="las-condes">Las Condes</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Teléfono:</label>
-                        <input type="tel" class="form-control" placeholder="+56 9 1234 5678">
-                    </div>
-                </div>
-                
                 <div class="form-group">
-                    <label>Horario preferido:</label>
-                    <div class="time-slots">
-                        <div class="time-slot">12:00 - 14:00</div>
-                        <div class="time-slot selected">14:00 - 16:00</div>
-                        <div class="time-slot">16:00 - 18:00</div>
-                        <div class="time-slot">18:00 - 20:00</div>
-                    </div>
+                    <label>Comuna:</label>
+                    <select class="form-control" id="comunaInput">
+                        <option value="vitacura">Vitacura</option>
+                        <option value="las-condes">Las Condes</option>
+                        <option value="providencia">Providencia</option>
+                    </select>
                 </div>
+            </div>
+
+            <div class="form-group" style="margin-top:15px;">
+                <label>Teléfono de contacto:</label>
+                <input type="tel" class="form-control" id="telefonoInput" placeholder="+56 9..." required>
             </div>
         </div>
         
         <div class="action-buttons">
-            <a href="E3F2.html" class="btn btn-secondary">← Volver</a>
-            <button class="btn btn-primary" onclick="guardarEntrega()">Continuar →</button>
+            <button class="btn" onclick="confirmarPedido()">CONFIRMAR Y PAGAR</button>
         </div>
     </div>
 
-    <div class="notification" id="notification">✅ Método guardado!</div>
+    <div class="notification" id="notification"></div>
 
     <script>
-        let metodo = 'retiro';
-        let horario = '14:00';
+        let metodoSeleccionado = 'retiro';
+        const COSTO_ENVIO = 5000;
 
-        document.addEventListener('DOMContentLoaded', function() {
-            generarHorarios();
-        });
-
-        function selMetodo(m) {
-            metodo = m;
-            document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
+        function selMetodo(metodo) {
+            metodoSeleccionado = metodo;
             
-            document.getElementById('pickupForm').classList.toggle('active', m === 'retiro');
-            document.getElementById('deliveryForm').classList.toggle('active', m === 'delivery');
-        }
-
-        function generarHorarios() {
-            const timeSlots = document.getElementById('timeSlots');
-            const horas = ['10:00', '12:00', '14:00', '16:00', '18:00', '20:00'];
+            // Visuales
+            document.getElementById('optRetiro').classList.toggle('selected', metodo === 'retiro');
+            document.getElementById('optDelivery').classList.toggle('selected', metodo === 'delivery');
             
-            horas.forEach(hora => {
-                const slot = document.createElement('div');
-                slot.className = 'time-slot' + (hora === '14:00' ? ' selected' : '');
-                slot.textContent = hora + ' hrs';
-                slot.onclick = function() {
-                    document.querySelectorAll('#timeSlots .time-slot').forEach(s => s.classList.remove('selected'));
-                    this.classList.add('selected');
-                    horario = hora;
-                };
-                timeSlots.appendChild(slot);
-            });
+            document.getElementById('pickupForm').classList.toggle('active', metodo === 'retiro');
+            document.getElementById('deliveryForm').classList.toggle('active', metodo === 'delivery');
         }
 
-        function actualizarSucursal(valor) {
-            // Lógica simplificada para actualizar sucursal
-        }
-
-        function guardarEntrega() {
-            if (metodo === 'retiro') {
-                notificar('Retiro programado');
-            } else {
-                notificar('Dirección guardada');
+        async function confirmarPedido() {
+            // 1. Validar Datos Básicos
+            const telefono = document.getElementById('telefonoInput').value;
+            if(!telefono) {
+                alert("Por favor ingresa un teléfono de contacto");
+                return;
             }
-            
-            setTimeout(() => {
-                notificar('Redirigiendo al pago...');
-            }, 1500);
-        }
 
-        function notificar(mensaje) {
-            const notification = document.getElementById('notification');
-            notification.textContent = mensaje;
-            notification.style.display = 'block';
-            setTimeout(() => notification.style.display = 'none', 3000);
+            // 2. Preparar datos del Carrito
+            const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            if(carrito.length === 0) {
+                alert("El carrito está vacío");
+                window.location.href = 'E2F2.html';
+                return;
+            }
+
+            // Calcular totales
+            const subtotal = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            const envio = metodoSeleccionado === 'delivery' ? COSTO_ENVIO : 0;
+            const total = subtotal + envio;
+
+            // 3. Armar el objeto PEDIDO para la API
+            // Nota: Mapeamos los datos para que coincidan con models.py (ProductoEnCarrito)
+            const itemsParaApi = carrito.map(item => ({
+                producto_id: item._id,
+                cantidad: item.cantidad
+            }));
+
+            const datosPedido = {
+                items: itemsParaApi,
+                subtotal: subtotal,
+                envio: envio,
+                descuento: 0,
+                total: total,
+                metodo_entrega: metodoSeleccionado,
+                sucursal: metodoSeleccionado === 'retiro' ? document.getElementById('sucursalInput').value : null,
+                direccion: metodoSeleccionado === 'delivery' ? document.getElementById('direccionInput').value : null,
+                estado: "Ingresado"
+            };
+
+            // 4. ENVIAR A LA API
+            try {
+                const notif = document.getElementById('notification');
+                notif.textContent = "Procesando pedido...";
+                notif.style.display = 'block';
+
+                const response = await fetch('http://127.0.0.1:8000/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datosPedido)
+                });
+
+                const resultado = await response.json();
+
+                if (response.ok) {
+                    // ÉXITO
+                    localStorage.removeItem('carrito'); // Vaciamos el carrito
+                    notif.style.backgroundColor = "#27ae60";
+                    notif.textContent = `¡Éxito! Pedido #${resultado.id} creado.`;
+                    
+                    // Redirigir después de 2 segundos (al home o a seguimiento)
+                    setTimeout(() => {
+                        window.location.href = 'E2F1.html'; 
+                    }, 2000);
+                } else {
+                    // ERROR API
+                    throw new Error(resultado.detail || "Error al crear el pedido");
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert("Error: " + error.message);
+                document.getElementById('notification').style.display = 'none';
+            }
         }
     </script>
 </body>

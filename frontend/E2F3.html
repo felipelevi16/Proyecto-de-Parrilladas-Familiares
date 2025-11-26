@@ -31,6 +31,9 @@
         🛒 IR AL CARRITO
     </button>
   </div>
+
+  <div class="detalle" id="detalleProducto">
+    </div>
 </div>
 
 <script>
@@ -69,7 +72,7 @@ function mostrarDetalle(producto) {
   productoActual = producto;
   const detalle = document.getElementById('detalleProducto');
   
-  // Lógica de Imagen vs Emoji (igual que en el catálogo)
+  // Lógica de Imagen vs Emoji
   let imagenHTML = "";
   if (producto.imagen && producto.imagen.startsWith("http")) {
       imagenHTML = `<img src="${producto.imagen}" alt="${producto.nombre}" style="max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain;">`;
@@ -77,7 +80,7 @@ function mostrarDetalle(producto) {
       imagenHTML = `<div style="font-size: 80px;">${producto.imagen || "🥩"}</div>`;
   }
 
-  // Generamos el HTML de las especificaciones (si las tiene)
+  // Generamos el HTML de las especificaciones
   let especificacionesHTML = '';
   if (producto.especificaciones && producto.especificaciones.length > 0) {
       producto.especificaciones.forEach(esp => {
@@ -108,18 +111,15 @@ function mostrarDetalle(producto) {
 function agregarAlCarrito(id) {
   if (!productoActual) return;
 
-  // 1. Recuperar el carrito actual de la memoria (o crear uno vacío)
+  // 1. Recuperar el carrito actual de la memoria
   let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-  // 2. Buscar si el producto ya estaba en el carrito
+  // 2. Buscar si el producto ya estaba
   const indice = carrito.findIndex(item => item._id === id);
 
   if (indice !== -1) {
-    // Si ya existe, aumentamos la cantidad
     carrito[indice].cantidad += 1;
   } else {
-    // Si es nuevo, lo agregamos con cantidad 1
-    // Guardamos solo lo necesario: ID, nombre, precio, imagen
     carrito.push({
       _id: productoActual._id,
       nombre: productoActual.nombre,
@@ -129,11 +129,13 @@ function agregarAlCarrito(id) {
     });
   }
 
-  // 3. Guardar el carrito actualizado en memoria
+  // 3. Guardar el carrito
   localStorage.setItem('carrito', JSON.stringify(carrito));
 
-  // 4. Feedback al usuario
-  alert(`¡${productoActual.nombre} agregado al carrito!`);
+  // 4. Preguntar si ir al carrito
+  if(confirm(`¡${productoActual.nombre} agregado!\n¿Quieres ir al carrito a pagar?`)) {
+      window.location.href = 'E3F2.html';
+  }
 }
 </script>
 </body>

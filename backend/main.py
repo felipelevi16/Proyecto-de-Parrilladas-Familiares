@@ -91,6 +91,24 @@ async def login_user(form_data: models.UserLogin):
     
     return {"message": "¡Sesión iniciada correctamente!", "email": user_db["email"]}
 
+# --- Agrega o actualiza esto en backend/main.py ---
+
+@app.post("/orders", status_code=status.HTTP_201_CREATED)
+async def create_order(pedido: models.Pedido):
+    # 1. Conectamos a la colección
+    order_collection = get_order_collection()
+    
+    # 2. Preparamos los datos
+    pedido_dict = pedido.dict(by_alias=True, exclude={"id"})
+    
+    # 3. Asignamos estado inicial automático
+    pedido_dict["estado"] = "Ingresado" 
+    
+    # 4. Insertamos en MongoDB
+    new_order = await order_collection.insert_one(pedido_dict)
+    
+    # 5. Devolvemos el ID del pedido creado
+    return {"id": str(new_order.inserted_id), "mensaje": "Pedido recibido exitosamente"}
 @app.get("/products")
 async def get_products():
     # 1. Conectamos a la colección de productos
