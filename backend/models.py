@@ -89,3 +89,16 @@ class Pedido(BaseModel):
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
+class Reserva(BaseModel):
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    cliente_nombre: str # O podrías usar user_id si prefieres
+    telefono: str
+    fecha_hora: str
+    asistentes: int
+    sucursal: str
+    menu: Optional[str] = None
+    estado: str = "Pendiente" # Pendiente, Confirmada, Rechazada
+
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True

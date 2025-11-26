@@ -161,3 +161,30 @@ async def get_orders():
         results.append(order)
         
     return results
+
+# 1. Crear Reserva (Para el Cliente)
+@app.post("/reservations", status_code=status.HTTP_201_CREATED)
+async def create_reservation(reserva: models.Reserva):
+    # Puedes crear una colección nueva "reservations"
+    db = get_order_collection().database # Truco para obtener la referencia a la DB
+    reservations_collection = db["reservations"]
+    
+    reserva_dict = reserva.dict(by_alias=True, exclude={"id"})
+    new_reserva = await reservations_collection.insert_one(reserva_dict)
+    
+    return {"id": str(new_reserva.inserted_id), "mensaje": "Reserva solicitada"}
+
+# 2. Leer Reservas (Para el Dashboard)
+@app.get("/reservations")
+async def get_reservations():
+    db = get_order_collection().database
+    reservations_collection = db["reservations"]
+    
+    cursor = reservations_collection.find({}).sort("_id", -1)
+    reservas = await cursor.to_list(length=100)
+    
+    for r in reservas:
+        r["id"] = str(r["_id"])
+        del r["_id"]
+        
+    return reservas
