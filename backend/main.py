@@ -204,3 +204,37 @@ async def get_single_order(id: str):
     order["id"] = str(order["_id"])
     del order["_id"]
     return order
+
+# --- Agrega esto al final de backend/main.py ---
+
+# 1. Para E6F3 (Admin Catálogo): Crear nuevos productos
+@app.post("/products", status_code=status.HTTP_201_CREATED)
+async def create_product(producto: models.Producto):
+    product_collection = get_product_collection()
+    
+    # Preparamos el producto (excluyendo el ID para que Mongo lo genere)
+    prod_dict = producto.dict(by_alias=True, exclude={"id"})
+    
+    new_prod = await product_collection.insert_one(prod_dict)
+    
+    return {"id": str(new_prod.inserted_id), "mensaje": "Producto creado exitosamente"}
+
+# 2. Para E6F2 (Admin Reservas): Confirmar/Actualizar reserva
+@app.put("/reservations/{id}")
+async def update_reservation_status(id: str, estado: str):
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=400, detail="ID inválido")
+        
+    db = get_order_collection().database
+    reservations_collection = db["reservations"]
+    
+    # Actualizamos solo el campo 'estado'
+    result = await reservations_collection.update_one(
+        {"_id": ObjectId(id)},
+        {"$set": {"estado": estado}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Reserva no encontrada")
+        
+    return {"mensaje": f"Reserva actualizada a {estado}"}

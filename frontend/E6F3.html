@@ -223,89 +223,114 @@
     </div>
 
     <script>
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.display = 'block';
-            notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarProductos();
+        // Navegación de pestañas
+        document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', e => showTab(e.target.getAttribute('onclick').split("'")[1])));
+    });
 
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
+    // 1. CARGAR PRODUCTOS DESDE LA API
+    async function cargarProductos() {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/products');
+            const productos = await response.json();
+            
+            const grid = document.querySelector('#catalog .items-grid');
+            grid.innerHTML = ''; // Limpiar lista falsa
+
+            productos.forEach(p => {
+                // Determinar imagen
+                let img = (p.imagen && p.imagen.startsWith('http')) 
+                    ? `<img src="${p.imagen}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">` 
+                    : `<span style="font-size:24px;">🥩</span>`;
+
+                grid.innerHTML += `
+                    <div class="item-card">
+                        <div class="item-header">
+                            <div class="item-name" style="display:flex; gap:10px; align-items:center;">
+                                ${img} ${p.nombre}
+                            </div>
+                            <div class="item-price">$${p.precio.toLocaleString()}</div>
+                        </div>
+                        <div class="item-description">${p.descripcion}</div>
+                        <div class="item-actions">
+                            <button class="action-btn btn-edit">Editar</button>
+                            <button class="action-btn btn-status">Desactivar</button>
+                        </div>
+                    </div>
+                `;
             });
-            
-            document.getElementById(tabName).classList.add('active');
-            
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
+        } catch (error) {
+            console.error("Error cargando productos:", error);
+        }
+    }
+
+    // 2. GUARDAR NUEVO PRODUCTO (CONECTADO A API)
+    async function saveProduct() {
+        const name = document.getElementById('productName').value;
+        const price = document.getElementById('productPrice').value;
+        const category = document.getElementById('productCategory').value;
+        const desc = document.getElementById('productDescription').value;
+        
+        // Validar
+        if (!name || !price || !category) {
+            showNotification('Por favor completa los campos obligatorios', 'error');
+            return;
+        }
+
+        const nuevoProducto = {
+            nombre: name,
+            descripcion: desc,
+            precio: parseInt(price),
+            categoria: category,
+            imagen: "", // Podrías poner una URL de imagen por defecto aquí si quieres
+            especificaciones: []
+        };
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nuevoProducto)
             });
-            event.target.classList.add('active');
-            
-            showNotification(`Navegando a: ${event.target.textContent}`);
-        }
 
-        function editItem(itemId) {
-            showNotification(`Editando: ${itemId}`);
-        }
-
-        function toggleStatus(itemId) {
-            showNotification(`Cambiando estado de: ${itemId}`);
-        }
-
-        function deleteItem(itemId) {
-            if (confirm(`¿Estás seguro de eliminar ${itemId}?`)) {
-                showNotification(`${itemId} eliminado correctamente`);
+            if (response.ok) {
+                showNotification(`Producto "${name}" creado exitosamente`);
+                // Limpiar form
+                document.getElementById('productName').value = '';
+                document.getElementById('productPrice').value = '';
+                document.getElementById('productDescription').value = '';
+                
+                // Recargar lista y volver a la pestaña de catálogo
+                cargarProductos();
+                showTab('catalog');
+            } else {
+                showNotification('Error al crear producto', 'error');
             }
+        } catch (error) {
+            console.error(error);
+            showNotification('Error de conexión', 'error');
         }
+    }
 
-        function savePromotion() {
-            const name = document.getElementById('promoName').value;
-            const price = document.getElementById('promoPrice').value;
-            
-            if (!name || !price) {
-                showNotification('Por favor completa todos los campos', 'error');
-                return;
-            }
-            
-            showNotification(`Promoción "${name}" guardada correctamente`);
-            document.getElementById('promoName').value = '';
-            document.getElementById('promoDescription').value = '';
-            document.getElementById('promoPrice').value = '';
-            document.getElementById('promoPeriod').value = '';
-            
-            showTab('promotions');
-        }
+    // Funciones de UI (Pestañas y Notificaciones)
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        // Buscar el botón que corresponde a este tab para activarlo visualmente
+        const btn = Array.from(document.querySelectorAll('.tab')).find(b => b.getAttribute('onclick').includes(tabId));
+        if(btn) btn.classList.add('active');
+    }
 
-        function saveProduct() {
-            const name = document.getElementById('productName').value;
-            const price = document.getElementById('productPrice').value;
-            const category = document.getElementById('productCategory').value;
-            
-            if (!name || !price || !category) {
-                showNotification('Por favor completa todos los campos', 'error');
-                return;
-            }
-            
-            showNotification(`Producto "${name}" guardado correctamente`);
-            document.getElementById('productName').value = '';
-            document.getElementById('productDescription').value = '';
-            document.getElementById('productPrice').value = '';
-            document.getElementById('productCategory').value = '';
-            
-            showTab('catalog');
-        }
-
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+    function showNotification(msg, type='success') {
+        const notif = document.getElementById('notification');
+        notif.textContent = msg;
+        notif.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
+        notif.style.display = 'block';
+        setTimeout(() => notif.style.display = 'none', 3000);
+    }
     </script>
 </body>
 </html>

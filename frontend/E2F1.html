@@ -3,257 +3,220 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PARRILLADAS FAMILIARES</title>
+<title>Inicio - Parrilladas Don Eduardo</title>
 <style>
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #f6f5f3, #042490);
-    height: 100vh; 
-    margin: 0;
+  body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; min-height: 100vh; }
+  
+  /* --- HEADER DE NAVEGACIÓN --- */
+  .header { 
+    background: #042490; 
+    color: white; 
+    padding: 15px 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
   
-  .form-box {
-    background: #fff;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 1000px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    margin: 40px 0;
-    overflow: hidden;
-  }
-
-  .nav {
-    display: flex;
-    justify-content: space-around;
-    background: #042490;
-    padding: 10px;
-  }
-
+  .logo { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+  
+  .nav-links { display: flex; gap: 15px; }
+  
   .nav-btn {
-    flex: 1;
-    padding: 10px;
+    background: rgba(255,255,255,0.1);
+    color: white;
     border: none;
-    border-radius: 5px;
-    background: transparent;
-    color: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
     cursor: pointer;
-    font-weight: bold;
+    text-decoration: none;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     transition: background 0.3s;
   }
-
-  .nav-btn:hover,
-  .nav-btn.activo {
-    background: #042490;
-  }
-
-  h1 {
-    text-align: center;
+  .nav-btn:hover { background: rgba(255,255,255,0.3); }
+  
+  .cart-badge {
+    background: #FFD700;
     color: #042490;
-    margin-top: 20px;
+    border-radius: 50%;
+    width: 20px; 
+    height: 20px;
+    font-size: 12px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-weight: bold;
   }
 
-  p {
-    text-align: center;
-    color: #555;
-    margin-bottom: 30px;
-  }
+  /* --- CONTENEDOR PRINCIPAL --- */
+  .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+  
+  h1 { color: #042490; text-align: center; margin-bottom: 10px; }
+  p.subtitle { text-align: center; color: #666; margin-bottom: 30px; }
 
-  /* --- GRID DEL CATÁLOGO --- */
+  /* --- GRID DE PRODUCTOS (Igual que E2F2) --- */
   #listaProductos {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
   }
 
   .producto {
-    background: #fdfdfd;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+    cursor: pointer;
     border: 1px solid #eee;
-    border-radius: 10px;
-    text-align: center;
-    padding: 15px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
   }
 
-  .producto:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-  }
+  .producto:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
 
-  .producto img {
-    width: 100%;
+  .producto-imagen {
     height: 180px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 10px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
   }
+  
+  .producto-info { padding: 15px; text-align: center; }
+  
+  .producto h3 { margin: 0 0 5px 0; color: #333; font-size: 18px; }
+  .producto p { color: #666; font-size: 13px; margin: 0 0 10px 0; height: 40px; overflow: hidden; }
+  .precio { color: #042490; font-weight: bold; font-size: 20px; margin-bottom: 15px; }
 
-  .producto h3 {
-    color: #042490;
-    margin-bottom: 5px;
-    font-size: 18px;
-  }
-
-  .producto p {
-    color: #555;
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-
-  .precio {
-    font-weight: bold;
-    color: #042490;
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  .producto button {
+  .btn-agregar {
     width: 100%;
     padding: 10px;
-    border: none;
-    border-radius: 8px;
     background: #042490;
-    color: #fff;
+    color: white;
+    border: none;
+    border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.2s;
   }
+  .btn-agregar:hover { background: #06048a; }
 
-  .producto button:hover {
-    background: #042490;
-  }
-
-  .mensaje {
-    margin: 15px auto;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: 600;
-    display: none;
-    width: 80%;
-    text-align: center;
-  }
-
-  .exito {
-    background: #2ecc71;
-    color: #fff;
-  }
-
-  .error {
-    background: #e74c3c;
-    color: #fff;
-  }
-
-  .escenario {
-    display: none;
-  }
-
-  .escenario.activo {
-    display: block;
-  }
+  /* --- ESTADO VACÍO --- */
+  .loading, .error { text-align: center; padding: 40px; color: #666; grid-column: 1 / -1; }
 </style>
 </head>
 <body>
 
-<div class="form-box">
-
-  <!-- NAV -->
-  <div class="nav">
-    <button class="nav-btn activo" onclick="mostrarEscenario('catalogo')">CATÁLOGO</button>
+<div class="header">
+  <div class="logo">🥩 Don Eduardo</div>
+  <div class="nav-links">
+    <a href="E7F3.html" class="nav-btn">👤 Mi Perfil</a>
+    <a href="E3F2.html" class="nav-btn">
+      🛒 Carrito 
+      <span class="cart-badge" id="cartCount">0</span>
+    </a>
   </div>
+</div>
 
-  <!-- ESCENARIO 1: CATÁLOGO -->
-  <div id="catalogo" class="escenario activo">
-    <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
-    <p>Catálogo de nuestros productos destacados</p>
-    
-    <div id="listaProductos">
-      <!-- PRODUCTO 1 -->
-      <div class="producto">
-        <!-- 🔽 Reemplaza la URL aquí -->
-        <img src="URL_DE_TU_IMAGEN_1" alt="Lomo Vetado">
-        <h3>🥩 Lomo Vetado</h3>
-        <p>Corte premium de res marmoleado</p>
-        <div class="precio">$160.000</div>
-        <button onclick="agregarAlCarrito('Lomo Vetado')">Agregar al Carrito</button>
-      </div>
+<div class="container">
+  <h1>¡Bienvenido al Menú!</h1>
+  <p class="subtitle">Elige tus cortes favoritos para hoy</p>
 
-      <!-- PRODUCTO 2 -->
-      <div class="producto">
-        <img src="URL_DE_TU_IMAGEN_2" alt="Costillar de Cerdo">
-        <h3>🍖 Costillar de Cerdo</h3>
-        <p>Costillar marinado 24 horas</p>
-        <div class="precio">$45.000</div>
-        <button onclick="agregarAlCarrito('Costillar de Cerdo')">Agregar al Carrito</button>
-      </div>
-
-      <!-- PRODUCTO 3 -->
-      <div class="producto">
-        <img src="URL_DE_TU_IMAGEN_3" alt="Punta de Anca">
-        <h3>🥓 Punta de Anca</h3>
-        <p>Corte especial para parrilla</p>
-        <div class="precio">$52.000</div>
-        <button onclick="agregarAlCarrito('Punta de Anca')">Agregar al Carrito</button>
-      </div>
-
-      <!-- PRODUCTO 4 -->
-      <div class="producto">
-        <img src="URL_DE_TU_IMAGEN_4" alt="Longaniza Artesanal">
-        <h3>🌭 Longaniza Artesanal</h3>
-        <p>Receta tradicional con aliños caseros</p>
-        <div class="precio">$12.000</div>
-        <button onclick="agregarAlCarrito('Longaniza Artesanal')">Agregar al Carrito</button>
-      </div>
-
-      <!-- PRODUCTO 5 -->
-      <div class="producto">
-        <img src="URL_DE_TU_IMAGEN_5" alt="Pollo a las Brasas">
-        <h3>🍗 Pollo a las Brasas</h3>
-        <p>Pollo marinado con finas hierbas</p>
-        <div class="precio">$25.000</div>
-        <button onclick="agregarAlCarrito('Pollo a las Brasas')">Agregar al Carrito</button>
-      </div>
-    </div>
+  <div id="listaProductos">
+    <div class="loading">Cargando parrilla... 🔥</div>
   </div>
-
-  <!-- ESCENARIO 2: CATÁLOGO VACÍO -->
-  <div id="catalogo-vacio" class="escenario">
-    <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
-    <p>No hay productos disponibles</p>
-    <div style="color:#666; margin:20px 0;">
-      Próximamente tendremos nuevos productos en stock.
-    </div>
-    <button onclick="mostrarEscenario('catalogo')">Volver al Catálogo</button>
-  </div>
-
-  <div id="mensaje" class="mensaje"></div>
 </div>
 
 <script>
-let carrito = [];
+// --- LÓGICA DEL CATÁLOGO (Traída de E2F2) ---
 
-function mostrarEscenario(nombre) {
-  document.querySelectorAll('.escenario').forEach(e => e.classList.remove('activo'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('activo'));
-  document.getElementById(nombre).classList.add('activo');
-  document.querySelector(`.nav-btn[onclick="mostrarEscenario('${nombre}')"]`).classList.add('activo');
+document.addEventListener('DOMContentLoaded', async () => {
+  actualizarContadorCarrito();
+  
+  const grid = document.getElementById('listaProductos');
+  
+  try {
+    // 1. Pedir productos a la API
+    const response = await fetch('http://127.0.0.1:8000/products');
+    const productos = await response.json();
+    
+    grid.innerHTML = ''; // Limpiar mensaje de carga
+
+    if (productos.length === 0) {
+      grid.innerHTML = '<div class="error">No hay productos disponibles aún.</div>';
+      return;
+    }
+
+    // 2. Dibujar cada producto
+    productos.forEach(p => {
+      // Lógica de Imagen vs Emoji
+      let imagenHTML = "";
+      if (p.imagen && p.imagen.startsWith("http")) {
+          imagenHTML = `<img src="${p.imagen}" alt="${p.nombre}" style="width: 100%; height: 100%; object-fit: cover;">`;
+      } else {
+          imagenHTML = `<div style="font-size: 50px;">${p.imagen || "🥩"}</div>`;
+      }
+      
+      // Crear tarjeta HTML
+      grid.innerHTML += `
+        <div class="producto" onclick="verDetalle('${p._id}')">
+          <div class="producto-imagen">
+              ${imagenHTML}
+          </div>
+          <div class="producto-info">
+            <h3>${p.nombre}</h3>
+            <p>${p.descripcion}</p>
+            <div class="precio">$${p.precio.toLocaleString()}</div>
+            <button class="btn-agregar" onclick="event.stopPropagation(); agregarAlCarrito('${p._id}', '${p.nombre}', ${p.precio})">
+              Agregar al Carrito
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+  } catch (error) {
+    console.error(error);
+    grid.innerHTML = '<div class="error" style="color:red">Error al conectar con el servidor. Revisa Uvicorn.</div>';
+  }
+});
+
+// --- FUNCIONES AUXILIARES ---
+
+function verDetalle(id) {
+  localStorage.setItem('productoSeleccionado', id);
+  window.location.href = 'E2F3.html'; 
 }
 
-function agregarAlCarrito(producto) {
-  carrito.push(producto);
-  const msj = document.getElementById('mensaje');
-  msj.textContent = `✅ ${producto} agregado al carrito`;
-  msj.className = "mensaje exito";
-  msj.style.display = "block";
+function agregarAlCarrito(id, nombre, precio) {
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
   
-  setTimeout(() => {
-    msj.style.display = "none";
-  }, 2000);
+  // Verificar si ya existe para sumar cantidad
+  const existente = carrito.find(item => item._id === id);
+  
+  if (existente) {
+    existente.cantidad++;
+  } else {
+    carrito.push({ _id: id, nombre: nombre, precio: precio, cantidad: 1 });
+  }
+  
+  localStorage.setItem('carrito', JSON.stringify(carrito));
+  actualizarContadorCarrito();
+  alert(`¡${nombre} agregado!`);
+}
+
+function actualizarContadorCarrito() {
+  const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  const total = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+  document.getElementById('cartCount').textContent = total;
 }
 </script>
+
 </body>
 </html>

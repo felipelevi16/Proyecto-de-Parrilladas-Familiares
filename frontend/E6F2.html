@@ -59,187 +59,81 @@
     </div>
     
     <div class="container">
-        <h2 class="page-title">Administración de Reservas</h2>
-        
+        <h2 class="page-title">Gestión de Reservas</h2>
         <div class="notification" id="notification"></div>
         
-        <!-- Escenario 1: Mesa disponible -->
-        <div class="reservation-details" id="scenario1">
-            <h3 style="color: #333; margin-bottom: 25px; text-align: center;">Resumen de Reserva</h3>
-            
-            <div class="detail-group">
-                <div class="detail-label">Nombre Cliente:</div>
-                <div class="detail-value">Eduardo Díaz</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Teléfono:</div>
-                <div class="detail-value">+56 9 1234 5678</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Fecha y hora:</div>
-                <div class="detail-value">16 de agosto, 22:00 hrs</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Cantidad de asistentes:</div>
-                <div class="detail-value">8 personas</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Sucursal:</div>
-                <div class="detail-value">Las Condes</div>
-            </div>
-            
-            <div class="availability-status available">
-                MESA DISPONIBLE EN ESTE HORARIO
-            </div>
-            
-            <div class="action-buttons">
-                <button class="btn btn-secondary" onclick="goBack()">Volver a Administración</button>
-                <button class="btn btn-success" onclick="confirmReservation()">Agendar Reserva</button>
-            </div>
-        </div>
-
-        <!-- Escenario 2: Mesa no disponible -->
-        <div class="reservation-details hidden" id="scenario2">
-            <h3 style="color: #333; margin-bottom: 25px; text-align: center;">Resumen de Reserva</h3>
-            
-            <div class="detail-group">
-                <div class="detail-label">Nombre Cliente:</div>
-                <div class="detail-value">Eduardo Díaz</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Teléfono:</div>
-                <div class="detail-value">+56 9 1234 5678</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Fecha y hora solicitada:</div>
-                <div class="detail-value">16 de agosto, 22:00 hrs</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Cantidad de asistentes:</div>
-                <div class="detail-value">8 personas</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Sucursal:</div>
-                <div class="detail-value">Las Condes</div>
-            </div>
-            
-            <div class="availability-status not-available">
-                MESA NO DISPONIBLE EN ESTE HORARIO
-            </div>
-            
-            <div class="alternative-times">
-                <div class="alternative-title">Horarios Alternativos Disponibles:</div>
-                <div class="time-slots">
-                    <div class="time-slot">20:30 hrs</div>
-                    <div class="time-slot">21:00 hrs</div>
-                    <div class="time-slot selected">21:30 hrs</div>
-                    <div class="time-slot">23:00 hrs</div>
-                </div>
-            </div>
-            
-            <div class="action-buttons">
-                <button class="btn btn-secondary" onclick="goBack()">Volver a Administración</button>
-                <button class="btn btn-warning" onclick="proposeAlternative()">Proponer Horario Alternativo</button>
-            </div>
-        </div>
-
-        <!-- Escenario 3: Reserva confirmada -->
-        <div class="reservation-details hidden" id="scenario3">
-            <div class="confirmation-message">
-                <h3>AGENDAMIENTO CONFIRMADO</h3>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Nombre Cliente:</div>
-                <div class="detail-value">Eduardo Díaz</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Teléfono:</div>
-                <div class="detail-value">+56 9 1234 5678</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Fecha y hora confirmada:</div>
-                <div class="detail-value">16 de agosto, 21:30 hrs</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Cantidad de asistentes:</div>
-                <div class="detail-value">8 personas</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Sucursal:</div>
-                <div class="detail-value">Las Condes</div>
-            </div>
-            
-            <div class="detail-group">
-                <div class="detail-label">Número de Mesa:</div>
-                <div class="detail-value">Mesa #12 (Terraza)</div>
-            </div>
-            
-            <div class="action-buttons">
-                <button class="btn btn-primary" onclick="goBack()">Volver a Administración</button>
-            </div>
+        <div class="reservation-details">
+            <table class="data-table" style="width:100%; border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#f8f9fa; text-align:left;">
+                        <th style="padding:10px;">Cliente</th>
+                        <th>Fecha/Hora</th>
+                        <th>Personas</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReservas">
+                    </tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.display = 'block';
-            notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
+    document.addEventListener('DOMContentLoaded', cargarReservas);
+
+    async function cargarReservas() {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/reservations');
+            const reservas = await response.json();
             
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
+            const tbody = document.getElementById('tablaReservas');
+            tbody.innerHTML = '';
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const timeSlots = document.querySelectorAll('.time-slot');
-            timeSlots.forEach(slot => {
-                slot.addEventListener('click', function() {
-                    timeSlots.forEach(s => s.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
+            reservas.forEach(r => {
+                let color = r.estado === 'Confirmada' ? '#d4edda' : '#fff3cd';
+                let textoColor = r.estado === 'Confirmada' ? '#155724' : '#856404';
+                
+                // Botón Confirmar solo si está pendiente
+                let btnConfirmar = r.estado !== 'Confirmada' 
+                    ? `<button class="btn btn-success" onclick="confirmar('${r.id}')" style="padding:5px 10px; font-size:12px;">Confirmar</button>` 
+                    : '<span style="color:green;">✓ Listo</span>';
+
+                tbody.innerHTML += `
+                    <tr style="border-bottom:1px solid #eee;">
+                        <td style="padding:15px;">
+                            <strong>${r.cliente_nombre}</strong><br>
+                            <small>${r.telefono}</small>
+                        </td>
+                        <td>${r.fecha_hora}</td>
+                        <td>${r.asistentes}</td>
+                        <td><span style="background:${color}; color:${textoColor}; padding:4px 8px; border-radius:4px;">${r.estado}</span></td>
+                        <td>${btnConfirmar}</td>
+                    </tr>
+                `;
             });
-        });
-
-        function goBack() {
-            window.location.href = 'E6F1.html';
+        } catch (error) {
+            console.error(error);
         }
+    }
 
-        function confirmReservation() {
-            showNotification('Reserva confirmada exitosamente');
-            document.getElementById('scenario1').classList.add('hidden');
-            document.getElementById('scenario3').classList.remove('hidden');
-        }
-
-        function proposeAlternative() {
-            const selectedTime = document.querySelector('.time-slot.selected').textContent;
-            showNotification(`Horario alternativo propuesto: ${selectedTime}`);
-            document.getElementById('scenario2').classList.add('hidden');
-            document.getElementById('scenario3').classList.remove('hidden');
-            document.querySelector('#scenario3 .detail-value:nth-child(3)').textContent = 
-                `16 de agosto, ${selectedTime}`;
-        }
-
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
+    async function confirmar(id) {
+        if(!confirm("¿Confirmar esta reserva?")) return;
+        
+        try {
+            // Llamada a la API PUT que creamos en el Paso 1
+            const response = await fetch(`http://127.0.0.1:8000/reservations/${id}?estado=Confirmada`, {
+                method: 'PUT'
             });
-        });
+            
+            if(response.ok) {
+                cargarReservas(); // Recargar tabla
+                alert("Reserva confirmada");
+            }
+        } catch (error) {
+            alert("Error al conectar");
+        }
+    }
     </script>
 </body>
 </html>

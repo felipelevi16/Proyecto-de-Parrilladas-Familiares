@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PARRILLADAS FAMILIARES</title>
+<title>Login - Parrilladas Familiares</title>
 <style>
   body {
     display: flex;
@@ -173,15 +173,11 @@
 <script>
 // --- 1. LÓGICA DE PESTAÑAS (VISUAL) ---
 function mostrarForm(tipo) {
-  // Oculta todos los formularios y quita la clase activo de los botones
   document.querySelectorAll('.formulario').forEach(f => f.classList.remove('activo'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('activo'));
   
-  // Muestra el formulario seleccionado y activa el botón
   document.getElementById(tipo).classList.add('activo');
   document.querySelector(`.nav-btn[onclick="mostrarForm('${tipo}')"]`).classList.add('activo');
-  
-  // Limpia mensajes al cambiar
   document.getElementById('mensaje').style.display = 'none';
 }
 
@@ -193,7 +189,7 @@ function limpiarErrores(){["email","password","confirm","terminos"].forEach(c=>e
 
 const msj = document.getElementById("mensaje");
 
-// --- 3. LÓGICA DE LOGIN (CONECTADO A API) ---
+// --- 3. LÓGICA DE LOGIN (CONECTADO A API Y REDIRECCIÓN) ---
 document.getElementById("loginForm").addEventListener("submit", async e => {
   e.preventDefault(); 
   msj.style.display = 'none';
@@ -211,29 +207,33 @@ document.getElementById("loginForm").addEventListener("submit", async e => {
     const resultado = await response.json();
 
     if (response.ok) {
-      msj.textContent = resultado.message; 
+      msj.textContent = "¡Sesión iniciada! Redirigiendo..."; 
       msj.className = "mensaje exito";
       msj.style.display = "block";
-      // Aquí podrías redirigir al catálogo: window.location.href = "E2F2.html";
+      
+      // --- REDIRECCIÓN AL MENÚ PRINCIPAL ---
+      setTimeout(() => {
+        window.location.href = "E2F1.html"; 
+      }, 1500);
+      
     } else {
-      msj.textContent = resultado.detail;
+      msj.textContent = resultado.detail || "Credenciales incorrectas";
       msj.className = "mensaje error";
       msj.style.display = "block";
     }
   } catch (error) {
-    msj.textContent = "Error de conexión.";
+    msj.textContent = "Error de conexión. Revisa que Uvicorn esté corriendo.";
     msj.className = "mensaje error";
     msj.style.display = "block";
   }
 });
 
-// --- 4. LÓGICA DE REGISTRO (CONECTADO A API) ---
+// --- 4. LÓGICA DE REGISTRO (CONECTADO A API Y REDIRECCIÓN) ---
 document.getElementById("registroForm").addEventListener("submit", async e => {
   e.preventDefault(); 
   limpiarErrores(); 
   msj.style.display="none";
 
-  // Nota: Usamos los IDs que tiene tu HTML E1F2 (regEmail, regPassword...)
   const emailVal = document.getElementById("regEmail").value.trim();
   const passVal = document.getElementById("regPassword").value;
   const confVal = document.getElementById("regConfirm").value;
@@ -263,13 +263,16 @@ document.getElementById("registroForm").addEventListener("submit", async e => {
     const resultado = await response.json();
 
     if (response.ok) {
-      msj.textContent = "¡Cuenta creada! Ahora puedes iniciar sesión.";
+      msj.textContent = "¡Cuenta creada! Ingresando...";
       msj.className = "mensaje exito"; 
       msj.style.display = "block";
       document.getElementById("registroForm").reset();
       
-      // Opcional: Cambiar automáticamente a la pestaña de Login después de 2 seg
-      setTimeout(() => mostrarForm('login'), 2000);
+      // Redirección automática al menú también después del registro
+      setTimeout(() => {
+          window.location.href = "E2F1.html";
+      }, 2000);
+      
     } else {
       msj.textContent = resultado.detail;
       msj.className = "mensaje error"; 
