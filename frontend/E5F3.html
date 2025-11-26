@@ -183,14 +183,40 @@
             document.getElementById('eventForm').classList.remove('hidden');
         }
         
-        function confirmReservation() {
-            const total = document.getElementById('totalPrice').textContent;
+        async function confirmReservation() {
             const attendees = document.getElementById('attendees').value;
-            const menu = document.getElementById('summaryMenu').textContent;
-            
-            alert(`¡Reserva confirmada!\n\n${attendees} personas - ${menu}\nTotal: ${total}`);
-            
-            showEventForm();
+            const menu = document.getElementById('menu').value;
+            const branch = document.getElementById('branch').value;
+            // En un caso real, tomaríamos la fecha de un input, aquí usamos la estática del ejemplo
+            const fechaTexto = "16 de septiembre - 22:00 hrs"; 
+
+            const datosReserva = {
+                cliente_nombre: "Usuario Web", // Aquí podrías poner el nombre real si estuviera logueado
+                telefono: "+56912345678", // Idealmente agregar un input para esto
+                fecha_hora: fechaTexto,
+                asistentes: parseInt(attendees),
+                sucursal: branch,
+                menu: menu,
+                estado: "Pendiente"
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/reservations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datosReserva)
+                });
+
+                if (response.ok) {
+                    alert("¡Reserva solicitada con éxito!");
+                    showEventForm(); // Volver al inicio
+                } else {
+                    alert("Error al solicitar reserva");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error de conexión");
+            }
         }
     </script>
 </body>

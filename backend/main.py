@@ -188,3 +188,19 @@ async def get_reservations():
         del r["_id"]
         
     return reservas
+
+# backend/main.py
+
+@app.get("/orders/{id}")
+async def get_single_order(id: str):
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=400, detail="ID inválido")
+        
+    order = await get_order_collection().find_one({"_id": ObjectId(id)})
+    
+    if not order:
+        raise HTTPException(status_code=404, detail="Pedido no encontrado")
+        
+    order["id"] = str(order["_id"])
+    del order["_id"]
+    return order

@@ -146,78 +146,57 @@
     </div>
 
     <script>
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.display = 'block';
-            notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
-            setTimeout(() => { notification.style.display = 'none'; }, 3000);
-        }
-
-        // Modal de ayuda
-        function showHelpModal() {
-            document.getElementById('helpModal').style.display = 'flex';
-        }
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Intentamos recuperar el ID del último pedido creado (guardado en E3F3)
+        // Nota: En E3F3 deberíamos guardar: localStorage.setItem('ultimoPedidoId', resultado.id);
+        // Si no lo hicimos, puedes probar pegando un ID manual en el código para la demo.
         
-        function hideHelpModal() {
-            document.getElementById('helpModal').style.display = 'none';
+        const orderId = localStorage.getItem('ultimoPedidoId'); 
+
+        if (!orderId) {
+            alert("No hay pedido activo para rastrear.");
+            return;
         }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/orders/${orderId}`);
+            if (!response.ok) throw new Error("Pedido no encontrado");
+            
+            const pedido = await response.json();
+            
+            // Actualizar la interfaz
+            document.getElementById('orderStatus').textContent = pedido.estado;
+            document.querySelector('.order-number').textContent = `Número de pedido: #${pedido.id.slice(-6)}`;
+            
+            // Actualizar barra de progreso visualmente según el estado
+            actualizarBarra(pedido.estado);
+            
+            // Mostrar detalles del monto
+            // (Aquí podrías rellenar la lista de productos si quisieras ser detallista)
+            
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    function actualizarBarra(estado) {
+        let step = 1;
+        if (estado === 'Ingresado') step = 1;
+        if (estado === 'En preparación') step = 2;
+        if (estado === 'Listo') step = 3;
+        if (estado === 'Entregado') step = 4;
         
-        function selectProblem(type) {
-            const problems = {
-                delay: 'Pedido con retraso',
-                cancel: 'Cancelar pedido',
-                issue: 'Problema con el pedido',
-                other: 'Otro problema'
-            };
-            
-            showNotification(`Ayuda solicitada: ${problems[type]}`);
-            hideHelpModal();
-        }
-
-        // Progreso del pedido
-        let currentStep = 2;
-        const steps = ['Confirmado', 'En preparación', 'Listo', 'Entregado'];
-        const progressWidths = ['25%', '50%', '75%', '100%'];
-
-        function updateProgress(step) {
-            document.getElementById('progressBar').style.width = progressWidths[step - 1];
-            document.getElementById('orderStatus').textContent = steps[step - 1];
-            
-            document.querySelectorAll('.progress-step').forEach((stepEl, index) => {
-                stepEl.classList.remove('step-completed', 'step-active');
-                if (index + 1 < step) stepEl.classList.add('step-completed');
-                else if (index + 1 === step) stepEl.classList.add('step-active');
-            });
-            
-            if (step === 3) {
-                document.getElementById('estimatedTime').textContent = 'LISTO';
-                document.getElementById('estimatedTime').style.color = '#28a745';
-            }
-            
-            showNotification(`Pedido actualizado: ${steps[step - 1]}`);
-        }
-
-        function simulateProgress() {
-            if (currentStep < 4) {
-                currentStep++;
-                updateProgress(currentStep);
-            } else {
-                showNotification('¡Pedido completado!', 'success');
-            }
-        }
-
-        // Cerrar modal al hacer click fuera
-        document.getElementById('helpModal').addEventListener('click', function(e) {
-            if (e.target === this) hideHelpModal();
+        // Lógica visual de la barra (manteniendo tu CSS original)
+        const widths = ['25%', '50%', '75%', '100%'];
+        document.getElementById('progressBar').style.width = widths[step-1];
+        
+        // Actualizar bolitas
+        document.querySelectorAll('.progress-step').forEach((el, idx) => {
+            if (idx + 1 < step) el.className = 'progress-step step-completed';
+            else if (idx + 1 === step) el.className = 'progress-step step-active';
+            else el.className = 'progress-step';
         });
-
-        // Simulación de actualización
-        setInterval(() => {
-            if (Math.random() < 0.1 && currentStep < 4) {
-                simulateProgress();
-            }
-        }, 30000);
+    }
     </script>
 </body>
 </html>

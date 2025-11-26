@@ -176,45 +176,70 @@
 
     async function cargarDashboard() {
         try {
-            // 1. Pedir los pedidos a la API
-            const response = await fetch('http://127.0.0.1:8000/orders');
-            const pedidos = await response.json();
+            // --- 1. CARGAR PEDIDOS (Ya lo teníamos) ---
+            const respPedidos = await fetch('http://127.0.0.1:8000/orders');
+            const pedidos = await respPedidos.json();
 
-            // 2. Calcular Estadísticas Rápidas
+            // --- 2. CARGAR RESERVAS (¡Nuevo!) ---
+            const respReservas = await fetch('http://127.0.0.1:8000/reservations');
+            const reservas = await respReservas.json();
+
+            // --- 3. ACTUALIZAR TARJETAS SUPERIORES (KPIs) ---
             const totalPedidos = pedidos.length;
-            // Sumamos el total de dinero de todos los pedidos
+            const totalReservas = reservas.length;
             const ingresoTotal = pedidos.reduce((sum, p) => sum + (p.total || 0), 0);
             
-            // 3. Actualizar las tarjetas de arriba (KPIs)
-            // Buscamos las tarjetas por su contenido aproximado (o idealmente ponerles IDs)
+            // Buscamos los números grandes del dashboard
             const cards = document.querySelectorAll('.stat-number');
-            if(cards.length > 0) cards[0].textContent = totalPedidos; // Pedidos Hoy
-            if(cards.length > 2) cards[2].textContent = `$${ingresoTotal.toLocaleString()}`; // Ingresos
+            if(cards[0]) cards[0].textContent = totalPedidos; // Pedidos Hoy
+            if(cards[1]) cards[1].textContent = totalReservas; // Reservas Pendientes (¡Ahora es real!)
+            if(cards[2]) cards[2].textContent = `$${ingresoTotal.toLocaleString()}`; // Ingresos
 
-            // 4. Llenar la Tabla de Pedidos
-            const tbody = document.querySelector('.data-table tbody');
-            tbody.innerHTML = ''; // Limpiar datos falsos
+            // --- 4. ACTUALIZAR TABLA DE PEDIDOS (Ya lo teníamos) ---
+            const tablaPedidos = document.querySelectorAll('.data-table tbody')[0];
+            tablaPedidos.innerHTML = ''; // Limpiar
 
             pedidos.forEach(p => {
-                // Determinamos el color del estado
-                let badgeClass = 'status-pending';
-                if(p.estado === 'Entregado') badgeClass = 'status-confirmed';
+                let badgeClass = p.estado === 'Entregado' ? 'status-confirmed' : 'status-pending';
                 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>#${p.id.slice(-6)}</td> <td>${p.direccion ? 'Delivery' : 'Retiro en Local'}</td>
+                    <td>#${p.id.slice(-6)}</td>
+                    <td>${p.direccion ? 'Delivery' : 'Retiro'}</td>
                     <td>$${(p.total || 0).toLocaleString()}</td>
                     <td><span class="status-badge ${badgeClass}">${p.estado}</span></td>
+                    <td><button class="action-btn btn-primary" onclick="alert('Ver pedido: ${p.id}')">Ver</button></td>
+                `;
+                tablaPedidos.appendChild(tr);
+            });
+
+            // --- 5. ACTUALIZAR TABLA DE RESERVAS (¡Nuevo!) ---
+            // Buscamos la segunda tabla en la página (la de reservas)
+            const tablaReservas = document.querySelectorAll('.data-table tbody')[1];
+            tablaReservas.innerHTML = ''; // Limpiar datos falsos
+
+            reservas.forEach(r => {
+                // Lógica de colores para el estado
+                let badgeClass = 'status-pending'; 
+                if(r.estado === 'Confirmada') badgeClass = 'status-confirmed';
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#${r.id.slice(-6)}</td>
+                    <td>${r.cliente_nombre}</td>
+                    <td>${r.asistentes} personas</td>
+                    <td><span class="status-badge ${badgeClass}">${r.estado}</span></td>
                     <td>
-                        <button class="action-btn btn-primary" onclick="verPedido('${p.id}')">Ver</button>
+                        <button class="action-btn btn-primary" onclick="verDetalleReserva('${r.id}')">Ver</button>
+                        <button class="action-btn btn-success" onclick="confirmarReserva('${r.id}')">Confirmar</button>
                     </td>
                 `;
-                tbody.appendChild(tr);
+                tablaReservas.appendChild(tr);
             });
 
         } catch (error) {
             console.error("Error cargando dashboard:", error);
-            showNotification("Error de conexión con el servidor", "error");
+            showNotification("Error conectando con el servidor", "error");
         }
     }
 
@@ -226,12 +251,18 @@
         setTimeout(() => { notification.style.display = 'none'; }, 3000);
     }
 
-    function verPedido(id) {
-        alert("Detalle del pedido ID: " + id);
-        // Aquí podrías redirigir a una página de detalle de orden admin
+    function verDetalleReserva(id) {
+        // Aquí conectaríamos con E6F2.html pasando el ID
+        alert("Gestionar reserva ID: " + id);
+        // window.location.href = `E6F2.html?id=${id}`; 
     }
 
-    // Lógica de navegación (Menú lateral)
+    function confirmarReserva(id) {
+        // Aquí haríamos un fetch UPDATE a la API para cambiar estado a "Confirmada"
+        alert("Lógica para confirmar reserva: " + id);
+    }
+
+    // Navegación Menú
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function(e) {
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
