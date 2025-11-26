@@ -158,19 +158,16 @@
                 const resultado = await response.json();
 
                 if (response.ok) {
-                    // ÉXITO
-                    localStorage.removeItem('carrito'); // Vaciamos el carrito
-                    notif.style.backgroundColor = "#27ae60";
-                    notif.textContent = `¡Éxito! Pedido #${resultado.id} creado.`;
-                    
-                    // Redirigir después de 2 segundos (al home o a seguimiento)
-                    setTimeout(() => {
-                        window.location.href = 'E2F1.html'; 
-                    }, 2000);
-                } else {
-                    // ERROR API
-                    throw new Error(resultado.detail || "Error al crear el pedido");
-                }
+            // ... código anterior ...
+            localStorage.removeItem('carrito');
+            notif.style.backgroundColor = "#27ae60";
+            notif.textContent = `¡Éxito! Pedido #${resultado.id} creado.`;
+            
+            // Redirigir después de 2 segundos AL CATÁLOGO REAL
+            setTimeout(() => {
+                window.location.href = 'E2F2.html'; // <--- CAMBIO AQUÍ
+            }, 2000);
+        }
 
             } catch (error) {
                 console.error(error);

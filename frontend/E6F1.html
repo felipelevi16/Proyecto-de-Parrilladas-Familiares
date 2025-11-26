@@ -172,43 +172,72 @@
     </div>
 
     <script>
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.display = 'block';
-            notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
+    document.addEventListener('DOMContentLoaded', cargarDashboard);
+
+    async function cargarDashboard() {
+        try {
+            // 1. Pedir los pedidos a la API
+            const response = await fetch('http://127.0.0.1:8000/orders');
+            const pedidos = await response.json();
+
+            // 2. Calcular Estadísticas Rápidas
+            const totalPedidos = pedidos.length;
+            // Sumamos el total de dinero de todos los pedidos
+            const ingresoTotal = pedidos.reduce((sum, p) => sum + (p.total || 0), 0);
             
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
+            // 3. Actualizar las tarjetas de arriba (KPIs)
+            // Buscamos las tarjetas por su contenido aproximado (o idealmente ponerles IDs)
+            const cards = document.querySelectorAll('.stat-number');
+            if(cards.length > 0) cards[0].textContent = totalPedidos; // Pedidos Hoy
+            if(cards.length > 2) cards[2].textContent = `$${ingresoTotal.toLocaleString()}`; // Ingresos
 
-        function viewOrder(orderId) {
-            showNotification(`Viendo detalles del pedido #${orderId}`);
-        }
+            // 4. Llenar la Tabla de Pedidos
+            const tbody = document.querySelector('.data-table tbody');
+            tbody.innerHTML = ''; // Limpiar datos falsos
 
-        function confirmOrder(orderId) {
-            showNotification(`Pedido #${orderId} confirmado exitosamente`);
-        }
-
-        function viewReservation(reservationId) {
-            showNotification(`Viendo detalles de la reserva ${reservationId}`);
-        }
-
-        function confirmReservation(reservationId) {
-            showNotification(`Reserva ${reservationId} confirmada exitosamente`);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const navItems = document.querySelectorAll('.nav-item');
-            
-            navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    this.classList.add('active');
-                });
+            pedidos.forEach(p => {
+                // Determinamos el color del estado
+                let badgeClass = 'status-pending';
+                if(p.estado === 'Entregado') badgeClass = 'status-confirmed';
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#${p.id.slice(-6)}</td> <td>${p.direccion ? 'Delivery' : 'Retiro en Local'}</td>
+                    <td>$${(p.total || 0).toLocaleString()}</td>
+                    <td><span class="status-badge ${badgeClass}">${p.estado}</span></td>
+                    <td>
+                        <button class="action-btn btn-primary" onclick="verPedido('${p.id}')">Ver</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
             });
+
+        } catch (error) {
+            console.error("Error cargando dashboard:", error);
+            showNotification("Error de conexión con el servidor", "error");
+        }
+    }
+
+    function showNotification(message, type = 'success') {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.style.display = 'block';
+        notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
+        setTimeout(() => { notification.style.display = 'none'; }, 3000);
+    }
+
+    function verPedido(id) {
+        alert("Detalle del pedido ID: " + id);
+        // Aquí podrías redirigir a una página de detalle de orden admin
+    }
+
+    // Lógica de navegación (Menú lateral)
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            this.classList.add('active');
         });
+    });
     </script>
 </body>
 </html>

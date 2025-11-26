@@ -141,3 +141,23 @@ async def get_product_detail(id: str):
     # 4. Convertimos el ID a texto para enviarlo
     product["_id"] = str(product["_id"])
     return product
+    # --- Agrega esto al final de backend/main.py ---
+
+@app.get("/orders")
+async def get_orders():
+    # 1. Conectamos a la colección
+    order_collection = get_order_collection()
+    
+    # 2. Traemos todos los pedidos (los más nuevos primero)
+    # sort("_id", -1) ordena de forma descendente por fecha
+    orders_cursor = order_collection.find({}).sort("_id", -1)
+    orders = await orders_cursor.to_list(length=100)
+    
+    # 3. Limpieza de datos para enviar al frontend
+    results = []
+    for order in orders:
+        order["id"] = str(order["_id"]) # Convertir ID a texto
+        del order["_id"]
+        results.append(order)
+        
+    return results
