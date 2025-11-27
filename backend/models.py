@@ -63,6 +63,9 @@ class Producto(BaseModel):
     categoria: str
     imagen: str
     especificaciones: Optional[List[Especificacion]] = []
+    
+    es_oferta: bool = False
+    precio_normal: Optional[float] = None # Para mostrar el precio anterior tachado
 
     class Config:
         populate_by_name = True
