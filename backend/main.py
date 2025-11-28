@@ -89,7 +89,15 @@ async def login_user(form_data: models.UserLogin):
     if not user_db or not security.verify_password(form_data.password, user_db["hashed_password"]):
         raise HTTPException(status_code=400, detail="Credenciales incorrectas")
     
-    return {"message": "¡Sesión iniciada correctamente!", "email": user_db["email"]}
+    # Obtenemos el rol (si no tiene, asumimos que es cliente)
+    user_role = user_db.get("role", "cliente")
+    
+    # Devolvemos el rol al frontend
+    return {
+        "message": "¡Sesión iniciada correctamente!", 
+        "email": user_db["email"],
+        "role": user_role  
+    }
 
 # --- Agrega o actualiza esto en backend/main.py ---
 

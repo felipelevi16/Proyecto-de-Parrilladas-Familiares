@@ -44,6 +44,11 @@ class UserInDB(BaseModel):
     hashed_password: str
     terminos: bool
     is_active: bool = Field(default=True)
+    role: str = Field(default="cliente") # Puede ser "cliente" o "admin"
+
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True
 
     class Config:
         populate_by_name = True

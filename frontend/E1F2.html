@@ -189,7 +189,7 @@ function limpiarErrores(){["email","password","confirm","terminos"].forEach(c=>e
 
 const msj = document.getElementById("mensaje");
 
-// --- 3. LÓGICA DE LOGIN (CONECTADO A API Y REDIRECCIÓN) ---
+// --- 3. LÓGICA DE LOGIN CON REDIRECCIÓN POR ROL ---
 document.getElementById("loginForm").addEventListener("submit", async e => {
   e.preventDefault(); 
   msj.style.display = 'none';
@@ -207,13 +207,25 @@ document.getElementById("loginForm").addEventListener("submit", async e => {
     const resultado = await response.json();
 
     if (response.ok) {
-      msj.textContent = "¡Sesión iniciada! Redirigiendo..."; 
+      msj.textContent = "¡Bienvenido! Redirigiendo..."; 
       msj.className = "mensaje exito";
       msj.style.display = "block";
       
-      // --- REDIRECCIÓN AL MENÚ PRINCIPAL ---
+      // Guardamos info útil en el navegador
+      localStorage.setItem('userEmail', resultado.email);
+      localStorage.setItem('userRole', resultado.role);
+
+      // --- AQUÍ ESTÁ LA SOLUCIÓN ---
       setTimeout(() => {
-        window.location.href = "E2F1.html"; 
+        console.log("Rol detectado:", resultado.role); // Para depurar si hace falta
+
+        if (resultado.role === 'admin') {
+            // SI ES ADMIN -> Va al Panel de Control
+            window.location.href = "E6F1.html"; 
+        } else {
+            // SI ES CLIENTE (o cualquier otro) -> Va al Menú Principal
+            window.location.href = "E2F1.html"; 
+        }
       }, 1500);
       
     } else {
@@ -222,7 +234,8 @@ document.getElementById("loginForm").addEventListener("submit", async e => {
       msj.style.display = "block";
     }
   } catch (error) {
-    msj.textContent = "Error de conexión. Revisa que Uvicorn esté corriendo.";
+    console.error(error);
+    msj.textContent = "Error de conexión.";
     msj.className = "mensaje error";
     msj.style.display = "block";
   }
