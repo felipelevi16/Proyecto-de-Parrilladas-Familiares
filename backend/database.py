@@ -2,9 +2,8 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 
-# --- Configuración de Conexión ---
+#Configuración de Conexión 
 
-# Lo siguiente lee la cadena de conexión de MongoDB de una variable de entorno
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
 DATABASE_NAME = "parrilladas_familiares_db" 
 
@@ -28,7 +27,7 @@ async def close_mongo_connection():
     Database.client.close()
     print("Conexión cerrada.")
 
-# --- Funciones de Acceso a Colecciones ---
+#Funciones de Acceso a Colecciones 
 
 def get_user_collection():
     """ Obtiene la colección 'users' """

@@ -3,129 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrega - Parrilladas</title>
+    <title>Finalizar Compra - Parrilladas</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-        body{background:#f8f9fa;color:#333}
-        .header{background:#042490;color:white;padding:15px}
-        .nav{display:flex;justify-content:space-between;align-items:center;max-width:800px;margin:0 auto}
-        .nav a{color:white;text-decoration:none}
-        .container{max-width:800px;margin:0 auto;padding:20px}
-        .progress-bar{display:flex;justify-content:space-between;margin:20px 0}
-        .step-circle{width:30px;height:30px;border-radius:50%;background:white;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-weight:bold}
-        .step-circle.active{border-color:#042490;background:#042490;color:white}
-        .delivery-options{background:white;border-radius:8px;padding:20px;margin-bottom:20px;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
-        .radio-option{padding:15px;border:2px solid #eee;border-radius:8px;cursor:pointer;margin-bottom:10px}
-        .radio-option.selected{border-color:#042490;background:#fff9f9}
-        .form-section{background:#f9f9f9;padding:15px;border-radius:8px;margin-top:15px;display:none}
-        .form-section.active{display:block}
-        .form-group{margin-bottom:15px}
-        .form-control{width:100%;padding:10px;border:1px solid #ddd;border-radius:4px}
-        .action-buttons{display:flex;gap:10px;margin-top:20px}
-        .btn{padding:12px 20px;border:none;border-radius:4px;cursor:pointer;flex:1;text-align:center;text-decoration:none;font-weight:bold;color:white;background:#042490;}
-        .btn:hover{background:#0eabc7;}
-        .btn-secondary{background:#6c757d;}
-        .notification{position:fixed;top:20px;right:20px;background:#27ae60;color:white;padding:15px;border-radius:8px;display:none;z-index:1000;}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f4f7f6; color: #333; }
+        
+        .header { background: #042490; color: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        
+        .checkout-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
+        
+        /* SECCIONES (Tarjetas) */
+        .section-card { background: white; border-radius: 10px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .section-title { font-size: 18px; font-weight: bold; color: #042490; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .step-number { background: #042490; color: white; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+        /* OPCIONES DE RADIO (Entrega y Pago) */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .radio-card { border: 2px solid #eee; border-radius: 8px; padding: 15px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .radio-card:hover { border-color: #bbccee; }
+        .radio-card.selected { border-color: #042490; background-color: #f0f4ff; }
+        .radio-icon { font-size: 24px; margin-bottom: 5px; }
+        
+        /* FORMULARIOS */
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
+        .hidden { display: none; }
+
+        /* RESUMEN LATERAL (Sticky) */
+        .summary-card { position: sticky; top: 20px; background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .summary-items { max-height: 300px; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px dashed #ddd; }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; }
+        .item-img { width: 50px; height: 50px; background: #eee; border-radius: 5px; object-fit: cover; }
+        .item-details { flex: 1; margin-left: 10px; }
+        
+        .totals-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; }
+        .total-final { font-size: 24px; font-weight: bold; color: #042490; margin-top: 15px; border-top: 2px solid #eee; padding-top: 15px; }
+
+        .btn-pay { background: #28a745; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-pay:hover { background: #218838; }
+        
+        .notification { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 25px; border-radius: 8px; display: none; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+
+        @media (max-width: 768px) { .checkout-layout { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+
     <div class="header">
-        <div class="nav">
-            <div>🥩 Parrilladas</div>
-            <div><a href="E3F2.html">← Volver al Carrito</a></div>
+        <div class="container" style="margin:0; padding:0; display:flex; justify-content:space-between; align-items:center;">
+            <h2>🥩 Finalizar Compra</h2>
+            <a href="E3F2.html" style="color:white; text-decoration:none;">← Volver al Carrito</a>
         </div>
     </div>
-    
-    <div class="container">
-        <h2 style="text-align:center;color:#042490;margin:20px 0">Finalizar Pedido</h2>
+
+    <div class="container checkout-layout">
         
-        <div class="delivery-options">
-            <div style="margin-bottom:15px;font-weight:bold">Método de entrega:</div>
+        <div class="main-content">
             
-            <div class="radio-option selected" id="optRetiro" onclick="selMetodo('retiro')">
-                <div style="font-weight:bold">Retiro en Local (Gratis)</div>
-            </div>
-            
-            <div class="radio-option" id="optDelivery" onclick="selMetodo('delivery')">
-                <div style="font-weight:bold">Delivery a Domicilio (+$5.000)</div>
-            </div>
-            
-            <div id="pickupForm" class="form-section active">
+            <div class="section-card">
+                <div class="section-title"><span class="step-number">1</span> Información de Contacto</div>
                 <div class="form-group">
-                    <label>Sucursal:</label>
-                    <select class="form-control" id="sucursalInput">
-                        <option value="vitacura">Vitacura</option>
-                        <option value="las-condes">Las Condes</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div id="deliveryForm" class="form-section">
-                <div class="form-group">
-                    <label>Dirección:</label>
-                    <input type="text" class="form-control" id="direccionInput" placeholder="Calle y número">
-                </div>
-                <div class="form-group">
-                    <label>Comuna:</label>
-                    <select class="form-control" id="comunaInput">
-                        <option value="vitacura">Vitacura</option>
-                        <option value="las-condes">Las Condes</option>
-                        <option value="providencia">Providencia</option>
-                    </select>
+                    <label class="form-label">Teléfono móvil</label>
+                    <input type="tel" id="telefonoInput" class="form-control" placeholder="+56 9 1234 5678" value="+569">
                 </div>
             </div>
 
-            <div class="form-group" style="margin-top:15px;">
-                <label>Teléfono de contacto:</label>
-                <input type="tel" class="form-control" id="telefonoInput" placeholder="+56 9..." required>
+            <div class="section-card">
+                <div class="section-title"><span class="step-number">2</span> Método de Entrega</div>
+                <div class="options-grid">
+                    <div class="radio-card selected" id="optRetiro" onclick="selMetodo('retiro')">
+                        <div class="radio-icon">🏪</div>
+                        <strong>Retiro en Local</strong>
+                        <small>Gratis</small>
+                    </div>
+                    <div class="radio-card" id="optDelivery" onclick="selMetodo('delivery')">
+                        <div class="radio-icon">🛵</div>
+                        <strong>Delivery</strong>
+                        <small>+ $5.000</small>
+                    </div>
+                </div>
+
+                <div id="pickupForm" style="margin-top: 20px;">
+                    <label class="form-label">Selecciona Sucursal</label>
+                    <select class="form-control" id="sucursalInput">
+                        <option value="Las Condes">Las Condes (Av. Las Condes 1234)</option>
+                        <option value="Vitacura">Vitacura (Av. Vitacura 5678)</option>
+                    </select>
+                </div>
+
+                <div id="deliveryForm" class="hidden" style="margin-top: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">Dirección de envío</label>
+                        <input type="text" id="direccionInput" class="form-control" placeholder="Calle y número">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Comuna</label>
+                        <select class="form-control" id="comunaInput">
+                            <option>Las Condes</option>
+                            <option>Vitacura</option>
+                            <option>Providencia</option>
+                            <option>Ñuñoa</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-title"><span class="step-number">3</span> Método de Pago</div>
+                <div class="options-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                    <div class="radio-card selected" id="payWebpay" onclick="selPago('WebPay')">
+                        <div class="radio-icon">💳</div>
+                        <strong>WebPay</strong>
+                    </div>
+                    <div class="radio-card" id="payTransfer" onclick="selPago('Transferencia')">
+                        <div class="radio-icon">🏦</div>
+                        <strong>Transferencia</strong>
+                    </div>
+                    <div class="radio-card" id="payCash" onclick="selPago('Efectivo')">
+                        <div class="radio-icon">💵</div>
+                        <strong>Efectivo</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="sidebar">
+            <div class="summary-card">
+                <h3 style="margin-bottom:20px; color:#042490;">Resumen del Pedido</h3>
+                
+                <div class="summary-items" id="summaryList">
+                    </div>
+
+                <div class="totals-row">
+                    <span>Subtotal</span>
+                    <span id="resSubtotal">$0</span>
+                </div>
+                <div class="totals-row">
+                    <span>Envío</span>
+                    <span id="resEnvio">$0</span>
+                </div>
+                
+                <div class="totals-row total-final">
+                    <span>Total</span>
+                    <span id="resTotal">$0</span>
+                </div>
+
+                <button class="btn-pay" onclick="confirmarPedido()">PAGAR AHORA</button>
+                <div style="text-align:center; margin-top:10px; font-size:12px; color:#666;">
+                    🔒 Pago 100% Seguro
+                </div>
             </div>
         </div>
-        
-        <div class="action-buttons">
-            <button class="btn" onclick="confirmarPedido()">CONFIRMAR Y PAGAR</button>
-        </div>
+
     </div>
 
     <div class="notification" id="notification"></div>
 
     <script>
-        let metodoSeleccionado = 'retiro';
+        let metodoEntrega = 'retiro';
+        let metodoPago = 'WebPay';
         const COSTO_ENVIO = 5000;
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            renderResumen();
+        });
 
         function selMetodo(metodo) {
-            metodoSeleccionado = metodo;
+            metodoEntrega = metodo;
             
-            // Visuales
+            // UI
             document.getElementById('optRetiro').classList.toggle('selected', metodo === 'retiro');
             document.getElementById('optDelivery').classList.toggle('selected', metodo === 'delivery');
             
-            document.getElementById('pickupForm').classList.toggle('active', metodo === 'retiro');
-            document.getElementById('deliveryForm').classList.toggle('active', metodo === 'delivery');
+            // Formularios
+            document.getElementById('pickupForm').classList.toggle('hidden', metodo !== 'retiro');
+            document.getElementById('deliveryForm').classList.toggle('hidden', metodo !== 'delivery');
+
+            // Recalcular Total (Envío)
+            renderResumen();
+        }
+
+        function selPago(pago) {
+            metodoPago = pago;
+            
+            // Reset UI
+            ['payWebpay', 'payTransfer', 'payCash'].forEach(id => {
+                document.getElementById(id).classList.remove('selected');
+            });
+            
+            // Select active
+            if(pago === 'WebPay') document.getElementById('payWebpay').classList.add('selected');
+            if(pago === 'Transferencia') document.getElementById('payTransfer').classList.add('selected');
+            if(pago === 'Efectivo') document.getElementById('payCash').classList.add('selected');
+        }
+
+        function renderResumen() {
+            const list = document.getElementById('summaryList');
+            list.innerHTML = '';
+            
+            let subtotal = 0;
+
+            carrito.forEach(prod => {
+                const totalItem = prod.precio * prod.cantidad;
+                subtotal += totalItem;
+                
+                // Imagen o Emoji
+                let imgHTML = prod.imagen && prod.imagen.startsWith('http') 
+                    ? `<img src="${prod.imagen}" class="item-img">`
+                    : `<div class="item-img" style="display:flex;align-items:center;justify-content:center;font-size:20px;">🥩</div>`;
+
+                list.innerHTML += `
+                    <div class="summary-item">
+                        ${imgHTML}
+                        <div class="item-details">
+                            <div style="font-weight:bold;">${prod.nombre}</div>
+                            <div style="color:#666;">Cant: ${prod.cantidad}</div>
+                        </div>
+                        <div style="font-weight:bold;">$${totalItem.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+
+            // Cálculos
+            const costoEnvio = metodoEntrega === 'delivery' ? COSTO_ENVIO : 0;
+            const total = subtotal + costoEnvio;
+
+            // Render Totales
+            document.getElementById('resSubtotal').textContent = `$${subtotal.toLocaleString()}`;
+            document.getElementById('resEnvio').textContent = metodoEntrega === 'delivery' ? `$${COSTO_ENVIO.toLocaleString()}` : 'Gratis';
+            document.getElementById('resTotal').textContent = `$${total.toLocaleString()}`;
         }
 
         async function confirmarPedido() {
-            // 1. Validar Datos Básicos
+            // Validaciones
             const telefono = document.getElementById('telefonoInput').value;
-            if(!telefono) {
-                alert("Por favor ingresa un teléfono de contacto");
+            if(!telefono || telefono.length < 8) {
+                alert("Por favor ingresa un teléfono válido");
+                return;
+            }
+            if(metodoEntrega === 'delivery' && !document.getElementById('direccionInput').value) {
+                alert("Por favor ingresa una dirección de envío");
                 return;
             }
 
-            // 2. Preparar datos del Carrito
-            const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-            if(carrito.length === 0) {
-                alert("El carrito está vacío");
-                window.location.href = 'E2F2.html';
-                return;
-            }
-
-            // Calcular totales
+            // Preparar Datos
             const subtotal = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-            const envio = metodoSeleccionado === 'delivery' ? COSTO_ENVIO : 0;
-            const total = subtotal + envio;
-
-            // 3. Armar el objeto PEDIDO para la API
-            // Nota: Mapeamos los datos para que coincidan con models.py (ProductoEnCarrito)
+            const envio = metodoEntrega === 'delivery' ? COSTO_ENVIO : 0;
+            
             const itemsParaApi = carrito.map(item => ({
                 producto_id: item._id,
                 cantidad: item.cantidad
@@ -136,18 +265,19 @@
                 subtotal: subtotal,
                 envio: envio,
                 descuento: 0,
-                total: total,
-                metodo_entrega: metodoSeleccionado,
-                sucursal: metodoSeleccionado === 'retiro' ? document.getElementById('sucursalInput').value : null,
-                direccion: metodoSeleccionado === 'delivery' ? document.getElementById('direccionInput').value : null,
+                total: subtotal + envio,
+                metodo_entrega: metodoEntrega,
+                metodo_pago: metodoPago, // <--- CAMPO NUEVO
+                sucursal: metodoEntrega === 'retiro' ? document.getElementById('sucursalInput').value : null,
+                direccion: metodoEntrega === 'delivery' ? document.getElementById('direccionInput').value : null,
                 estado: "Ingresado"
             };
 
-            // 4. ENVIAR A LA API
+            // Enviar a API
             try {
-                const notif = document.getElementById('notification');
-                notif.textContent = "Procesando pedido...";
-                notif.style.display = 'block';
+                const btn = document.querySelector('.btn-pay');
+                btn.textContent = "Procesando...";
+                btn.disabled = true;
 
                 const response = await fetch('http://127.0.0.1:8000/orders', {
                     method: 'POST',
@@ -158,25 +288,26 @@
                 const resultado = await response.json();
 
                 if (response.ok) {
-                        localStorage.removeItem('carrito');
+                    localStorage.removeItem('carrito');
+                    localStorage.setItem('ultimoPedidoId', resultado.id);
                     
-                    // --- AGREGA ESTA LÍNEA ---
-                    localStorage.setItem('ultimoPedidoId', resultado.id); // Guardamos ID para el seguimiento
-                    // --------------------------
-
-                    notif.style.backgroundColor = "#27ae60";
-                    // ... resto del código ...
+                    const notif = document.getElementById('notification');
+                    notif.textContent = `¡Pago Exitoso! Pedido #${resultado.id} confirmado.`;
+                    notif.style.display = 'block';
                     
-                    // CAMBIO OPCIONAL: Redirigir al Seguimiento en vez del Catálogo para la demo
                     setTimeout(() => {
-                        window.location.href = 'E7F2.html'; // ¡Llévalo directo al seguimiento!
+                        window.location.href = 'E7F2.html'; // Ir a Seguimiento
                     }, 2000);
+                } else {
+                    throw new Error(JSON.stringify(resultado));
                 }
 
             } catch (error) {
                 console.error(error);
-                alert("Error: " + error.message);
-                document.getElementById('notification').style.display = 'none';
+                alert("Hubo un error al procesar el pedido. Intenta nuevamente.");
+                const btn = document.querySelector('.btn-pay');
+                btn.textContent = "PAGAR AHORA";
+                btn.disabled = false;
             }
         }
     </script>

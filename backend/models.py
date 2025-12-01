@@ -4,7 +4,7 @@ from typing import List, Optional, Any
 from bson import ObjectId
 from pydantic_core import core_schema
 
-# --- CLASE ESPECIAL PARA EL ID ---
+#CLASE ESPECIAL PARA EL ID 
 class PyObjectId(str):
     """
     Clase personalizada para que Pydantic v2 pueda manejar
@@ -25,7 +25,7 @@ class PyObjectId(str):
             ),
         )
 
-# --- Modelos de Usuario ---
+#Modelos de Usuario 
 
 class UserCreate(BaseModel):
     email: EmailStr
@@ -38,13 +38,13 @@ class UserLogin(BaseModel):
     password: str
 
 class UserInDB(BaseModel):
-    # Aquí usamos nuestra clase especial PyObjectId
+
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     email: EmailStr
     hashed_password: str
     terminos: bool
     is_active: bool = Field(default=True)
-    role: str = Field(default="cliente") # Puede ser "cliente" o "admin"
+    role: str = Field(default="cliente") 
 
     class Config:
         populate_by_name = True
@@ -54,7 +54,7 @@ class UserInDB(BaseModel):
         populate_by_name = True
         arbitrary_types_allowed = True
 
-# --- Modelos de Producto ---
+#Modelos de Producto 
 
 class Especificacion(BaseModel):
     nombre: str
@@ -70,13 +70,13 @@ class Producto(BaseModel):
     especificaciones: Optional[List[Especificacion]] = []
     
     es_oferta: bool = False
-    precio_normal: Optional[float] = None # Para mostrar el precio anterior tachado
+    precio_normal: Optional[float] = None 
 
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
 
-# --- Modelos de Pedido ---
+#Modelos de Pedido
 
 class ProductoEnCarrito(BaseModel):
     producto_id: str
@@ -90,6 +90,10 @@ class Pedido(BaseModel):
     descuento: float
     total: float
     metodo_entrega: str
+    
+
+    metodo_pago: str 
+    
     sucursal: Optional[str] = None
     direccion: Optional[str] = None
     estado: str
@@ -97,16 +101,31 @@ class Pedido(BaseModel):
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
+
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True
 class Reserva(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    cliente_nombre: str # O podrías usar user_id si prefieres
+    cliente_nombre: str 
     telefono: str
     fecha_hora: str
     asistentes: int
     sucursal: str
     menu: Optional[str] = None
-    estado: str = "Pendiente" # Pendiente, Confirmada, Rechazada
+    estado: str = "Pendiente" 
 
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
+
+
+class UserUpdate(BaseModel):
+    email: EmailStr
+    nombre: Optional[str] = None
+    telefono: Optional[str] = None
+
+class PasswordChange(BaseModel):
+    email: EmailStr
+    current_password: str
+    new_password: str

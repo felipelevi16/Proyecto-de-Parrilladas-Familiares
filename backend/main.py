@@ -1,4 +1,4 @@
-# backend/main.py
+
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware 
 from fastapi.staticfiles import StaticFiles
@@ -16,7 +16,7 @@ from .database import (
     get_order_collection
 )
 
-# --- Configuración de la Aplicación ---
+#Configuración de la Aplicación 
 
 app = FastAPI(
     title="API de Parrilladas Familiares",
@@ -24,13 +24,13 @@ app = FastAPI(
     version="1.0.0"
 )
 app.mount("/static", StaticFiles(directory="backend/static"), name="static")
-# --- CONFIGURACIÓN DE CORS (PERMISOS) ---
-# Esto debe ir justo después de crear la 'app'
+#CONFIGURACIÓN DE CORS (PERMISOS)
+
 origins = [
     "http://localhost",
     "http://localhost:8080",
-    "http://127.0.0.1:5500",  # Puerto común de Live Server
-    "*"  # Comodín: permite conexiones desde cualquier lugar (útil para desarrollo)
+    "http://127.0.0.1:5500",  
+    "*"  
 ]
 
 app.add_middleware(
@@ -50,7 +50,7 @@ async def startup_event():
 async def shutdown_event():
     await close_mongo_connection()
 
-# --- Rutas (Endpoints) ---
+#Rutas (Endpoints)
 
 @app.get("/")
 def read_root():
@@ -99,7 +99,7 @@ async def login_user(form_data: models.UserLogin):
         "role": user_role  
     }
 
-# --- Agrega o actualiza esto en backend/main.py ---
+
 
 @app.post("/orders", status_code=status.HTTP_201_CREATED)
 async def create_order(pedido: models.Pedido):
@@ -122,7 +122,7 @@ async def get_products():
     # 1. Conectamos a la colección de productos
     product_collection = get_product_collection()
     
-    # 2. Buscamos todos los productos (limitado a 100 para no saturar)
+    # 2. Buscamos todos los productos 
     products_cursor = product_collection.find({})
     products = await products_cursor.to_list(length=100)
     
@@ -135,7 +135,7 @@ async def get_products():
 
 @app.get("/products/{id}")
 async def get_product_detail(id: str):
-    # 1. Validamos si el ID tiene el formato correcto de MongoDB
+    # 1. Validamos si el ID tiene el formato correcto 
     if not ObjectId.is_valid(id):
         raise HTTPException(status_code=400, detail="ID de producto inválido")
     
@@ -149,7 +149,7 @@ async def get_product_detail(id: str):
     # 4. Convertimos el ID a texto para enviarlo
     product["_id"] = str(product["_id"])
     return product
-    # --- Agrega esto al final de backend/main.py ---
+
 
 @app.get("/orders")
 async def get_orders():
@@ -157,14 +157,13 @@ async def get_orders():
     order_collection = get_order_collection()
     
     # 2. Traemos todos los pedidos (los más nuevos primero)
-    # sort("_id", -1) ordena de forma descendente por fecha
     orders_cursor = order_collection.find({}).sort("_id", -1)
     orders = await orders_cursor.to_list(length=100)
     
     # 3. Limpieza de datos para enviar al frontend
     results = []
     for order in orders:
-        order["id"] = str(order["_id"]) # Convertir ID a texto
+        order["id"] = str(order["_id"]) 
         del order["_id"]
         results.append(order)
         
@@ -173,8 +172,7 @@ async def get_orders():
 # 1. Crear Reserva (Para el Cliente)
 @app.post("/reservations", status_code=status.HTTP_201_CREATED)
 async def create_reservation(reserva: models.Reserva):
-    # Puedes crear una colección nueva "reservations"
-    db = get_order_collection().database # Truco para obtener la referencia a la DB
+    db = get_order_collection().database 
     reservations_collection = db["reservations"]
     
     reserva_dict = reserva.dict(by_alias=True, exclude={"id"})
@@ -197,8 +195,6 @@ async def get_reservations():
         
     return reservas
 
-# backend/main.py
-
 @app.get("/orders/{id}")
 async def get_single_order(id: str):
     if not ObjectId.is_valid(id):
@@ -212,8 +208,6 @@ async def get_single_order(id: str):
     order["id"] = str(order["_id"])
     del order["_id"]
     return order
-
-# --- Agrega esto al final de backend/main.py ---
 
 # 1. Para E6F3 (Admin Catálogo): Crear nuevos productos
 @app.post("/products", status_code=status.HTTP_201_CREATED)
@@ -246,3 +240,45 @@ async def update_reservation_status(id: str, estado: str):
         raise HTTPException(status_code=404, detail="Reserva no encontrada")
         
     return {"mensaje": f"Reserva actualizada a {estado}"}
+
+# 1. Actualizar Perfil (Nombre, Teléfono)
+@app.put("/users/profile")
+async def update_profile(data: models.UserUpdate):
+    user_collection = get_user_collection()
+    
+    # Preparamos los datos a actualizar (quitando nulos)
+    update_data = {k: v for k, v in data.dict().items() if v is not None and k != 'email'}
+    
+    result = await user_collection.update_one(
+        {"email": data.email},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+        
+    return {"mensaje": "Perfil actualizado correctamente"}
+
+# 2. Cambiar Contraseña
+@app.post("/users/change-password")
+async def change_password(data: models.PasswordChange):
+    user_collection = get_user_collection()
+    user_db = await user_collection.find_one({"email": data.email})
+    
+    if not user_db:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+        
+    # Verificar contraseña antigua
+    if not security.verify_password(data.current_password, user_db["hashed_password"]):
+        raise HTTPException(status_code=400, detail="La contraseña actual es incorrecta")
+        
+    # Hashear nueva contraseña
+    new_hashed_password = security.get_password_hash(data.new_password)
+    
+    # Guardar
+    await user_collection.update_one(
+        {"email": data.email},
+        {"$set": {"hashed_password": new_hashed_password}}
+    )
+    
+    return {"mensaje": "Contraseña actualizada exitosamente"}
