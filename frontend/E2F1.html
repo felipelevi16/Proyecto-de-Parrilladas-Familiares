@@ -5,311 +5,338 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inicio - Parrilladas Don Eduardo</title>
 <style>
-  body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; min-height: 100vh; }
+  :root {
+    --primary: #042490;
+    --primary-gradient: linear-gradient(135deg, #021B79 0%, #0575E6 100%);
+    --secondary: #FFFFFF;
+    --accent: #FFD700;
+    --text-dark: #1E293B;
+    --text-light: #64748B;
+    --bg-page: #F8FAFC;
+    --glass: rgba(255, 255, 255, 0.95);
+  }
   
-  /* --- HEADER DE NAVEGACIÓN --- */
+  body { 
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+    background: var(--bg-page); 
+    margin: 0; 
+    padding-bottom: 80px; 
+    color: var(--text-dark); 
+  }
+  
+  /* --- NAVBAR --- */
   .header { 
-    background: #042490; 
-    color: white; 
-    padding: 15px 20px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    background: var(--glass); backdrop-filter: blur(10px);
+    padding: 15px 25px; display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 1000; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03); border-bottom: 1px solid rgba(0,0,0,0.05);
   }
+  .logo { font-size: 22px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
   
-  .logo { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+  .nav-actions { display: flex; gap: 15px; }
+  .icon-btn { 
+    background: white; border: 1px solid #E2E8F0; width: 42px; height: 42px; 
+    border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; 
+    font-size: 18px; transition: 0.3s; text-decoration: none; color: var(--text-dark); position: relative;
+  }
+  .icon-btn:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); }
+  .badge { position: absolute; top: -2px; right: -2px; background: #EF4444; color: white; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; }
+
+  /* --- HERO CAROUSEL --- */
+  .carousel-container { 
+    position: relative; width: 95%; max-width: 1200px; margin: 25px auto; 
+    overflow: hidden; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+    height: 380px; cursor: pointer; 
+  }
+  .carousel-track { display: flex; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); height: 100%; }
+  .carousel-slide { min-width: 100%; position: relative; }
+  .carousel-slide img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s; }
+  .carousel-slide:hover img { transform: scale(1.05); } 
+  .carousel-overlay { 
+    position: absolute; bottom: 0; left: 0; width: 100%; 
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); 
+    padding: 50px 30px 30px; color: white; pointer-events: none; 
+  }
+  .carousel-overlay h2 { font-size: 32px; margin: 0; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+  .carousel-overlay p { font-size: 16px; margin: 5px 0 0; opacity: 0.9; }
   
-  .nav-links { display: flex; gap: 15px; }
+  .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; color: white; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: 0.3s; z-index: 10; }
+  .carousel-btn:hover { background: white; color: var(--primary); }
+  .prev { left: 20px; } .next { right: 20px; }
+
+  /* --- FILTROS --- */
+  .categories-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 10px 25px; max-width: 1200px; margin: 0 auto; scrollbar-width: none; }
+  .category-pill { 
+    background: white; padding: 10px 20px; border-radius: 30px; border: 1px solid #E2E8F0; 
+    white-space: nowrap; cursor: pointer; font-weight: 700; color: var(--text-light);
+    transition: all 0.3s; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); 
+  }
+  .category-pill:hover, .category-pill.active { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(4, 36, 144, 0.2); }
+
+  /* --- PROMOS FLASH (ESTO FALTABA) --- */
+  .promos-grid { 
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 20px; max-width: 1200px; margin: 30px auto; padding: 0 25px; 
+  }
+  .promo-card { 
+    position: relative; height: 200px; border-radius: 16px; overflow: hidden; 
+    cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: transform 0.3s; 
+  }
+  .promo-card:hover { transform: translateY(-5px); }
+  .promo-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+  .promo-card:hover img { transform: scale(1.1); }
+  .promo-content { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 100%); 
+    display: flex; flex-direction: column; justify-content: center; padding: 25px; color: white; 
+  }
+  .promo-tag { background: var(--accent); color: var(--primary); padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 800; width: fit-content; margin-bottom: 10px; text-transform: uppercase; }
+  .promo-content h3 { margin: 0; font-size: 22px; width: 80%; line-height: 1.2; font-weight: 800; }
+  .promo-link { margin-top: 15px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 5px; }
+
+  /* --- CATÁLOGO --- */
+  .section-container { max-width: 1200px; margin: 40px auto; padding: 0 25px; }
+  .section-title { font-size: 26px; font-weight: 800; color: var(--text-dark); margin: 0 0 25px 0; letter-spacing: -0.5px; }
+  .section-title span { color: var(--primary); }
+
+  .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
   
-  .nav-btn {
-    background: rgba(255,255,255,0.1);
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: background 0.3s;
+  .product-card { 
+    background: white; border-radius: 20px; overflow: hidden; 
+    transition: all 0.3s; position: relative; border: 1px solid rgba(0,0,0,0.03); 
+    cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
   }
-  .nav-btn:hover { background: rgba(255,255,255,0.3); }
+  .product-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
   
-  .cart-badge {
-    background: #FFD700;
-    color: #042490;
-    border-radius: 50%;
-    width: 20px; 
-    height: 20px;
-    font-size: 12px;
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    font-weight: bold;
-  }
-
-  /* --- CONTENEDOR PRINCIPAL --- */
-  .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+  .card-img-container { height: 200px; overflow: hidden; position: relative; background: #f1f5f9; display: flex; align-items: center; justify-content: center; }
+  .card-img-container img { width: 100%; height: 100%; object-fit: cover; }
   
-  h1 { color: #042490; text-align: center; margin-bottom: 10px; }
-  p.subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+  .promo-badge { position: absolute; top: 15px; right: 15px; background: #EF4444; color: white; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-  /* --- BARRA DE FILTROS (NUEVO) --- */
-  .filters {
-    display: flex;
-    gap: 15px;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-  }
-
-  .search-input {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    min-width: 200px;
-  }
-
-  .category-select {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    background: white;
-    min-width: 150px;
-    cursor: pointer;
-  }
-
-  /* --- GRID DE PRODUCTOS --- */
-  #listaProductos {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 25px;
-  }
-
-  .producto {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-    transition: transform 0.2s;
-    cursor: pointer;
-    border: 1px solid #eee;
-  }
-
-  .producto:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
-
-  .producto-imagen {
-    height: 180px;
-    background: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
+  .card-body { padding: 20px; }
+  .card-title { font-weight: 700; font-size: 17px; margin-bottom: 5px; color: var(--text-dark); }
+  .card-desc { font-size: 13px; color: var(--text-light); margin-bottom: 15px; height: 36px; overflow: hidden; line-height: 1.4; }
   
-  .producto-info { padding: 15px; text-align: center; }
+  .card-footer { display: flex; justify-content: space-between; align-items: flex-end; }
+  .price-box { display: flex; flex-direction: column; }
+  .old-price { font-size: 12px; text-decoration: line-through; color: #94A3B8; font-weight: 600; }
+  .current-price { font-size: 20px; font-weight: 800; color: var(--text-dark); }
   
-  .producto h3 { margin: 0 0 5px 0; color: #333; font-size: 18px; }
-  .producto p { color: #666; font-size: 13px; margin: 0 0 10px 0; height: 40px; overflow: hidden; }
-  .precio { color: #042490; font-weight: bold; font-size: 20px; margin-bottom: 15px; }
-
-  .btn-agregar {
-    width: 100%;
-    padding: 10px;
-    background: #042490;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
+  .add-btn { 
+    background: var(--primary-gradient); color: white; border: none; 
+    width: 40px; height: 40px; border-radius: 12px; cursor: pointer; 
+    display: flex; align-items: center; justify-content: center; font-size: 20px; 
+    transition: 0.3s; box-shadow: 0 5px 15px rgba(4, 36, 144, 0.2);
   }
-  .btn-agregar:hover { background: #06048a; }
+  .add-btn:hover { transform: scale(1.1); box-shadow: 0 8px 20px rgba(4, 36, 144, 0.3); }
 
-  /* --- ESTADO VACÍO --- */
-  .loading, .error { text-align: center; padding: 40px; color: #666; grid-column: 1 / -1; }
+  /* Loading */
+  .loading-skeleton { height: 250px; background: #e2e8f0; border-radius: 20px; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+  @media (max-width: 768px) {
+    .carousel-container { height: 220px; width: 100%; border-radius: 0; margin-top: 0; }
+    .promos-grid { grid-template-columns: 1fr; gap: 15px; }
+    .products-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="logo">🥩 Don Eduardo</div>
-  <div class="nav-links">
-    <a href="E7F3.html" class="nav-btn">👤 Mi Perfil</a>
-    <a href="E3F2.html" class="nav-btn">
-      🛒 Carrito 
-      <span class="cart-badge" id="cartCount">0</span>
-    </a>
+  <nav class="header">
+    <div class="logo">🔥Parrilladas Don Eduardo</div>
+    <div class="nav-actions">
+      <a href="E7F3.html" class="icon-btn">👤</a>
+      <a href="E3F2.html" class="icon-btn">
+        🛒 <div class="badge" id="cartCount">0</div>
+      </a>
+    </div>
+  </nav>
+
+  <div class="carousel-container">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-slide" onclick="verDetalle('ID_DEL_COSTILLAR_AQUI')">
+        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" alt="Parrilla">
+        <div class="carousel-overlay">
+          <h2>¡Finde Parrillero! 🍖</h2>
+          <p>Toca para ver el Costillar Premium.</p>
+        </div>
+      </div>
+      <div class="carousel-slide" onclick="verDetalle('ID_DE_BEBIDA_AQUI')">
+        <img src="https://images.unsplash.com/photo-1606216733228-662703a497a7?q=80&w=1200&auto=format&fit=crop" alt="Bebidas">
+        <div class="carousel-overlay">
+          <h2>Refresca tu Asado 🍻</h2>
+          <p>Pack de bebidas con descuento.</p>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-btn prev" onclick="event.stopPropagation(); moveSlide(-1)">❮</button>
+    <button class="carousel-btn next" onclick="event.stopPropagation(); moveSlide(1)">❯</button>
   </div>
-</div>
 
-<div class="container">
-  <h1>¡Bienvenido al Menú!</h1>
-  <p class="subtitle">Elige tus cortes favoritos para hoy</p>
+  <div class="categories-scroll">
+    <div class="category-pill active" onclick="filtrar('todos', this)">🍽️ Todo</div>
+    <div class="category-pill" onclick="filtrar('carnes', this)">🥩 Carnes</div>
+    <div class="category-pill" onclick="filtrar('acompañamientos', this)">🥗 Acompañamientos</div>
+    <div class="category-pill" onclick="filtrar('bebidas', this)">🥤 Bebidas</div>
+    <div class="category-pill" onclick="filtrar('postres', this)">🍰 Postres</div>
+  </div>
 
-  <div class="filters">
-    <input type="text" id="buscador" class="search-input" placeholder="¿Qué se te antoja? (Ej: Lomo, Pollo...)" onkeyup="filtrarParrilla()">
+  <div class="promos-grid">
+    <div class="promo-card" onclick="verDetalle('ID_DEL_POLLO_AQUI')">
+      <img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=600&auto=format&fit=crop" alt="Pollo">
+      <div class="promo-content">
+        <div class="promo-tag">Solo por hoy</div>
+        <h3>Pollo a las Brasas -20%</h3>
+        <span class="promo-link">Pedir Ahora →</span>
+      </div>
+    </div>
+
+    <div class="promo-card" onclick="verDetalle('ID_DEL_HELADO_AQUI')">
+      <img src="https://images.unsplash.com/photo-1576506295286-5cda18df43e7?q=80&w=600&auto=format&fit=crop" alt="Helado">
+      <div class="promo-content">
+        <div class="promo-tag">Postre</div>
+        <h3>Helados Artesanales</h3>
+        <span class="promo-link">Ver Sabores →</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">Nuestra <span>Carta</span></h2>
+    </div>
     
-    <select id="filtroCategoria" class="category-select" onchange="filtrarParrilla()">
-      <option value="">Todas las Categorías</option>
-      <option value="carnes">Carnes</option>
-      <option value="acompañamientos">Acompañamientos</option>
-      <option value="bebidas">Bebidas</option>
-      <option value="postres">Postres</option>
-    </select>
+    <div class="products-grid" id="productsGrid">
+      <div class="loading-skeleton"></div>
+      <div class="loading-skeleton"></div>
+      <div class="loading-skeleton"></div>
+    </div>
   </div>
-
-  <div id="listaProductos">
-    <div class="loading">Cargando parrilla... 🔥</div>
-  </div>
-</div>
 
 <script>
-// Variable global para guardar los datos originales
 let productosGlobal = [];
+let slideIndex = 0;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  actualizarContadorCarrito();
-  
-  const grid = document.getElementById('listaProductos');
-  
-  try {
-    // 1. Pedir productos a la API
-    const response = await fetch('http://127.0.0.1:8000/products');
-    productosGlobal = await response.json();
-    
-    // 2. Renderizar todos al principio
-    renderizarGrid(productosGlobal);
-
-  } catch (error) {
-    console.error(error);
-    grid.innerHTML = '<div class="error" style="color:red">Error al conectar con el servidor. Revisa Uvicorn.</div>';
-  }
+  actualizarContador();
+  await cargarProductos();
+  iniciarCarrusel();
 });
 
-// --- FUNCIÓN DE FILTRADO ---
-function filtrarParrilla() {
-    const texto = document.getElementById('buscador').value.toLowerCase();
-    const categoria = document.getElementById('filtroCategoria').value.toLowerCase();
+function iniciarCarrusel() { setInterval(() => moveSlide(1), 5000); }
 
-    const filtrados = productosGlobal.filter(p => {
-        // Filtrar por nombre (texto)
-        const coincideNombre = p.nombre.toLowerCase().includes(texto) || 
-                               (p.descripcion && p.descripcion.toLowerCase().includes(texto));
-        
-        // Filtrar por categoría (si hay una seleccionada)
-        // Nota: Asumimos que en MongoDB el campo es 'categoria'
-        const coincideCategoria = categoria === "" || 
-                                  (p.categoria && p.categoria.toLowerCase() === categoria);
-
-        return coincideNombre && coincideCategoria;
-    });
-
-    renderizarGrid(filtrados);
+function moveSlide(n) {
+  const track = document.getElementById('carouselTrack');
+  const slides = document.querySelectorAll('.carousel-slide');
+  slideIndex = (slideIndex + n + slides.length) % slides.length;
+  track.style.transform = `translateX(-${slideIndex * 100}%)`;
 }
 
-// --- FUNCIÓN PARA DIBUJAR EL GRID ---
-function renderizarGrid(lista) {
-    const grid = document.getElementById('listaProductos');
-    grid.innerHTML = '';
+async function cargarProductos() {
+  const grid = document.getElementById('productsGrid');
+  try {
+    const response = await fetch('http://127.0.0.1:8000/products');
+    productosGlobal = await response.json();
+    renderizar(productosGlobal);
+  } catch (error) {
+    grid.innerHTML = '<p style="text-align:center">Error de conexión 😔</p>';
+  }
+}
 
-    if (lista.length === 0) {
-      grid.innerHTML = '<div class="error">No encontramos productos con esa búsqueda 😢</div>';
-      return;
+function renderizar(lista) {
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = '';
+
+  if (lista.length === 0) {
+    grid.innerHTML = '<p style="text-align:center; width:100%">No hay productos aquí.</p>';
+    return;
+  }
+
+  lista.forEach(p => {
+    let imgHTML = (p.imagen && p.imagen.startsWith('http')) 
+      ? `<img src="${p.imagen}" alt="${p.nombre}">` 
+      : `<span>${p.imagen || "🥩"}</span>`;
+
+    let precioDisplay = `$${p.precio.toLocaleString()}`;
+    let oldPriceHTML = '';
+    let badgeHTML = '';
+
+    if (p.es_oferta) {
+      const precioAntiguo = p.precio_normal || p.precio * 1.2;
+      oldPriceHTML = `<span class="old-price">$${precioAntiguo.toLocaleString()}</span>`;
+      badgeHTML = `<span class="promo-badge">OFERTA</span>`;
     }
 
-    lista.forEach(p => {
-      // 1. Lógica de Imagen vs Emoji
-      let imagenHTML = "";
-      if (p.imagen && p.imagen.startsWith("http")) {
-          imagenHTML = `<img src="${p.imagen}" alt="${p.nombre}" style="width: 100%; height: 100%; object-fit: cover;">`;
-      } else {
-          imagenHTML = `<div style="font-size: 50px;">${p.imagen || "🥩"}</div>`;
-      }
-      
-      // 2. Lógica de Oferta (CORREGIDA)
-      let precioHTML = `<div class="precio">$${p.precio.toLocaleString()}</div>`;
-      let badgeOferta = "";
-
-      if (p.es_oferta) {
-          // Si es oferta, cambiamos el HTML del precio y creamos el badge
-          precioHTML = `
-            <div class="precio" style="color:#d63031">
-                <span style="text-decoration:line-through; color:#999; font-size:14px; margin-right:5px;">
-                    $${(p.precio_normal || p.precio * 1.2).toLocaleString()}
-                </span>
-                $${p.precio.toLocaleString()}
+    grid.innerHTML += `
+      <div class="product-card" onclick="verDetalle('${p._id}')">
+        ${badgeHTML}
+        <div class="card-img-container">
+          ${imgHTML}
+        </div>
+        <div class="card-body">
+          <div class="card-title">${p.nombre}</div>
+          <div class="card-desc">${p.descripcion}</div>
+          <div class="card-footer">
+            <div class="price-box">
+              ${oldPriceHTML}
+              <span class="current-price">${precioDisplay}</span>
             </div>
-          `;
-          badgeOferta = `<div style="position:absolute; top:10px; right:10px; background:#d63031; color:white; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:bold; box-shadow:0 2px 5px rgba(0,0,0,0.2); z-index: 10;">¡OFERTA! 🔥</div>`;
-      }
-      
-      // 3. Crear tarjeta HTML (AHORA SÍ USAMOS LAS VARIABLES NUEVAS)
-      grid.innerHTML += `
-        <div class="producto" onclick="verDetalle('${p._id}')" style="position: relative;">
-          ${badgeOferta} <div class="producto-imagen">
-              ${imagenHTML}
-          </div>
-          <div class="producto-info">
-            <h3>${p.nombre}</h3>
-            <p>${p.descripcion}</p>
-            
-            ${precioHTML} <button class="btn-agregar" onclick="event.stopPropagation(); agregarAlCarrito('${p._id}', '${p.nombre}', ${p.precio})">
-              Agregar al Carrito
+            <button class="add-btn" onclick="event.stopPropagation(); agregar('${p._id}', '${p.nombre}', ${p.precio})">
+              +
             </button>
           </div>
         </div>
-      `;
-    });
+      </div>
+    `;
+  });
 }
 
-//FUNCIONES AUXILIARES 
+function filtrar(categoria, elemento) {
+  document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+  elemento.classList.add('active');
+
+  if (categoria === 'todos') {
+    renderizar(productosGlobal);
+  } else {
+    const filtrados = productosGlobal.filter(p => 
+      p.categoria && p.categoria.toLowerCase() === categoria.toLowerCase()
+    );
+    renderizar(filtrados);
+  }
+}
 
 function verDetalle(id) {
+  if (id.includes("ID_")) return; // Prevenir click en placeholders
   localStorage.setItem('productoSeleccionado', id);
-  window.location.href = 'E2F3.html'; 
+  window.location.href = 'E2F3.html';
 }
 
-function agregarAlCarrito(id, nombre, precio) {
+function agregar(id, nombre, precio) {
   let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-  
-  // Verificar si ya existe para sumar cantidad
-  const existente = carrito.find(item => item._id === id);
-  
-  if (existente) {
+  const existente = carrito.find(i => i._id === id);
+  const prodOriginal = productosGlobal.find(p => p._id === id);
+  const img = prodOriginal ? prodOriginal.imagen : "";
+
+  if(existente) {
     existente.cantidad++;
   } else {
-    // Si tienes imagen, podrías pasarla aquí también
-    // Buscamos el objeto original para sacar la imagen si es necesario
-    const prodOriginal = productosGlobal.find(p => p._id === id);
-    const img = prodOriginal ? prodOriginal.imagen : "";
-    
-    carrito.push({ _id: id, nombre: nombre, precio: precio, imagen: img, cantidad: 1 });
+    carrito.push({ _id: id, nombre, precio, imagen: img, cantidad: 1 });
   }
   
   localStorage.setItem('carrito', JSON.stringify(carrito));
-  actualizarContadorCarrito();
-  alert(`¡${nombre} agregado!`);
+  actualizarContador();
+  
+  const badge = document.getElementById('cartCount');
+  badge.style.transform = 'scale(1.5)';
+  setTimeout(() => badge.style.transform = 'scale(1)', 200);
 }
 
-function actualizarContadorCarrito() {
+function actualizarContador() {
   const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-  const total = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+  const total = carrito.reduce((sum, i) => sum + i.cantidad, 0);
   document.getElementById('cartCount').textContent = total;
 }
 </script>
-
 </body>
 </html>

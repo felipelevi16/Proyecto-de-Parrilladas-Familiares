@@ -3,138 +3,442 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PARRILLADAS FAMILIARES</title>
+<title>Detalle - Parrilladas Don Eduardo</title>
 <style>
-  body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #f6f5f3, #042490); margin: 0; min-height: 100vh; display: flex; justify-content: center; }
-  .form-box { background: #fff; border-radius: 12px; width: 95%; max-width: 800px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); margin: 20px 0; }
-  .nav { display: flex; justify-content: space-around; background: #042490; padding: 10px; }
-  .nav-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #fff; cursor: pointer; font-weight: bold; }
-  .nav-btn.activo { background: rgba(255,255,255,0.1); }
-  h1 { text-align: center; color: #042490; margin-top: 20px; }
-  .detalle { padding: 20px; }
-  .producto-imagen { width: 100%; height: 200px; background: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #042490; font-weight: bold; font-size: 24px; margin-bottom: 20px; }
-  .precio { font-size: 24px; font-weight: bold; color: #042490; margin: 15px 0; }
-  .especificaciones { background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 15px 0; }
-  .especificacion { display: flex; justify-content: space-between; margin: 8px 0; }
-  button { width: 100%; padding: 12px; background: #042490; color: white; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+  :root {
+    /* Paleta de Colores "Blue Royal Innovator" */
+    --primary: #042490;
+    --primary-gradient: linear-gradient(135deg, #021B79 0%, #0575E6 100%);
+    --secondary: #FFFFFF;
+    --accent: #FFD700;
+    --text-dark: #1E293B;
+    --text-light: #64748B;
+    --bg-page: #F1F5F9;
+    --glass: rgba(255, 255, 255, 0.95);
+  }
+
+  body { 
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+    background: var(--bg-page); 
+    margin: 0; 
+    min-height: 100vh; 
+    display: flex; 
+    justify-content: center;
+    color: var(--text-dark);
+  }
+  
+  .form-box { 
+    background: var(--secondary); 
+    border-radius: 24px;
+    width: 100%; 
+    max-width: 600px; 
+    box-shadow: 0 20px 40px rgba(4, 36, 144, 0.1);
+    margin: 20px 0; 
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+
+  /* --- HEADER MODERNO --- */
+  .nav { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 20px; 
+    background: var(--glass); 
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .nav-btn { 
+    background: transparent; 
+    color: var(--text-light); 
+    border: 1px solid #E2E8F0; 
+    padding: 8px 16px; 
+    border-radius: 30px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    font-size: 13px; 
+    transition: all 0.3s ease;
+  }
+  
+  .nav-btn:hover { 
+    background: var(--primary); 
+    color: white; 
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  /* Botón Carrito AZUL (Nuevo diseño) */
+  .nav-btn.cart { 
+    background: var(--primary); 
+    color: white; 
+    border: none;
+    box-shadow: 0 4px 10px rgba(4, 36, 144, 0.3);
+  }
+
+  .content-scroll { padding: 0 25px 120px 25px; } 
+
+  /* --- IMAGEN CON ESTILO --- */
+  .img-container { 
+    width: 100%; 
+    height: 280px; 
+    background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+    border-radius: 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    overflow: visible; 
+    margin: 20px 0 30px 0; 
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.03);
+  }
+  
+  .img-container img { 
+    width: 90%; 
+    height: 90%; 
+    object-fit: contain; 
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+    transition: transform 0.5s;
+  }
+  
+  .img-container:hover img { transform: scale(1.05) rotate(2deg); }
+
+  .badge-oferta { 
+    position: absolute; 
+    top: 15px; 
+    right: 15px; 
+    background: #EF4444; 
+    color: white; 
+    padding: 6px 14px; 
+    border-radius: 30px; 
+    font-size: 11px; 
+    font-weight: 800; 
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+  /* --- TIPOGRAFÍA --- */
+  h1 { font-size: 28px; font-weight: 800; color: var(--text-dark); margin: 0 0 8px 0; letter-spacing: -0.5px; }
+  .desc { color: var(--text-light); font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+
+  /* --- PRECIOS --- */
+  .price-container { margin-bottom: 25px; display: flex; align-items: baseline; gap: 10px; }
+  .old-price { text-decoration: line-through; color: #94A3B8; font-size: 16px; font-weight: 500; }
+  .final-price { 
+    font-size: 36px; 
+    font-weight: 800; 
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+   background-clip: text;         
+    -webkit-text-fill-color: transparent;
+    color: transparent;            
+  }
+
+  /* --- SECCIÓN DE EXTRAS --- */
+  .extras-section { 
+    background: white; 
+    border: none;
+    padding: 0; 
+    margin-bottom: 25px; 
+    display: none; 
+  }
+  .extras-section.active { display: block; }
+  
+  .extras-title { 
+    font-weight: 700; 
+    color: var(--text-dark); 
+    margin-bottom: 15px; 
+    display: block; 
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+  }
+  
+  .extra-item { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px; 
+    background: #FFFFFF; 
+    border-radius: 12px; 
+    margin-bottom: 10px; 
+    border: 1px solid #F1F5F9; 
+    cursor: pointer; 
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  }
+  .extra-item:hover { 
+    border-color: var(--primary); 
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(4, 36, 144, 0.1);
+  }
+  
+  .extra-label { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 500; color: var(--text-dark); }
+  .extra-price { font-weight: 700; color: var(--primary); font-size: 14px; background: #E0E7FF; padding: 4px 8px; border-radius: 6px; }
+
+  input[type="checkbox"], input[type="radio"] { 
+    accent-color: var(--primary); 
+    width: 20px; 
+    height: 20px; 
+    cursor: pointer;
+  }
+
+  /* --- BARRA INFERIOR FLOTANTE --- */
+  .bottom-bar { 
+    position: fixed; 
+    bottom: 20px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 90%; 
+    max-width: 560px;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    padding: 10px; 
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+    display: flex; 
+    justify-content: center; 
+    z-index: 100; 
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  
+  .add-btn-large { 
+    background: var(--primary-gradient);
+    color: white; 
+    width: 100%; 
+    padding: 16px; 
+    border: none; 
+    border-radius: 16px; 
+    font-size: 16px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    transition: all 0.3s; 
+    box-shadow: 0 10px 20px rgba(4, 36, 144, 0.3);
+  }
+  
+  .add-btn-large:hover { 
+    transform: scale(1.02); 
+    box-shadow: 0 15px 30px rgba(4, 36, 144, 0.4);
+  }
+  
+  .btn-price { 
+    background: rgba(255,255,255,0.2); 
+    padding: 4px 10px; 
+    border-radius: 8px; 
+    font-size: 14px; 
+  }
 </style>
 </head>
 <body>
 
 <div class="form-box">
   <div class="nav">
-    <button class="nav-btn" onclick="location.href='E2F1.html'">CATÁLOGO</button>
-    <button class="nav-btn activo" onclick="location.href='E2F3.html'">DETALLE</button>
-    
-    <button class="nav-btn" onclick="location.href='E3F2.html'" style="background: #FFD700; color: #042490; margin-left: 10px;">
-        🛒 IR AL CARRITO
-    </button>
+    <button class="nav-btn" onclick="history.back()">← Volver</button>
+    <button class="nav-btn cart" onclick="location.href='E3F2.html'">Ir al Carrito</button>
   </div>
 
-  <div class="detalle" id="detalleProducto">
-    </div>
+  <div class="content-scroll" id="contentArea">
+    <div style="text-align:center; padding:50px; color:#999;">Cargando detalles...</div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+    <button class="add-btn-large" onclick="agregarAlCarrito()">
+        <span>Agregar al Pedido</span>
+        <span class="btn-price" id="btnTotalPrice">$0</span>
+    </button>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', async () => {
-  // 1. Recuperamos el ID del producto que el usuario seleccionó en el catálogo
-  const productoId = localStorage.getItem('productoSeleccionado');
+let productoBase = null;
+let precioBase = 0;
+let extrasSeleccionados = [];
 
-  if (!productoId) {
-    alert("No se ha seleccionado ningún producto. Volviendo al catálogo.");
-    window.location.href = 'E2F2.html';
-    return;
-  }
+document.addEventListener('DOMContentLoaded', async () => {
+  const productoId = localStorage.getItem('productoSeleccionado');
+  if (!productoId) { window.location.href = 'E2F1.html'; return; }
 
   try {
-    // 2. Pedimos a la API la información de ESE producto específico
     const response = await fetch(`http://127.0.0.1:8000/products/${productoId}`);
+    if (!response.ok) throw new Error("Producto no encontrado");
     
-    if (!response.ok) {
-        throw new Error("Producto no encontrado");
-    }
-
-    const producto = await response.json();
+    productoBase = await response.json();
+    precioBase = productoBase.es_oferta ? productoBase.precio : productoBase.precio; 
     
-    // 3. Mostramos los datos en pantalla
-    mostrarDetalle(producto);
+    renderizarDetalle();
+    actualizarTotal();
 
   } catch (error) {
-    console.error(error);
-    document.getElementById('detalleProducto').innerHTML = 
-        '<div style="text-align:center; padding:50px;"><h2>Error al cargar el producto 😢</h2><button onclick="location.href=\'E2F2.html\'">Volver</button></div>';
+    document.getElementById('contentArea').innerHTML = '<p style="text-align:center; color:red">Error al cargar producto.</p>';
   }
 });
 
-let productoActual = null;
-function mostrarDetalle(producto) {
-  productoActual = producto;
-  const detalle = document.getElementById('detalleProducto');
+function renderizarDetalle() {
+  const container = document.getElementById('contentArea');
   
-  // Lógica de Imagen vs Emoji
-  let imagenHTML = "";
-  if (producto.imagen && producto.imagen.startsWith("http")) {
-      imagenHTML = `<img src="${producto.imagen}" alt="${producto.nombre}" style="max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain;">`;
+  let imgHTML = (productoBase.imagen && productoBase.imagen.startsWith("http")) 
+      ? `<img src="${productoBase.imagen}" alt="${productoBase.nombre}">`
+      : `<div style="font-size: 80px;">${productoBase.imagen || "🥩"}</div>`;
+
+  let badgeHTML = productoBase.es_oferta ? `<div class="badge-oferta">¡OFERTA! 🔥</div>` : '';
+  
+  let precioDisplay = '';
+  if (productoBase.es_oferta) {
+      const antiguo = productoBase.precio_normal || productoBase.precio * 1.2;
+      precioDisplay = `
+        <div class="old-price">$${antiguo.toLocaleString()}</div>
+        <div class="final-price">$${productoBase.precio.toLocaleString()}</div>
+      `;
   } else {
-      imagenHTML = `<div style="font-size: 80px;">${producto.imagen || "🥩"}</div>`;
+      precioDisplay = `<div class="final-price">$${productoBase.precio.toLocaleString()}</div>`;
   }
 
-  // Generamos el HTML de las especificaciones
-  let especificacionesHTML = '';
-  if (producto.especificaciones && producto.especificaciones.length > 0) {
-      producto.especificaciones.forEach(esp => {
-        especificacionesHTML += `<div class="especificacion"><span>${esp.nombre}:</span> <span>${esp.valor}</span></div>`;
-      });
-  } else {
-      especificacionesHTML = '<p style="color:#888; font-style:italic;">Sin especificaciones adicionales.</p>';
+  let extrasHTML = '';
+  let categoria = (productoBase.categoria || "").toLowerCase();
+  let nombreProd = (productoBase.nombre || "").toLowerCase();
+
+  // A) CARNES
+  if (categoria.includes('carne') || categoria.includes('parrilla')) {
+      extrasHTML = `
+        <div class="extras-section active">
+            <span class="extras-title">Elige un acompañamiento (Opcional)</span>
+            <label class="extra-item">
+                <div class="extra-label"><input type="checkbox" onchange="toggleExtra('Papas Fritas', 3000, this, 'extra')"> 🍟 Papas Fritas</div>
+                <div class="extra-price">+$3.000</div>
+            </label>
+            <label class="extra-item">
+                <div class="extra-label"><input type="checkbox" onchange="toggleExtra('Ensalada', 2500, this, 'extra')"> 🥗 Ensalada Chilena</div>
+                <div class="extra-price">+$2.500</div>
+            </label>
+        </div>
+      `;
   }
 
-  detalle.innerHTML = `
-    <h1>${producto.nombre}</h1>
-    <div class="producto-imagen" style="background:transparent; height:auto; padding:20px;">
-        ${imagenHTML}
-    </div>
-    <div class="precio">$${producto.precio.toLocaleString()}</div>
-    <p style="color:#666; text-align:center; font-size: 1.1em; margin: 20px 0;">${producto.descripcion}</p>
-    
-    <div class="especificaciones" style="margin-bottom: 30px;">
-      <h3 style="color:#042490; border-bottom:1px solid #ddd; padding-bottom:5px;">Detalles</h3>
-      ${especificacionesHTML}
-    </div>
-    
-    <button onclick="agregarAlCarrito('${producto._id}')" style="padding: 15px; font-size: 1.1em;">🛒 Agregar al Carrito</button>
-    <button onclick="location.href='E2F2.html'" style="background:#666; margin-top:10px;">← Volver al Catálogo</button>
+  // B) PAPAS
+  if (categoria.includes('acompañamiento') || nombreProd.includes('papas')) {
+      extrasHTML = `
+        <div class="extras-section active">
+            <span class="extras-title">¿Alguna salsa?</span>
+            <label class="extra-item">
+                <div class="extra-label"><input type="checkbox" onchange="toggleExtra('Ketchup', 0, this, 'extra')"> 🍅 Ketchup</div>
+                <div class="extra-price">Gratis</div>
+            </label>
+            <label class="extra-item">
+                <div class="extra-label"><input type="checkbox" onchange="toggleExtra('Mayonesa', 0, this, 'extra')"> 🥚 Mayonesa</div>
+                <div class="extra-price">Gratis</div>
+            </label>
+        </div>
+      `;
+  }
+
+  // C) BEBIDAS
+  if (categoria.includes('bebida') || nombreProd.includes('bebida')) {
+      extrasHTML = `
+        <div class="extras-section active">
+            <span class="extras-title">Elige el sabor</span>
+            <label class="extra-item">
+                <div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Coca Cola', 0, this, 'sabor')"> 🥤 Coca Cola</div>
+                <div class="extra-price">Gratis</div>
+            </label>
+            <label class="extra-item">
+                <div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Fanta', 0, this, 'sabor')"> 🍊 Fanta</div>
+                <div class="extra-price">Gratis</div>
+            </label>
+        </div>
+      `;
+  }
+
+  // D) HELADOS
+  if (nombreProd.includes('helado')) {
+      extrasHTML = `
+        <div class="extras-section active">
+            <span class="extras-title">Elige tu sabor favorito</span>
+            <label class="extra-item">
+                <div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Vainilla', 0, this, 'sabor')"> 🍦 Vainilla</div>
+                <div class="extra-price">Gratis</div>
+            </label>
+            <label class="extra-item">
+                <div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Chocolate', 0, this, 'sabor')"> 🍫 Chocolate</div>
+                <div class="extra-price">Gratis</div>
+            </label>
+        </div>
+      `;
+  }
+
+  container.innerHTML = `
+    <div class="img-container">${imgHTML} ${badgeHTML}</div>
+    <h1>${productoBase.nombre}</h1>
+    <div class="price-container">${precioDisplay}</div>
+    <div class="desc">${productoBase.descripcion}</div>
+    ${extrasHTML}
   `;
 }
 
-function agregarAlCarrito(id) {
-  if (!productoActual) return;
+function toggleExtra(nombre, precio, input, tipo) {
+    if (tipo === 'sabor') {
+        extrasSeleccionados = extrasSeleccionados.filter(e => e.tipo !== 'sabor');
+        if (input.checked) extrasSeleccionados.push({ nombre, precio, tipo: 'sabor' });
+    } else {
+        if (input.checked) {
+            extrasSeleccionados.push({ nombre, precio, tipo: 'extra' });
+        } else {
+            extrasSeleccionados = extrasSeleccionados.filter(e => e.nombre !== nombre);
+        }
+    }
+    actualizarTotal();
+}
 
-  // 1. Recuperar el carrito actual de la memoria
-  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+function actualizarTotal() {
+    let totalExtras = extrasSeleccionados.reduce((sum, item) => sum + item.precio, 0);
+    const totalFinal = precioBase + totalExtras;
+    document.getElementById('btnTotalPrice').textContent = `$${totalFinal.toLocaleString()}`;
+}
 
-  // 2. Buscar si el producto ya estaba
-  const indice = carrito.findIndex(item => item._id === id);
+function agregarAlCarrito() {
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    
+    let nombreProd = (productoBase.nombre || "").toLowerCase();
+    let requiereSabor = nombreProd.includes('helado') || nombreProd.includes('bebida');
+    
+    if (requiereSabor && extrasSeleccionados.length === 0) {
+        if(!confirm("No has elegido sabor. ¿Agregar así?")) return;
+    }
 
-  if (indice !== -1) {
-    carrito[indice].cantidad += 1;
-  } else {
-    carrito.push({
-      _id: productoActual._id,
-      nombre: productoActual.nombre,
-      precio: productoActual.precio,
-      imagen: productoActual.imagen,
-      cantidad: 1
-    });
-  }
+    let nombreFinal = productoBase.nombre;
+    let precioFinal = precioBase;
+    
+    if (extrasSeleccionados.length > 0) {
+        const nombres = extrasSeleccionados.map(e => e.nombre).join(" + ");
+        const costos = extrasSeleccionados.reduce((s, i) => s + i.precio, 0);
+        nombreFinal += ` (${nombres})`;
+        precioFinal += costos;
+    }
 
-  // 3. Guardar el carrito
-  localStorage.setItem('carrito', JSON.stringify(carrito));
+    const itemNuevo = {
+        _id: productoBase._id + "-" + Date.now(),
+        producto_id_real: productoBase._id,
+        nombre: nombreFinal,
+        precio: precioFinal,
+        imagen: productoBase.imagen,
+        cantidad: 1
+    };
 
-  // 4. Preguntar si ir al carrito
-  if(confirm(`¡${productoActual.nombre} agregado!\n¿Quieres ir al carrito a pagar?`)) {
-      window.location.href = 'E3F2.html';
-  }
+    carrito.push(itemNuevo);
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+
+    if(confirm(`¡Agregado!\n${nombreFinal}\n\n¿Ir a pagar?`)) {
+        window.location.href = 'E3F2.html';
+    }
 }
 </script>
 </body>
