@@ -5,56 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finalizar Compra - Parrilladas</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: #f4f7f6; color: #333; }
-        
-        .header { background: #042490; color: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
-        
-        .checkout-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
-        
-        /* SECCIONES (Tarjetas) */
-        .section-card { background: white; border-radius: 10px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .section-title { font-size: 18px; font-weight: bold; color: #042490; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .step-number { background: #042490; color: white; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        :root {
+            /* Paleta Blue Royal */
+            --primary: #042490;
+            --primary-gradient: linear-gradient(135deg, #021B79 0%, #0575E6 100%);
+            --secondary: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-light: #64748B;
+            --bg-page: #F8FAFC;
+            --glass: rgba(255, 255, 255, 0.95);
+            --success: #10B981;
+        }
 
-        /* OPCIONES DE RADIO (Entrega y Pago) */
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .radio-card { border: 2px solid #eee; border-radius: 8px; padding: 15px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .radio-card:hover { border-color: #bbccee; }
-        .radio-card.selected { border-color: #042490; background-color: #f0f4ff; }
-        .radio-icon { font-size: 24px; margin-bottom: 5px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg-page); color: var(--text-dark); }
+        
+        /* HEADER */
+        .header { 
+            background: var(--primary); 
+            color: white; 
+            padding: 20px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+            position: sticky; top: 0; z-index: 100;
+        }
+        .header-content {
+            max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;
+        }
+        .header h2 { font-size: 20px; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 10px; }
+        .back-link { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.3s; }
+        .back-link:hover { color: white; transform: translateX(-3px); }
+
+        /* LAYOUT */
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+        .checkout-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: start; }
+        
+        /* TARJETAS (SECCIONES) */
+        .section-card { 
+            background: white; border-radius: 20px; padding: 30px; margin-bottom: 25px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02);
+        }
+        .section-title { 
+            font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 25px; 
+            display: flex; align-items: center; gap: 15px; 
+        }
+        .step-number { 
+            background: var(--primary-gradient); color: white; width: 32px; height: 32px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 14px; font-weight: 800; box-shadow: 0 4px 10px rgba(4, 36, 144, 0.2);
+        }
+
+        /* OPCIONES (RADIOS) */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .radio-card { 
+            border: 2px solid #F1F5F9; border-radius: 16px; padding: 20px; cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            display: flex; flex-direction: column; align-items: center; text-align: center; 
+            background: white;
+        }
+        .radio-card:hover { transform: translateY(-3px); border-color: #E2E8F0; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .radio-card.selected { 
+            border-color: var(--primary); background-color: #F8FAFC; 
+            box-shadow: 0 0 0 4px rgba(4, 36, 144, 0.05);
+        }
+        
+        .radio-icon { font-size: 32px; margin-bottom: 10px; }
+        .radio-card strong { font-size: 15px; color: var(--text-dark); }
+        .radio-card small { font-size: 13px; color: var(--text-light); margin-top: 5px; }
         
         /* FORMULARIOS */
-        .form-group { margin-bottom: 15px; }
-        .form-label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--text-dark); }
+        .form-control { 
+            width: 100%; padding: 12px 15px; border: 2px solid #F1F5F9; border-radius: 12px; 
+            font-size: 15px; color: var(--text-dark); transition: 0.3s; background: #FAFAFA;
+        }
+        .form-control:focus { outline: none; border-color: var(--primary); background: white; }
         .hidden { display: none; }
 
         /* RESUMEN LATERAL (Sticky) */
-        .summary-card { position: sticky; top: 20px; background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .summary-items { max-height: 300px; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px dashed #ddd; }
-        .summary-item { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; }
-        .item-img { width: 50px; height: 50px; background: #eee; border-radius: 5px; object-fit: cover; }
-        .item-details { flex: 1; margin-left: 10px; }
+        .summary-card { 
+            position: sticky; top: 100px; background: white; border-radius: 24px; padding: 30px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.02);
+        }
+        .summary-title { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 20px; }
         
-        .totals-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; }
-        .total-final { font-size: 24px; font-weight: bold; color: #042490; margin-top: 15px; border-top: 2px solid #eee; padding-top: 15px; }
-
-        .btn-pay { background: #28a745; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
-        .btn-pay:hover { background: #218838; }
+        .summary-items { max-height: 250px; overflow-y: auto; margin-bottom: 25px; padding-right: 5px; }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; align-items: center; }
+        .item-img { width: 45px; height: 45px; background: #F1F5F9; border-radius: 10px; object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .item-details { flex: 1; margin-left: 15px; }
+        .item-name { font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 2px; }
+        .item-qty { font-size: 12px; color: var(--text-light); }
         
-        .notification { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 25px; border-radius: 8px; display: none; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .totals-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 15px; color: var(--text-light); }
+        .total-final { 
+            font-size: 28px; font-weight: 800; color: var(--primary); margin-top: 25px; 
+            border-top: 2px dashed #E2E8F0; padding-top: 20px; display: flex; justify-content: space-between; align-items: center;
+        }
 
-        @media (max-width: 768px) { .checkout-layout { grid-template-columns: 1fr; } }
+        .btn-pay { 
+            background: var(--success); color: white; border: none; padding: 18px; width: 100%; 
+            border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer; margin-top: 25px; 
+            transition: all 0.3s; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.25);
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-pay:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(16, 185, 129, 0.35); }
+        .btn-pay:disabled { background: #CBD5E1; cursor: not-allowed; box-shadow: none; transform: none; }
+        
+        .secure-badge { text-align: center; margin-top: 15px; font-size: 12px; color: var(--text-light); display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+        .notification { position: fixed; top: 20px; right: 20px; background: var(--success); color: white; padding: 15px 25px; border-radius: 12px; display: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.2); font-weight: 600; }
+
+        @media (max-width: 900px) { .checkout-layout { grid-template-columns: 1fr; } .summary-card { position: static; margin-top: 20px; } }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="container" style="margin:0; padding:0; display:flex; justify-content:space-between; align-items:center;">
-            <h2>🥩 Finalizar Compra</h2>
-            <a href="E3F2.html" style="color:white; text-decoration:none;">← Volver al Carrito</a>
+        <div class="header-content">
+            <h2> Finalizar Compra</h2>
+            <a href="E3F2.html" class="back-link">← Volver al Carrito</a>
         </div>
     </div>
 
@@ -85,18 +154,20 @@
                     </div>
                 </div>
 
-                <div id="pickupForm" style="margin-top: 20px;">
-                    <label class="form-label">Selecciona Sucursal</label>
-                    <select class="form-control" id="sucursalInput">
-                        <option value="Las Condes">Las Condes (Av. Las Condes 1234)</option>
-                        <option value="Vitacura">Vitacura (Av. Vitacura 5678)</option>
-                    </select>
+                <div id="pickupForm" style="margin-top: 25px;">
+                    <div class="form-group">
+                        <label class="form-label">Selecciona Sucursal</label>
+                        <select class="form-control" id="sucursalInput">
+                            <option value="Las Condes">Las Condes (Av. Las Condes 1234)</option>
+                            <option value="Vitacura">Vitacura (Av. Vitacura 5678)</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div id="deliveryForm" class="hidden" style="margin-top: 20px;">
+                <div id="deliveryForm" class="hidden" style="margin-top: 25px;">
                     <div class="form-group">
                         <label class="form-label">Dirección de envío</label>
-                        <input type="text" id="direccionInput" class="form-control" placeholder="Calle y número">
+                        <input type="text" id="direccionInput" class="form-control" placeholder="Calle, número y depto">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Comuna</label>
@@ -105,6 +176,7 @@
                             <option>Vitacura</option>
                             <option>Providencia</option>
                             <option>Ñuñoa</option>
+                            <option>La Reina</option>
                         </select>
                     </div>
                 </div>
@@ -112,7 +184,7 @@
 
             <div class="section-card">
                 <div class="section-title"><span class="step-number">3</span> Método de Pago</div>
-                <div class="options-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="options-grid" style="grid-template-columns: repeat(3, 1fr);">
                     <div class="radio-card selected" id="payWebpay" onclick="selPago('WebPay')">
                         <div class="radio-icon">💳</div>
                         <strong>WebPay</strong>
@@ -132,28 +204,31 @@
 
         <div class="sidebar">
             <div class="summary-card">
-                <h3 style="margin-bottom:20px; color:#042490;">Resumen del Pedido</h3>
+                <div class="summary-title">Resumen del Pedido</div>
                 
                 <div class="summary-items" id="summaryList">
                     </div>
 
                 <div class="totals-row">
                     <span>Subtotal</span>
-                    <span id="resSubtotal">$0</span>
+                    <span id="resSubtotal" style="font-weight:600; color:var(--text-dark);">$0</span>
                 </div>
                 <div class="totals-row">
                     <span>Envío</span>
-                    <span id="resEnvio">$0</span>
+                    <span id="resEnvio" style="font-weight:600; color:var(--text-dark);">$0</span>
                 </div>
                 
-                <div class="totals-row total-final">
-                    <span>Total</span>
+                <div class="total-final">
+                    <span style="font-size:18px; color:var(--text-light); font-weight:600;">Total a pagar</span>
                     <span id="resTotal">$0</span>
                 </div>
 
-                <button class="btn-pay" onclick="confirmarPedido()">PAGAR AHORA</button>
-                <div style="text-align:center; margin-top:10px; font-size:12px; color:#666;">
-                    🔒 Pago 100% Seguro
+                <button class="btn-pay" onclick="confirmarPedido()">
+                    PAGAR AHORA ➔
+                </button>
+                
+                <div class="secure-badge">
+                    🔒 Pago procesado de forma 100% segura
                 </div>
             </div>
         </div>
@@ -215,16 +290,18 @@
                 // Imagen o Emoji
                 let imgHTML = prod.imagen && prod.imagen.startsWith('http') 
                     ? `<img src="${prod.imagen}" class="item-img">`
-                    : `<div class="item-img" style="display:flex;align-items:center;justify-content:center;font-size:20px;">🥩</div>`;
+                    : `<div class="item-img">🥩</div>`;
 
                 list.innerHTML += `
                     <div class="summary-item">
-                        ${imgHTML}
-                        <div class="item-details">
-                            <div style="font-weight:bold;">${prod.nombre}</div>
-                            <div style="color:#666;">Cant: ${prod.cantidad}</div>
+                        <div style="display:flex; align-items:center;">
+                            ${imgHTML}
+                            <div class="item-details">
+                                <span class="item-name">${prod.nombre}</span>
+                                <span class="item-qty">Cant: ${prod.cantidad}</span>
+                            </div>
                         </div>
-                        <div style="font-weight:bold;">$${totalItem.toLocaleString()}</div>
+                        <div style="font-weight:700;">$${totalItem.toLocaleString()}</div>
                     </div>
                 `;
             });
@@ -257,7 +334,9 @@
             
             const itemsParaApi = carrito.map(item => ({
                 producto_id: item._id,
-                cantidad: item.cantidad
+                cantidad: item.cantidad,
+                nombre: item.nombre,
+                precio: item.precio
             }));
 
             const datosPedido = {
@@ -267,10 +346,12 @@
                 descuento: 0,
                 total: subtotal + envio,
                 metodo_entrega: metodoEntrega,
-                metodo_pago: metodoPago, // <--- CAMPO NUEVO
+                user_email: userEmail,
+                metodo_pago: metodoPago, 
                 sucursal: metodoEntrega === 'retiro' ? document.getElementById('sucursalInput').value : null,
                 direccion: metodoEntrega === 'delivery' ? document.getElementById('direccionInput').value : null,
                 estado: "Ingresado"
+                
             };
 
             // Enviar a API
@@ -306,7 +387,7 @@
                 console.error(error);
                 alert("Hubo un error al procesar el pedido. Intenta nuevamente.");
                 const btn = document.querySelector('.btn-pay');
-                btn.textContent = "PAGAR AHORA";
+                btn.innerHTML = "PAGAR AHORA ➔";
                 btn.disabled = false;
             }
         }

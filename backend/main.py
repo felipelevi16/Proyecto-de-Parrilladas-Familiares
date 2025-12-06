@@ -282,3 +282,56 @@ async def change_password(data: models.PasswordChange):
     )
     
     return {"mensaje": "Contraseña actualizada exitosamente"}
+
+    # --- GESTIÓN DE PRODUCTOS (ADMIN) ---
+
+# 1. Eliminar Producto
+@app.delete("/products/{id}")
+async def delete_product(id: str):
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=400, detail="ID inválido")
+    
+    result = await get_product_collection().delete_one({"_id": ObjectId(id)})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    
+    return {"mensaje": "Producto eliminado"}
+
+# 2. Actualizar Stock (Disponible / Agotado)
+# Usaremos un campo nuevo "disponible" (booleano)
+@app.patch("/products/{id}/stock")
+async def update_stock(id: str, disponible: bool):
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=400, detail="ID inválido")
+        
+    result = await get_product_collection().update_one(
+        {"_id": ObjectId(id)},
+        {"$set": {"disponible": disponible}}  # True = En Stock, False = Agotado
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    
+    return {"mensaje": "Stock actualizado"}
+
+@app.put("/products/{id}")
+async def update_product_details(id: str, producto: models.Producto):
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=400, detail="ID inválido")
+    
+    product_collection = get_product_collection()
+    
+    # Preparamos los datos (excluyendo el ID para no sobrescribirlo)
+    update_data = producto.dict(by_alias=True, exclude={"id"})
+    
+    # Actualizamos en MongoDB
+    result = await product_collection.update_one(
+        {"_id": ObjectId(id)},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    
+    return {"mensaje": "Producto actualizado correctamente"}

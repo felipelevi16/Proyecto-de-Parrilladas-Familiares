@@ -3,137 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración de Reservas - Parrilladas Familiares</title>
+    <title>Reservas - Admin</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background-color: #f8f9fa; }
-        .header { background: #042490; color: white; padding: 15px; text-align: center; }
-        .admin-nav { background: #343a40; padding: 15px; }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; gap: 30px; }
-        .nav-item { color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; transition: background 0.3s; }
-        .nav-item:hover, .nav-item.active { background: #042490; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
-        .page-title { text-align: center; margin-bottom: 30px; color: #333; }
+        /* Copia los mismos estilos :root y sidebar del archivo anterior (E6F1) */
+        :root { --primary: #042490; --primary-gradient: linear-gradient(135deg, #021B79 0%, #0575E6 100%); --bg-page: #F8FAFC; --text-dark: #1E293B; --text-light: #64748B; --success: #10B981; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--bg-page); color: var(--text-dark); display: flex; min-height: 100vh; }
         
-        .reservation-details { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        .detail-group { margin-bottom: 20px; }
-        .detail-label { font-weight: bold; color: #333; margin-bottom: 5px; }
-        .detail-value { color: #666; font-size: 16px; }
+        .sidebar { width: 280px; background: var(--primary-gradient); color: white; padding: 30px 20px; display: flex; flex-direction: column; box-shadow: 4px 0 20px rgba(0,0,0,0.1); position: sticky; top: 0; height: 100vh; }
+        .logo { font-size: 22px; font-weight: 800; margin-bottom: 50px; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 16px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); }
+        .nav-group { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+        .nav-item { padding: 14px 20px; color: rgba(255,255,255,0.7); text-decoration: none; border-radius: 14px; transition: 0.3s; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 12px; border: 1px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.15); color: white; transform: translateX(5px); }
+        .nav-item.active { background: white; color: var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-weight: 800; }
+        .nav-footer { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
+
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        .page-title { font-size: 28px; font-weight: 800; margin-bottom: 30px; }
         
-        .availability-status { padding: 15px; border-radius: 4px; margin: 20px 0; text-align: center; font-weight: bold; }
-        .available { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .not-available { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .card { background: white; border-radius: 20px; padding: 0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 20px; background: #F8FAFC; color: var(--text-light); font-size: 12px; text-transform: uppercase; font-weight: 700; }
+        td { padding: 20px; border-bottom: 1px solid #F1F5F9; vertical-align: middle; }
         
-        .alternative-times { background: #e7f3ff; padding: 20px; border-radius: 4px; margin: 20px 0; }
-        .alternative-title { color: #004085; margin-bottom: 15px; font-weight: bold; }
-        .time-slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
-        .time-slot { padding: 10px; border: 1px solid #b8daff; border-radius: 4px; text-align: center; cursor: pointer; background: white; transition: all 0.3s; }
-        .time-slot:hover { background: #b8daff; }
-        .time-slot.selected { background: #007bff; color: white; border-color: #007bff; }
-        
-        .action-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
-        .btn { padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; text-align: center; min-width: 150px; }
-        .btn-primary { background: #042490; color: white; }
-        .btn-success { background: #28a745; color: white; }
-        .btn-secondary { background: #6c757d; color: white; }
-        .btn-warning { background: #ffc107; color: #212529; }
-        
-        .confirmation-message { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 20px; border-radius: 4px; text-align: center; margin: 20px 0; }
-        
-        .hidden { display: none; }
-        .notification { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 20px; border-radius: 4px; display: none; z-index: 1000; }
+        .btn-confirm { background: var(--success); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        .btn-confirm:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Parrilladas Familiares - Administración</h1>
-    </div>
-    
-    <div class="admin-nav">
-        <div class="nav-container">
-            <a href="E6F1.html" class="nav-item">Dashboard</a>
-            <a href="#" class="nav-item">Administrar Pedidos</a>
-            <a href="E6F2.html" class="nav-item active">Administrar Reservas</a>
-            <a href="E6F3.html" class="nav-item">Administrar Catálogo</a>
+    <div class="sidebar">
+        <div class="logo">🔥 Admin Panel</div>
+        <div class="nav-group">
+            <a href="E6F1.html" class="nav-item"><span>📊</span> Dashboard</a>
+            <a href="E6F3.html" class="nav-item"><span>🥩</span> Productos</a>
+            <a href="E6F2.html" class="nav-item active"><span>📅</span> Reservas</a>
+        </div>
+        <div class="nav-footer">
+            <a href="E2F1.html" class="nav-item" target="_blank" style="background: rgba(255,255,255,0.1);"><span>🌐</span> Ver Tienda</a>
         </div>
     </div>
-    
-    <div class="container">
+
+    <div class="main-content">
         <h2 class="page-title">Gestión de Reservas</h2>
-        <div class="notification" id="notification"></div>
-        
-        <div class="reservation-details">
-            <table class="data-table" style="width:100%; border-collapse:collapse;">
+        <div class="card">
+            <table>
                 <thead>
-                    <tr style="background:#f8f9fa; text-align:left;">
-                        <th style="padding:10px;">Cliente</th>
-                        <th>Fecha/Hora</th>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Fecha / Hora</th>
                         <th>Personas</th>
                         <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody id="tablaReservas">
-                    </tbody>
+                    <tr><td colspan="5" style="text-align:center; padding:30px;">Cargando...</td></tr>
+                </tbody>
             </table>
         </div>
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', cargarReservas);
+        document.addEventListener('DOMContentLoaded', cargarReservas);
 
-    async function cargarReservas() {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/reservations');
-            const reservas = await response.json();
-            
-            const tbody = document.getElementById('tablaReservas');
-            tbody.innerHTML = '';
+        async function cargarReservas() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/reservations');
+                const reservas = await response.json();
+                const tbody = document.getElementById('tablaReservas');
+                tbody.innerHTML = '';
 
-            reservas.forEach(r => {
-                let color = r.estado === 'Confirmada' ? '#d4edda' : '#fff3cd';
-                let textoColor = r.estado === 'Confirmada' ? '#155724' : '#856404';
-                
-                // Botón Confirmar solo si está pendiente
-                let btnConfirmar = r.estado !== 'Confirmada' 
-                    ? `<button class="btn btn-success" onclick="confirmar('${r.id}')" style="padding:5px 10px; font-size:12px;">Confirmar</button>` 
-                    : '<span style="color:green;">✓ Listo</span>';
+                reservas.forEach(r => {
+                    let estadoColor = r.estado === 'Confirmada' ? '#D1FAE5' : '#FEF3C7';
+                    let btn = r.estado !== 'Confirmada' 
+                        ? `<button class="btn-confirm" onclick="confirmar('${r.id}')">✓ Confirmar</button>` 
+                        : '<strong style="color:#059669">Listo</strong>';
 
-                tbody.innerHTML += `
-                    <tr style="border-bottom:1px solid #eee;">
-                        <td style="padding:15px;">
-                            <strong>${r.cliente_nombre}</strong><br>
-                            <small>${r.telefono}</small>
-                        </td>
-                        <td>${r.fecha_hora}</td>
-                        <td>${r.asistentes}</td>
-                        <td><span style="background:${color}; color:${textoColor}; padding:4px 8px; border-radius:4px;">${r.estado}</span></td>
-                        <td>${btnConfirmar}</td>
-                    </tr>
-                `;
-            });
-        } catch (error) {
-            console.error(error);
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>
+                                <strong>${r.cliente_nombre}</strong><br>
+                                <span style="font-size:13px; color:#64748B">${r.telefono}</span>
+                            </td>
+                            <td>${r.fecha_hora}</td>
+                            <td>${r.asistentes} pers.</td>
+                            <td><span style="background:${estadoColor}; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:700;">${r.estado}</span></td>
+                            <td>${btn}</td>
+                        </tr>
+                    `;
+                });
+            } catch (e) { console.error(e); }
         }
-    }
 
-    async function confirmar(id) {
-        if(!confirm("¿Confirmar esta reserva?")) return;
-        
-        try {
-            // Llamada a la API PUT que creamos en el Paso 1
-            const response = await fetch(`http://127.0.0.1:8000/reservations/${id}?estado=Confirmada`, {
-                method: 'PUT'
-            });
-            
-            if(response.ok) {
-                cargarReservas(); // Recargar tabla
-                alert("Reserva confirmada");
+        async function confirmar(id) {
+            if(confirm("¿Confirmar mesa?")) {
+                await fetch(`http://127.0.0.1:8000/reservations/${id}?estado=Confirmada`, { method: 'PUT' });
+                cargarReservas();
             }
-        } catch (error) {
-            alert("Error al conectar");
         }
-    }
     </script>
 </body>
 </html>

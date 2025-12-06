@@ -81,6 +81,8 @@ class Producto(BaseModel):
 class ProductoEnCarrito(BaseModel):
     producto_id: str
     cantidad: int
+    nombre: Optional[str] = "Producto" 
+    precio: Optional[float] = 0        
 
 class Pedido(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
@@ -93,6 +95,7 @@ class Pedido(BaseModel):
     
 
     metodo_pago: str 
+    user_email: Optional[str] = None
     
     sucursal: Optional[str] = None
     direccion: Optional[str] = None

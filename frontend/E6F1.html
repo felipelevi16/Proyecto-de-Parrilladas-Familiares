@@ -3,169 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Parrilladas Familiares</title>
+    <title>Panel de Administración - Parrilladas</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background-color: #f8f9fa; }
-        .header { background: #042490; color: white; padding: 15px; text-align: center; }
-        .admin-nav { background: #343a40; padding: 15px; }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; gap: 30px; }
-        .nav-item { color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; transition: background 0.3s; }
-        .nav-item:hover, .nav-item.active { background: #042490; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
-        .dashboard-title { text-align: center; margin-bottom: 30px; color: #333; }
+        :root {
+            --primary: #042490;
+            --primary-gradient: linear-gradient(135deg, #021B79 0%, #0575E6 100%);
+            --secondary: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-light: #64748B;
+            --bg-page: #F8FAFC;
+            --glass: rgba(255, 255, 255, 0.95);
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg-page); color: var(--text-dark); display: flex; min-height: 100vh; }
+
+        /* --- SIDEBAR PREMIUM --- */
+        .sidebar { 
+            width: 280px; 
+            background: var(--primary-gradient); 
+            color: white; 
+            padding: 30px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            position: sticky; top: 0; height: 100vh;
+            z-index: 100;
+        }
         
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 40px; }
-        .dashboard-card { background: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 4px solid #042490; }
-        .card-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 15px; }
-        .stat-number { font-size: 32px; font-weight: bold; color: #042490; margin-bottom: 10px; }
-        .stat-description { color: #666; font-size: 14px; }
+        .logo { 
+            font-size: 22px; font-weight: 800; margin-bottom: 50px; 
+            display: flex; align-items: center; gap: 12px; 
+            background: rgba(255,255,255,0.1); padding: 15px; 
+            border-radius: 16px; backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
         
-        .data-section { background: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        .section-title { color: #333; margin-bottom: 20px; font-size: 20px; }
-        .data-table { width: 100%; border-collapse: collapse; }
-        .data-table th { background: #f8f9fa; padding: 12px 15px; text-align: left; font-weight: bold; color: #333; border-bottom: 2px solid #dee2e6; }
-        .data-table td { padding: 12px 15px; border-bottom: 1px solid #dee2e6; }
+        .nav-group { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+        .nav-item { 
+            padding: 14px 20px; 
+            color: rgba(255,255,255,0.7); 
+            text-decoration: none; 
+            border-radius: 14px; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            font-weight: 600; font-size: 15px;
+            display: flex; align-items: center; gap: 12px;
+            border: 1px solid transparent;
+        }
         
-        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-confirmed { background: #d4edda; color: #155724; }
-        .status-cancelled { background: #f8d7da; color: #721c24; }
+        .nav-item:hover { 
+            background: rgba(255,255,255,0.15); 
+            color: white; transform: translateX(5px); 
+        }
         
-        .action-btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; margin-right: 5px; }
-        .btn-primary { background: #042490; color: white; }
-        .btn-secondary { background: #6c757d; color: white; }
-        .btn-success { background: #28a745; color: white; }
+        .nav-item.active { 
+            background: white; 
+            color: var(--primary); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-weight: 800;
+        }
+
+        .nav-footer { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
         
-        .notification { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 20px; border-radius: 4px; display: none; z-index: 1000; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .dashboard-title { font-size: 28px; font-weight: 800; color: var(--text-dark); }
+        .user-badge { display: flex; align-items: center; gap: 10px; background: white; padding: 8px 15px; border-radius: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); font-weight: 600; font-size: 14px; }
+        .avatar-mini { width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+
+        /* CARDS DE ESTADÍSTICAS */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        
+        .dashboard-card { 
+            background: white; border-radius: 20px; padding: 25px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.02); 
+            transition: transform 0.2s; position: relative; overflow: hidden;
+        }
+        .dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .dashboard-card::after { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
+
+        .card-title { font-size: 13px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .stat-number { font-size: 36px; font-weight: 800; color: var(--primary); margin-bottom: 5px; }
+        .stat-desc { font-size: 13px; color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 5px; }
+
+        /* TABLAS MODERNAS */
+        .data-section { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .section-title { margin: 0; font-size: 18px; font-weight: 800; color: var(--text-dark); }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; background: #F8FAFC; color: var(--text-light); font-size: 12px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; border-radius: 8px; }
+        td { padding: 20px 15px; border-bottom: 1px solid #F1F5F9; font-size: 14px; vertical-align: middle; color: var(--text-dark); }
+        tr:last-child td { border-bottom: none; }
+        
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .status-pending { background: #FEF3C7; color: #B45309; }
+        .status-confirmed { background: #D1FAE5; color: #059669; }
+        .status-shipping { background: #DBEAFE; color: #1E40AF; }
+
+        .action-btn { 
+            padding: 8px 16px; border-radius: 10px; border: none; cursor: pointer; 
+            font-weight: 600; font-size: 12px; transition: 0.2s; text-decoration: none;
+            background: var(--bg-page); color: var(--text-dark);
+        }
+        .action-btn:hover { background: var(--primary); color: white; }
+
+        .notification { position: fixed; top: 20px; right: 20px; padding: 15px 25px; border-radius: 12px; display: none; z-index: 1000; color: white; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Parrilladas Familiares - Panel de Administración</h1>
-    </div>
     
-    <div class="admin-nav">
-        <div class="nav-container">
-            <a href="E6F1.html" class="nav-item active">Dashboard</a>
-            <a href="#" class="nav-item">Administrar Pedidos</a>
-            <a href="E6F2.html" class="nav-item">Administrar Reservas</a>
-            <a href="E6F3.html" class="nav-item">Administrar Catálogo</a>
+    <div class="sidebar">
+        <div class="logo">🔥 Admin Panel</div>
+        
+        <div class="nav-group">
+            <a href="E6F1.html" class="nav-item active">
+                <span>📊</span> Dashboard
+            </a>
+            <a href="E6F3.html" class="nav-item">
+                <span>🥩</span> Productos
+            </a>
+            <a href="E6F2.html" class="nav-item">
+                <span>📅</span> Reservas
+            </a>
+        </div>
+
+        <div class="nav-footer">
+            <a href="E2F1.html" class="nav-item" target="_blank" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                <span>🌐</span> Ver Tienda
+            </a>
         </div>
     </div>
     
-    <div class="container">
-        <h2 class="dashboard-title">Dashboard Principal</h2>
+    <div class="main-content">
+        <div class="header">
+            <h2 class="dashboard-title">Resumen General</h2>
+            <div class="user-badge">
+                <div class="avatar-mini">A</div>
+                <span>Administrador</span>
+            </div>
+        </div>
         
         <div class="notification" id="notification"></div>
         
-        <!-- Estadísticas rápidas -->
         <div class="dashboard-grid">
             <div class="dashboard-card">
                 <div class="card-title">Pedidos Hoy</div>
-                <div class="stat-number">24</div>
-                <div class="stat-description">+5% vs ayer</div>
+                <div class="stat-number" id="kpiPedidos">0</div>
+                <div class="stat-desc">↗ Nuevas órdenes</div>
             </div>
-            
-            <div class="dashboard-card">
+            <div class="dashboard-card" style="border-left-color: var(--warning);">
                 <div class="card-title">Reservas Pendientes</div>
-                <div class="stat-number">12</div>
-                <div class="stat-description">Necesitan confirmación</div>
+                <div class="stat-number" id="kpiReservas">0</div>
+                <div class="stat-desc">⚠ Requieren acción</div>
             </div>
-            
-            <div class="dashboard-card">
+            <div class="dashboard-card" style="border-left-color: var(--success);">
                 <div class="card-title">Ingresos del Día</div>
-                <div class="stat-number">$450.000</div>
-                <div class="stat-description">Total acumulado</div>
-            </div>
-            
-            <div class="dashboard-card">
-                <div class="card-title">Productos Más Vendidos</div>
-                <div class="stat-number">Costillar</div>
-                <div class="stat-description">15 unidades hoy</div>
+                <div class="stat-number" id="kpiIngresos">$0</div>
+                <div class="stat-desc">Total ventas acumuladas</div>
             </div>
         </div>
         
-        <!-- Pedidos recientes -->
         <div class="data-section">
-            <h3 class="section-title">Pedidos Recientes</h3>
-            <table class="data-table">
+            <div class="section-header">
+                <h3 class="section-title">Últimos Pedidos</h3>
+                <button class="action-btn" onclick="cargarDashboard()">🔄 Actualizar</button>
+            </div>
+            <table>
                 <thead>
                     <tr>
                         <th>ID Pedido</th>
-                        <th>Cliente</th>
-                        <th>Total</th>
+                        <th>Método</th>
+                        <th>Monto Total</th>
                         <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>#00125</td>
-                        <td>María González</td>
-                        <td>$45.000</td>
-                        <td><span class="status-badge status-pending">Pendiente</span></td>
-                        <td>
-                            <button class="action-btn btn-primary" onclick="viewOrder('00125')">Ver</button>
-                            <button class="action-btn btn-success" onclick="confirmOrder('00125')">Confirmar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#00124</td>
-                        <td>Carlos López</td>
-                        <td>$32.000</td>
-                        <td><span class="status-badge status-confirmed">Confirmado</span></td>
-                        <td>
-                            <button class="action-btn btn-primary" onclick="viewOrder('00124')">Ver</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#00123</td>
-                        <td>Ana Martínez</td>
-                        <td>$28.500</td>
-                        <td><span class="status-badge status-confirmed">En Preparación</span></td>
-                        <td>
-                            <button class="action-btn btn-primary" onclick="viewOrder('00123')">Ver</button>
-                        </td>
-                    </tr>
+                <tbody id="tableOrders">
+                    <tr><td colspan="5" style="text-align:center; padding:30px; color:#999;">Cargando datos...</td></tr>
                 </tbody>
             </table>
         </div>
-        
-        <!-- Reservas pendientes -->
+
         <div class="data-section">
-            <h3 class="section-title">Reservas Pendientes</h3>
-            <table class="data-table">
+            <div class="section-header">
+                <h3 class="section-title">Últimas Reservas</h3>
+                <a href="E6F2.html" class="action-btn">Gestionar Todas →</a>
+            </div>
+            <table>
                 <thead>
                     <tr>
-                        <th>ID Reserva</th>
                         <th>Cliente</th>
-                        <th>Personas</th>
+                        <th>Fecha / Hora</th>
+                        <th>Asistentes</th>
                         <th>Estado</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>#R0045</td>
-                        <td>Eduardo Díaz</td>
-                        <td>8 personas</td>
-                        <td><span class="status-badge status-pending">Por Confirmar</span></td>
-                        <td>
-                            <button class="action-btn btn-primary" onclick="viewReservation('R0045')">Ver</button>
-                            <button class="action-btn btn-success" onclick="confirmReservation('R0045')">Confirmar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#R0044</td>
-                        <td>Laura Mendoza</td>
-                        <td>6 personas</td>
-                        <td><span class="status-badge status-pending">Por Confirmar</span></td>
-                        <td>
-                            <button class="action-btn btn-primary" onclick="viewReservation('R0044')">Ver</button>
-                            <button class="action-btn btn-success" onclick="confirmReservation('R0044')">Confirmar</button>
-                        </td>
-                    </tr>
+                <tbody id="tableReservations">
+                    <tr><td colspan="4" style="text-align:center; padding:30px; color:#999;">Cargando datos...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -176,99 +217,83 @@
 
     async function cargarDashboard() {
         try {
-            // --- 1. CARGAR PEDIDOS (Ya lo teníamos) ---
-            const respPedidos = await fetch('http://127.0.0.1:8000/orders');
-            const pedidos = await respPedidos.json();
-
-            // --- 2. CARGAR RESERVAS (¡Nuevo!) ---
-            const respReservas = await fetch('http://127.0.0.1:8000/reservations');
-            const reservas = await respReservas.json();
-
-            // --- 3. ACTUALIZAR TARJETAS SUPERIORES (KPIs) ---
-            const totalPedidos = pedidos.length;
-            const totalReservas = reservas.length;
-            const ingresoTotal = pedidos.reduce((sum, p) => sum + (p.total || 0), 0);
+            const [resP, resR] = await Promise.all([
+                fetch('http://127.0.0.1:8000/orders'),
+                fetch('http://127.0.0.1:8000/reservations')
+            ]);
             
-            // Buscamos los números grandes del dashboard
-            const cards = document.querySelectorAll('.stat-number');
-            if(cards[0]) cards[0].textContent = totalPedidos; // Pedidos Hoy
-            if(cards[1]) cards[1].textContent = totalReservas; // Reservas Pendientes (¡Ahora es real!)
-            if(cards[2]) cards[2].textContent = `$${ingresoTotal.toLocaleString()}`; // Ingresos
+            const pedidos = await resP.json();
+            const reservas = await resR.json();
 
-            // --- 4. ACTUALIZAR TABLA DE PEDIDOS (Ya lo teníamos) ---
-            const tablaPedidos = document.querySelectorAll('.data-table tbody')[0];
-            tablaPedidos.innerHTML = ''; // Limpiar
+            // KPIs
+            document.getElementById('kpiPedidos').textContent = pedidos.length;
+            
+            const pendientes = reservas.filter(r => r.estado !== 'Confirmada').length;
+            document.getElementById('kpiReservas').textContent = pendientes;
+            
+            const total = pedidos.reduce((sum, p) => sum + (p.total || 0), 0);
+            document.getElementById('kpiIngresos').textContent = `$${total.toLocaleString()}`;
 
-            pedidos.forEach(p => {
-                let badgeClass = p.estado === 'Entregado' ? 'status-confirmed' : 'status-pending';
-                
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>#${p.id.slice(-6)}</td>
-                    <td>${p.direccion ? 'Delivery' : 'Retiro'}</td>
-                    <td>$${(p.total || 0).toLocaleString()}</td>
-                    <td><span class="status-badge ${badgeClass}">${p.estado}</span></td>
-                    <td><button class="action-btn btn-primary" onclick="alert('Ver pedido: ${p.id}')">Ver</button></td>
-                `;
-                tablaPedidos.appendChild(tr);
-            });
+            // Tabla Pedidos (Últimos 5)
+            const tOrders = document.getElementById('tableOrders');
+            tOrders.innerHTML = '';
+            
+            if (pedidos.length === 0) {
+                tOrders.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px;">No hay pedidos aún</td></tr>';
+            } else {
+                pedidos.slice(0, 5).forEach(p => {
+                    let badge = 'status-pending';
+                    if (p.estado === 'En camino') badge = 'status-shipping';
+                    if (p.estado === 'Entregado') badge = 'status-confirmed';
+                    
+                    tOrders.innerHTML += `
+                        <tr>
+                            <td><strong>#${p.id.slice(-4).toUpperCase()}</strong></td>
+                            <td>${p.metodo_entrega === 'delivery' ? '🛵 Delivery' : '🏪 Retiro'}</td>
+                            <td>$${(p.total || 0).toLocaleString()}</td>
+                            <td><span class="status-badge ${badge}">${p.estado}</span></td>
+                            <td><button class="action-btn" onclick="alert('Ver detalle: ${p.id}')">Ver</button></td>
+                        </tr>
+                    `;
+                });
+            }
 
-            // --- 5. ACTUALIZAR TABLA DE RESERVAS (¡Nuevo!) ---
-            // Buscamos la segunda tabla en la página (la de reservas)
-            const tablaReservas = document.querySelectorAll('.data-table tbody')[1];
-            tablaReservas.innerHTML = ''; // Limpiar datos falsos
+            // Tabla Reservas (Últimas 5)
+            const tRes = document.getElementById('tableReservations');
+            tRes.innerHTML = '';
+            
+            if (reservas.length === 0) {
+                tRes.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:30px;">No hay reservas</td></tr>';
+            } else {
+                reservas.slice(0, 5).forEach(r => {
+                    const badge = r.estado === 'Confirmada' ? 'status-confirmed' : 'status-pending';
+                    tRes.innerHTML += `
+                        <tr>
+                            <td>
+                                <strong>${r.cliente_nombre}</strong><br>
+                                <span style="font-size:12px; color:#64748B">${r.telefono}</span>
+                            </td>
+                            <td>${r.fecha_hora}</td>
+                            <td>${r.asistentes} pers.</td>
+                            <td><span class="status-badge ${badge}">${r.estado}</span></td>
+                        </tr>
+                    `;
+                });
+            }
 
-            reservas.forEach(r => {
-                // Lógica de colores para el estado
-                let badgeClass = 'status-pending'; 
-                if(r.estado === 'Confirmada') badgeClass = 'status-confirmed';
-                
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>#${r.id.slice(-6)}</td>
-                    <td>${r.cliente_nombre}</td>
-                    <td>${r.asistentes} personas</td>
-                    <td><span class="status-badge ${badgeClass}">${r.estado}</span></td>
-                    <td>
-                        <button class="action-btn btn-primary" onclick="verDetalleReserva('${r.id}')">Ver</button>
-                        <button class="action-btn btn-success" onclick="confirmarReserva('${r.id}')">Confirmar</button>
-                    </td>
-                `;
-                tablaReservas.appendChild(tr);
-            });
-
-        } catch (error) {
-            console.error("Error cargando dashboard:", error);
-            showNotification("Error conectando con el servidor", "error");
+        } catch (e) { 
+            console.error(e); 
+            showNotification("Error de conexión", "error");
         }
     }
 
-    function showNotification(message, type = 'success') {
-        const notification = document.getElementById('notification');
-        notification.textContent = message;
-        notification.style.display = 'block';
-        notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
-        setTimeout(() => { notification.style.display = 'none'; }, 3000);
+    function showNotification(msg, type='success') {
+        const notif = document.getElementById('notification');
+        notif.textContent = msg;
+        notif.style.backgroundColor = type === 'success' ? '#10B981' : '#EF4444';
+        notif.style.display = 'block';
+        setTimeout(() => notif.style.display = 'none', 3000);
     }
-
-    function verDetalleReserva(id) {
-        // Aquí conectaríamos con E6F2.html pasando el ID
-        alert("Gestionar reserva ID: " + id);
-        // window.location.href = `E6F2.html?id=${id}`; 
-    }
-
-    function confirmarReserva(id) {
-        // Aquí haríamos un fetch UPDATE a la API para cambiar estado a "Confirmada"
-        alert("Lógica para confirmar reserva: " + id);
-    }
-
-    // Navegación Menú
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', function(e) {
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
     </script>
 </body>
 </html>

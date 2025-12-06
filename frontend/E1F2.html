@@ -3,167 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Parrilladas Familiares</title>
+<title>Bienvenido - Parrilladas Don Eduardo</title>
 <style>
+  :root {
+    --primary: #042490;
+    --primary-gradient: linear-gradient(135deg, #021B79 0%, #0575E6 100%);
+    --secondary: #FFFFFF;
+    --text-dark: #1E293B;
+    --text-light: #64748B;
+    --bg-page: #F8FAFC;
+    --glass: rgba(255, 255, 255, 0.95);
+  }
+
   body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg-page);
+    background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
+    background-size: 20px 20px; /* Patrón de puntos sutil */
+    margin: 0;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #f6f5f3, #042490);
-    height: 100vh; 
-    margin: 0;
+    color: var(--text-dark);
   }
+
   .form-box {
-    background: #fff; 
-    padding: 25px; 
-    border-radius: 12px;
-    width: 320px; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background: var(--secondary);
+    padding: 40px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 50px rgba(4, 36, 144, 0.1);
     text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.8);
   }
-  .form-box h1 {
-    color: #042490;
-    margin-bottom: 10px;
+
+  /* Efecto de luz superior */
+  .form-box::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+    background: var(--primary-gradient);
   }
-  .form-box p {
-    margin-bottom: 20px;
-    color: #555;
+
+  h1 {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
   }
+
+  p {
+    color: var(--text-light);
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+
+  /* --- SWITCH DE PESTAÑAS --- */
+  .nav {
+    display: flex;
+    background: #F1F5F9;
+    padding: 5px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    position: relative;
+  }
+
+  .nav-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-light);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    z-index: 1;
+  }
+
+  .nav-btn.activo {
+    background: white;
+    color: var(--primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  /* --- FORMULARIOS --- */
   form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 15px;
+  }
+
+  input {
     width: 100%;
-  }
-  input[type="email"],
-  input[type="password"] {
-    width: 85%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 2px solid #ccc;
-    border-radius: 6px;
+    padding: 14px 16px;
+    border: 2px solid #F1F5F9;
+    border-radius: 12px;
     font-size: 14px;
-    text-align: center; 
-    box-sizing: border-box;
+    color: var(--text-dark);
+    transition: 0.3s;
+    background: #FAFAFA;
+    box-sizing: border-box; /* Importante para que el padding no rompa el ancho */
   }
-  label {
-    width: 85%;
-    text-align: left;
+
+  input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(4, 36, 144, 0.05);
+  }
+
+  /* Checkbox personalizado */
+  .checkbox-container {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 8px;
-    font-size: 14px;
-    color: #444;
-  }
-  button {
-    width: 85%;
-    padding: 10px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 8px;
-    background: #06048a;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  button:hover {
-    background: #0eabc7;
-  }
-  small {
-    color: #e74c3c;
-    display: block;
-    height: 14px;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-light);
     text-align: left;
-    width: 85%;
-    margin-bottom: 5px;
+    width: 100%;
+    margin-top: 5px;
   }
-  .mensaje {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: 600;
-    display: none;
-    width: 85%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .exito {
-    background: #2ecc71; 
-    color: #fff;
-  }
-  .error {
-    background: #e74c3c; 
-    color: #fff;
-  }
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-  }
-  .nav-btn {
-    flex: 1;
-    padding: 8px;
-    margin: 0 5px;
+  input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); }
+
+  /* Botón Principal */
+  button[type="submit"] {
+    width: 100%;
+    padding: 16px;
+    margin-top: 10px;
     border: none;
-    border-radius: 5px;
-    background: #ddd;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  .nav-btn.activo {
-    background: #06048a;
+    border-radius: 14px;
+    background: var(--primary-gradient);
     color: white;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 10px 20px rgba(4, 36, 144, 0.2);
   }
-  .formulario {
-    display: none;
+
+  button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(4, 36, 144, 0.3);
   }
-  .formulario.activo {
+
+  /* Enlaces y Errores */
+  .forgot-pass {
     display: block;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
   }
+  
+  small { color: #EF4444; font-size: 12px; text-align: left; display: block; margin-top: -10px; margin-bottom: 5px; }
+
+  .mensaje {
+    margin-top: 20px; padding: 12px; border-radius: 10px; font-size: 14px;
+    font-weight: 600; display: none; text-align: center;
+  }
+  .exito { background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; }
+  .error { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+
+  .formulario { display: none; animation: fadeIn 0.4s ease; }
+  .formulario.activo { display: flex; flex-direction: column; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
+
 <div class="form-box">
+  <div class="logo-area" style="margin-bottom: 20px; font-size: 40px;">🔥</div>
+  <h1>Parrilladas Don Eduardo</h1>
+  <p>El auténtico sabor de la parrilla</p>
+
   <div class="nav">
-    <button class="nav-btn activo" onclick="mostrarForm('login')">Login</button>
-    <button class="nav-btn" onclick="mostrarForm('registro')">Registro</button>
+    <button class="nav-btn activo" onclick="mostrarForm('login')">Iniciar Sesión</button>
+    <button class="nav-btn" onclick="mostrarForm('registro')">Crear Cuenta</button>
   </div>
   
   <div id="login" class="formulario activo">
-    <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
-    <p>Iniciar sesión</p>
-    
     <form id="loginForm">
       <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
       <input type="password" id="loginPassword" placeholder="Contraseña" required>
-      <label><input type="checkbox" id="recordar"> Mantener sesión iniciada</label>
+      
+      <label class="checkbox-container">
+        <input type="checkbox" id="recordar"> Recordarme
+      </label>
+      
       <button type="submit">Ingresar</button>
     </form>
-    
-    <div style="margin-top: 15px; font-size: 14px;">
-      <p><a href="E1F3.html" style="color: #06048a; text-decoration: none;">¿Olvidaste tu contraseña?</a></p>
-    </div>
+    <a href="E1F3.html" class="forgot-pass">¿Olvidaste tu contraseña?</a>
   </div>
 
   <div id="registro" class="formulario">
-    <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
-    <p>Crear cuenta nueva</p>
-    
     <form id="registroForm">
-      <input type="email" id="regEmail" placeholder="Correo electrónico" required>
+      <input type="email" id="regEmail" placeholder="Tu correo electrónico" required>
       <small id="error-email"></small>
-      <input type="password" id="regPassword" placeholder="Contraseña" required>
+      
+      <input type="password" id="regPassword" placeholder="Crea una contraseña" required>
       <small id="error-password"></small>
-      <input type="password" id="regConfirm" placeholder="Confirmar contraseña" required>
+      
+      <input type="password" id="regConfirm" placeholder="Confirma tu contraseña" required>
       <small id="error-confirm"></small>
-      <label><input type="checkbox" id="regTerminos"> Acepto términos y condiciones</label>
+      
+      <label class="checkbox-container">
+        <input type="checkbox" id="regTerminos"> Acepto los términos y condiciones
+      </label>
       <small id="error-terminos"></small>
-      <button type="submit">Registrarme</button>
+      
+      <button type="submit">Crear Cuenta</button>
     </form>
   </div>
   
@@ -171,17 +226,21 @@
 </div>
 
 <script>
-// --- 1. LÓGICA DE PESTAÑAS (VISUAL) ---
+// --- LÓGICA DE UI ---
 function mostrarForm(tipo) {
   document.querySelectorAll('.formulario').forEach(f => f.classList.remove('activo'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('activo'));
   
   document.getElementById(tipo).classList.add('activo');
-  document.querySelector(`.nav-btn[onclick="mostrarForm('${tipo}')"]`).classList.add('activo');
+  // Buscar el botón correspondiente
+  const buttons = document.querySelectorAll('.nav-btn');
+  if(tipo === 'login') buttons[0].classList.add('activo');
+  else buttons[1].classList.add('activo');
+  
   document.getElementById('mensaje').style.display = 'none';
 }
 
-// --- 2. HERRAMIENTAS DE VALIDACIÓN ---
+// --- VALIDACIONES ---
 function validarEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
 function validarPass(p){return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(p);}
 function err(id,txt){document.getElementById(id).textContent=txt;}
@@ -189,13 +248,19 @@ function limpiarErrores(){["email","password","confirm","terminos"].forEach(c=>e
 
 const msj = document.getElementById("mensaje");
 
-// --- 3. LÓGICA DE LOGIN CON REDIRECCIÓN POR ROL ---
+// --- LOGIN (CON REDIRECCIÓN INTELIGENTE) ---
 document.getElementById("loginForm").addEventListener("submit", async e => {
   e.preventDefault(); 
   msj.style.display = 'none';
   
   const emailVal = document.getElementById("loginEmail").value.trim();
   const passwordVal = document.getElementById("loginPassword").value;
+
+  // Feedback visual inmediato
+  const btn = e.target.querySelector('button');
+  const btnText = btn.textContent;
+  btn.textContent = "Verificando...";
+  btn.disabled = true;
 
   try {
     const response = await fetch('http://127.0.0.1:8000/login', {
@@ -207,41 +272,38 @@ document.getElementById("loginForm").addEventListener("submit", async e => {
     const resultado = await response.json();
 
     if (response.ok) {
-      msj.textContent = "¡Bienvenido! Redirigiendo..."; 
+      msj.textContent = "¡Bienvenido! Entrando..."; 
       msj.className = "mensaje exito";
       msj.style.display = "block";
       
-      // Guardamos info útil en el navegador
       localStorage.setItem('userEmail', resultado.email);
       localStorage.setItem('userRole', resultado.role);
 
-      // --- AQUÍ ESTÁ LA SOLUCIÓN ---
       setTimeout(() => {
-        console.log("Rol detectado:", resultado.role); // Para depurar si hace falta
-
         if (resultado.role === 'admin') {
-            // SI ES ADMIN -> Va al Panel de Control
             window.location.href = "E6F1.html"; 
         } else {
-            // SI ES CLIENTE (o cualquier otro) -> Va al Menú Principal
             window.location.href = "E2F1.html"; 
         }
-      }, 1500);
+      }, 1000);
       
     } else {
       msj.textContent = resultado.detail || "Credenciales incorrectas";
       msj.className = "mensaje error";
       msj.style.display = "block";
+      btn.textContent = btnText;
+      btn.disabled = false;
     }
   } catch (error) {
-    console.error(error);
-    msj.textContent = "Error de conexión.";
+    msj.textContent = "Error de conexión";
     msj.className = "mensaje error";
     msj.style.display = "block";
+    btn.textContent = btnText;
+    btn.disabled = false;
   }
 });
 
-// --- 4. LÓGICA DE REGISTRO (CONECTADO A API Y REDIRECCIÓN) ---
+// --- REGISTRO ---
 document.getElementById("registroForm").addEventListener("submit", async e => {
   e.preventDefault(); 
   limpiarErrores(); 
@@ -255,9 +317,9 @@ document.getElementById("registroForm").addEventListener("submit", async e => {
   let errores = false;
 
   if(!emailVal || !validarEmail(emailVal)){ err("error-email","Correo inválido"); errores=true; }
-  if(!passVal || !validarPass(passVal)){ err("error-password","Contraseña débil"); errores=true; }
+  if(!passVal || !validarPass(passVal)){ err("error-password","Mín 8 caracteres, 1 mayúscula, 1 número"); errores=true; }
   if(confVal !== passVal){ err("error-confirm","No coinciden"); errores=true; }
-  if(!termVal){ err("error-terminos","Debes aceptar"); errores=true; }
+  if(!termVal){ err("error-terminos","Debes aceptar términos"); errores=true; }
   
   if(errores) return;
 
@@ -276,12 +338,11 @@ document.getElementById("registroForm").addEventListener("submit", async e => {
     const resultado = await response.json();
 
     if (response.ok) {
-      msj.textContent = "¡Cuenta creada! Ingresando...";
+      msj.textContent = "¡Cuenta creada con éxito!";
       msj.className = "mensaje exito"; 
       msj.style.display = "block";
       document.getElementById("registroForm").reset();
       
-      // Redirección automática al menú también después del registro
       setTimeout(() => {
           window.location.href = "E2F1.html";
       }, 2000);

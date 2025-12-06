@@ -3,199 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seguimiento de Pedido - Parrilladas Familiares</title>
+    <title>Seguimiento - Parrilladas Don Eduardo</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background: #f5f5f5; }
-        .header { background: #004085; color: white; padding: 15px 20px; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        .page-title { text-align: center; margin: 20px 0 30px; color: #333; }
+        :root {
+            --primary: #042490;
+            --primary-gradient: linear-gradient(135deg, #021B79 0%, #0575E6 100%);
+            --secondary: #FFFFFF;
+            --accent: #FFD700;
+            --text-dark: #1E293B;
+            --text-light: #64748B;
+            --bg-page: #F8FAFC;
+            --glass: rgba(255, 255, 255, 0.95);
+            --success: #10B981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg-page); color: var(--text-dark); min-height: 100vh; }
+
+        /* HEADER */
+        .header { 
+            background: var(--glass); backdrop-filter: blur(10px);
+            padding: 15px 25px; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        .logo { font-size: 22px; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px;}
+        .nav-btn { text-decoration: none; color: var(--text-light); font-weight: 600; font-size: 14px; }
+
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+
+        /* TARJETA PRINCIPAL */
+        .status-card {
+            background: white; border-radius: 24px; padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08); text-align: center;
+            position: relative; overflow: hidden; border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .order-id { font-size: 14px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .status-title { font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+        .eta { background: #E0E7FF; color: var(--primary); padding: 8px 16px; border-radius: 20px; font-weight: 700; display: inline-block; margin-bottom: 40px; }
+
+        /* LÍNEA DE TIEMPO (PROGRESS TRACKER) */
+        .tracker { display: flex; justify-content: space-between; position: relative; margin-bottom: 50px; }
+        .track-line { 
+            position: absolute; top: 15px; left: 0; width: 100%; height: 4px; 
+            background: #E2E8F0; z-index: 0; border-radius: 4px; 
+        }
+        .track-fill { 
+            position: absolute; top: 15px; left: 0; height: 4px; 
+            background: var(--success); z-index: 0; border-radius: 4px; 
+            transition: width 1s ease-in-out; width: 25%;
+        }
+
+        .step { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 20%; }
+        .step-circle { 
+            width: 34px; height: 34px; background: white; border: 4px solid #E2E8F0; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            transition: 0.3s; color: white; font-weight: bold; font-size: 14px;
+        }
+        .step-label { font-size: 12px; margin-top: 10px; color: var(--text-light); font-weight: 600; text-align: center; }
+
+        /* Estados Activos */
+        .step.active .step-circle { border-color: var(--success); background: var(--success); box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2); }
+        .step.active .step-label { color: var(--text-dark); }
+        .step.completed .step-circle { border-color: var(--success); background: var(--success); }
+
+        /* DETALLE DEL PEDIDO */
+        .order-details { margin-top: 30px; text-align: left; background: #F8FAFC; padding: 20px; border-radius: 16px; border: 1px solid #E2E8F0; }
+        .details-title { font-weight: 700; margin-bottom: 15px; color: var(--text-dark); }
         
-        .order-status-card { background: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        .status-title { font-size: 20px; font-weight: bold; color: #333; }
-        .order-number { color: #666; font-size: 14px; }
+        .item-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: var(--text-light); }
+        .total-row { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 2px dashed #CBD5E1; font-weight: 800; color: var(--primary); font-size: 18px; }
+
+        /* BOTONES DE ACCIÓN */
+        .actions { margin-top: 30px; display: flex; gap: 15px; }
         
-        .progress-tracker { display: flex; justify-content: space-between; position: relative; margin: 30px 0; }
-        .progress-tracker::before { content: ''; position: absolute; top: 15px; left: 0; right: 0; height: 3px; background: #e9ecef; z-index: 1; }
-        .progress-bar { position: absolute; top: 15px; left: 0; height: 3px; background: #28a745; z-index: 2; transition: width 0.3s; }
-        .progress-step { display: flex; flex-direction: column; align-items: center; z-index: 3; }
-        .step-icon { width: 30px; height: 30px; border-radius: 50%; background: #e9ecef; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; font-size: 12px; }
-        .step-active .step-icon, .step-completed .step-icon { background: #28a745; color: white; }
-        .step-label { font-size: 12px; color: #666; text-align: center; }
-        .step-active .step-label { color: #333; font-weight: bold; }
+        .btn { flex: 1; padding: 15px; border-radius: 16px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 15px; }
         
-        .order-details { background: #f8f9fa; padding: 20px; border-radius: 4px; margin: 20px 0; }
-        .detail-item { margin-bottom: 10px; display: flex; justify-content: space-between; }
-        .detail-label { font-weight: bold; color: #333; }
-        .detail-value { color: #666; }
+        .btn-primary { background: var(--primary-gradient); color: white; box-shadow: 0 10px 20px rgba(4, 36, 144, 0.2); text-decoration: none;}
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(4, 36, 144, 0.3); }
         
-        .estimated-time { background: #e7f3ff; padding: 15px; border-radius: 4px; margin: 15px 0; text-align: center; border-left: 4px solid #007bff; }
-        .time-display { font-size: 18px; font-weight: bold; color: #007bff; }
-        
-        .help-section { text-align: center; margin-top: 30px; }
-        .help-btn { background: #6c757d; color: white; border: none; padding: 12px 25px; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        
-        .help-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-content { background: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%; }
-        .modal-title { color: #333; margin-bottom: 20px; text-align: center; }
-        .problem-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        .problem-option { padding: 15px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; transition: background 0.3s; }
-        .problem-option:hover { background: #f8f9fa; }
-        .back-btn { background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%; }
-        
-        .notification { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 20px; border-radius: 4px; display: none; z-index: 1000; }
+        .btn-secondary { background: white; color: var(--text-dark); border: 1px solid #E2E8F0; }
+        .btn-secondary:hover { background: #F1F5F9; }
+
+        /* ANIMACIÓN DE CARGA */
+        .loading-pulse { display: inline-block; width: 10px; height: 10px; background: var(--success); border-radius: 50%; margin-left: 10px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(2.5); } }
+
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Parrilladas Familiares</h1>
-    </div>
-    
+
+    <nav class="header">
+        <a href="E2F1.html" class="logo">🔥 Don Eduardo</a>
+        <a href="E2F1.html" class="nav-btn">Inicio</a>
+    </nav>
+
     <div class="container">
-        <h2 class="page-title">Seguimiento de tu Pedido</h2>
         
-        <div class="notification" id="notification"></div>
-        
-        <div class="order-status-card">
-            <div class="status-header">
-                <div class="status-title">Estado del pedido: <span style="color: #28a745;" id="orderStatus">En preparación</span></div>
-                <div class="order-number">Número de pedido: #163945</div>
+        <div class="status-card">
+            <div class="order-id" id="displayId">Cargando pedido...</div>
+            
+            <div class="status-title" id="displayEstado">
+                Consultando...
             </div>
             
-            <div class="estimated-time">
-                <div>Hora estimada de preparación:</div>
-                <div class="time-display" id="estimatedTime">16:22</div>
+            <div class="eta">
+                ⏱️ Entrega estimada: 30-45 min
             </div>
-            
-            <div class="progress-tracker">
-                <div class="progress-bar" id="progressBar" style="width: 25%;"></div>
-                <div class="progress-step step-completed" data-step="1">
-                    <div class="step-icon">✓</div>
-                    <div class="step-label">Confirmado</div>
+
+            <div class="tracker">
+                <div class="track-line"></div>
+                <div class="track-fill" id="progressBar"></div>
+                
+                <div class="step" id="step1">
+                    <div class="step-circle">✓</div>
+                    <div class="step-label">Recibido</div>
                 </div>
-                <div class="progress-step step-active" data-step="2">
-                    <div class="step-icon">2</div>
-                    <div class="step-label">En preparación</div>
+                <div class="step" id="step2">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Preparando</div>
                 </div>
-                <div class="progress-step" data-step="3">
-                    <div class="step-icon">3</div>
+                <div class="step" id="step3">
+                    <div class="step-circle">3</div>
                     <div class="step-label">Listo</div>
                 </div>
-                <div class="progress-step" data-step="4">
-                    <div class="step-icon">4</div>
+                <div class="step" id="step4">
+                    <div class="step-circle">4</div>
                     <div class="step-label">Entregado</div>
                 </div>
             </div>
-            
-            <div class="order-details">
-                <h3 style="margin-bottom: 15px; color: #333;">Tu orden:</h3>
-                <div class="detail-item">
-                    <span>1 Parrillada familiar</span>
-                    <span>$25.000</span>
+
+            <div class="order-details" id="listaProductos">
+                <div class="details-title">Resumen del Pedido</div>
+                <div class="item-row">
+                    <span>Productos Parrilleros</span>
+                    <span id="itemsCount">...</span>
                 </div>
-                <div class="detail-item">
-                    <span>1 Porción grande de empanadas</span>
-                    <span>$8.000</span>
+                <div class="item-row">
+                    <span>Envío a domicilio</span>
+                    <span>$5.000</span>
                 </div>
-                <div class="detail-item">
-                    <span>2 Bebidas - Coca cola zero</span>
-                    <span>$4.000</span>
-                </div>
-                <div class="detail-item" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">
-                    <span style="font-weight: bold;">Total:</span>
-                    <span style="font-weight: bold; color: #8B0000;">$37.000</span>
+                <div class="total-row">
+                    <span>Total Pagado</span>
+                    <span id="displayTotal">...</span>
                 </div>
             </div>
-            
-            <div class="help-section">
-                <button class="help-btn" onclick="showHelpModal()">Ayuda con el pedido</button>
-                <button class="help-btn" onclick="simulateProgress()" style="background: #007bff; margin-left: 10px;">Simular Progreso</button>
+
+            <div class="actions">
+                <button class="btn btn-secondary" onclick="alert('Llamando a soporte...')">
+                    📞 Ayuda
+                </button>
+                <a href="E2F1.html" class="btn btn-primary">
+                    Volver al Inicio
+                </a>
             </div>
-        </div>
-    </div>
-    
-    <div class="help-modal" id="helpModal">
-        <div class="modal-content">
-            <h3 class="modal-title">¿Necesitas ayuda con tu pedido?</h3>
-            
-            <div class="problem-options">
-                <div class="problem-option" onclick="selectProblem('delay')">
-                    <strong>Mi pedido está tomando mucho tiempo</strong>
-                    <p style="color: #666; margin-top: 5px; font-size: 14px;">El tiempo de preparación está excediendo lo estimado</p>
-                </div>
-                
-                <div class="problem-option" onclick="selectProblem('cancel')">
-                    <strong>Quiero cancelar mi pedido</strong>
-                    <p style="color: #666; margin-top: 5px; font-size: 14px;">Cancelar el pedido antes de que comience la preparación</p>
-                </div>
-                
-                <div class="problem-option" onclick="selectProblem('issue')">
-                    <strong>Tengo un problema con mi pedido</strong>
-                    <p style="color: #666; margin-top: 5px; font-size: 14px;">Reportar un problema específico con mi orden</p>
-                </div>
-                
-                <div class="problem-option" onclick="selectProblem('other')">
-                    <strong>Otro problema</strong>
-                    <p style="color: #666; margin-top: 5px; font-size: 14px;">Otra consulta o problema no listado</p>
-                </div>
-            </div>
-            
-            <button class="back-btn" onclick="hideHelpModal()">Volver</button>
+
         </div>
     </div>
 
     <script>
     document.addEventListener('DOMContentLoaded', async () => {
-        // Intentamos recuperar el ID del último pedido creado (guardado en E3F3)
-        // Nota: En E3F3 deberíamos guardar: localStorage.setItem('ultimoPedidoId', resultado.id);
-        // Si no lo hicimos, puedes probar pegando un ID manual en el código para la demo.
-        
+        // 1. Obtener ID del pedido guardado
         const orderId = localStorage.getItem('ultimoPedidoId'); 
 
         if (!orderId) {
-            alert("No hay pedido activo para rastrear.");
+            document.querySelector('.container').innerHTML = '<h2 style="text-align:center">No tienes pedidos activos</h2><div style="text-align:center"><a href="E2F1.html">Ir al menú</a></div>';
             return;
         }
 
         try {
+            // 2. Consultar API
             const response = await fetch(`http://127.0.0.1:8000/orders/${orderId}`);
-            if (!response.ok) throw new Error("Pedido no encontrado");
+            
+            if (!response.ok) throw new Error("Error al buscar pedido");
             
             const pedido = await response.json();
             
-            // Actualizar la interfaz
-            document.getElementById('orderStatus').textContent = pedido.estado;
-            document.querySelector('.order-number').textContent = `Número de pedido: #${pedido.id.slice(-6)}`;
-            
-            // Actualizar barra de progreso visualmente según el estado
-            actualizarBarra(pedido.estado);
-            
-            // Mostrar detalles del monto
-            // (Aquí podrías rellenar la lista de productos si quisieras ser detallista)
-            
+            // 3. Actualizar UI
+            renderizarEstado(pedido);
+
         } catch (error) {
             console.error(error);
+            document.getElementById('displayEstado').textContent = "Error de conexión";
         }
     });
 
-    function actualizarBarra(estado) {
+    function renderizarEstado(pedido) {
+        // 1. Textos Generales
+        document.getElementById('displayId').textContent = `PEDIDO #${pedido.id.slice(-6).toUpperCase()}`;
+        document.getElementById('displayTotal').textContent = `$${pedido.total.toLocaleString()}`;
+        
+        // 2. Estado y Barra
+        const estado = pedido.estado || "Ingresado";
+        const titleEl = document.getElementById('displayEstado');
+        
         let step = 1;
-        if (estado === 'Ingresado') step = 1;
-        if (estado === 'En preparación') step = 2;
-        if (estado === 'Listo') step = 3;
-        if (estado === 'Entregado') step = 4;
+        if (estado === 'Ingresado') {
+            step = 1; titleEl.innerHTML = `Pedido Recibido <span class="loading-pulse"></span>`;
+        } else if (estado === 'En preparación') {
+            step = 2; titleEl.innerHTML = `En el Fuego 🔥`;
+        } else if (estado === 'Listo' || estado === 'En camino') {
+            step = 3; titleEl.innerHTML = `Va en camino 🛵`;
+        } else if (estado === 'Entregado') {
+            step = 4; titleEl.innerHTML = `¡Entregado! 🎉`;
+        } else {
+            titleEl.textContent = estado;
+        }
+        actualizarBarra(step);
+
+        // 3. LISTA DE PRODUCTOS (¡NUEVO!)
+        const contenedorLista = document.getElementById('listaProductos');
         
-        // Lógica visual de la barra (manteniendo tu CSS original)
-        const widths = ['25%', '50%', '75%', '100%'];
-        document.getElementById('progressBar').style.width = widths[step-1];
+        // Creamos el HTML de la lista dinámicamente
+        let htmlProductos = `<div class="details-title">Resumen del Pedido</div>`;
         
-        // Actualizar bolitas
-        document.querySelectorAll('.progress-step').forEach((el, idx) => {
-            if (idx + 1 < step) el.className = 'progress-step step-completed';
-            else if (idx + 1 === step) el.className = 'progress-step step-active';
-            else el.className = 'progress-step';
-        });
+        if (pedido.items && pedido.items.length > 0) {
+            pedido.items.forEach(item => {
+                const nombre = item.nombre || "Producto Parrillero"; // Fallback por si acaso
+                const precioTotal = (item.precio || 0) * item.cantidad;
+                
+                htmlProductos += `
+                <div class="item-row">
+                    <span>${item.cantidad}x ${nombre}</span>
+                    <span>$${precioTotal.toLocaleString()}</span>
+                </div>`;
+            });
+        }
+
+        // Agregamos el envío y el total
+        htmlProductos += `
+            <div class="item-row">
+                <span>Envío a domicilio</span>
+                <span>$${(pedido.envio || 0).toLocaleString()}</span>
+            </div>
+            <div class="total-row">
+                <span>Total Pagado</span>
+                <span>$${pedido.total.toLocaleString()}</span>
+            </div>
+        `;
+
+        // Inyectamos todo el HTML
+        contenedorLista.innerHTML = htmlProductos;
+        
+        // Actualizar contador simple de arriba
+        const cantidadItems = pedido.items ? pedido.items.reduce((s, i) => s + i.cantidad, 0) : 0;
+        if(document.getElementById('itemsCount')) 
+            document.getElementById('itemsCount').textContent = `${cantidadItems} unidades`;
+    }
+
+    function actualizarBarra(currentStep) {
+        // Ancho de la línea verde
+        const porcentajes = ['15%', '40%', '70%', '100%'];
+        document.getElementById('progressBar').style.width = porcentajes[currentStep - 1];
+
+        // Colores de las bolitas
+        for (let i = 1; i <= 4; i++) {
+            const el = document.getElementById(`step${i}`);
+            if (i < currentStep) {
+                el.className = 'step completed';
+                el.querySelector('.step-circle').innerHTML = '✓';
+            } else if (i === currentStep) {
+                el.className = 'step active';
+                el.querySelector('.step-circle').innerHTML = i;
+            } else {
+                el.className = 'step';
+            }
+        }
     }
     </script>
 </body>

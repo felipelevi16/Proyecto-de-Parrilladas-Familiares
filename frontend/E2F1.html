@@ -33,7 +33,31 @@
   }
   .logo { font-size: 22px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
   
-  .nav-actions { display: flex; gap: 15px; }
+  .nav-actions { display: flex; align-items: center; gap: 15px; }
+  
+  /* ESTILO NUEVO PARA EL BOTÓN DE RESERVA */
+  .reserve-btn {
+    background: white;
+    color: var(--primary);
+    border: 1px solid #E2E8F0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: none;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .reserve-btn:hover {
+    border-color: var(--primary);
+    background: #F0F9FF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+
   .icon-btn { 
     background: white; border: 1px solid #E2E8F0; width: 42px; height: 42px; 
     border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; 
@@ -73,7 +97,7 @@
   }
   .category-pill:hover, .category-pill.active { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(4, 36, 144, 0.2); }
 
-  /* --- PROMOS FLASH (ESTO FALTABA) --- */
+  /* --- PROMOS FLASH --- */
   .promos-grid { 
     display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
     gap: 20px; max-width: 1200px; margin: 30px auto; padding: 0 25px; 
@@ -138,6 +162,8 @@
     .carousel-container { height: 220px; width: 100%; border-radius: 0; margin-top: 0; }
     .promos-grid { grid-template-columns: 1fr; gap: 15px; }
     .products-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+    .nav-actions { gap: 10px; }
+    .reserve-btn span { display: none; } /* Oculta texto "Reservar" en móvil, deja icono */
   }
 </style>
 </head>
@@ -146,6 +172,11 @@
   <nav class="header">
     <div class="logo">🔥Parrilladas Don Eduardo</div>
     <div class="nav-actions">
+      
+      <a href="E4F1.html" class="reserve-btn">
+        <span>📅</span> Reservar
+      </a>
+
       <a href="E7F3.html" class="icon-btn">👤</a>
       <a href="E3F2.html" class="icon-btn">
         🛒 <div class="badge" id="cartCount">0</div>
@@ -153,20 +184,29 @@
     </div>
   </nav>
 
+  <div style="text-align: center; padding: 40px 20px 10px;">
+    <h1 style="font-size: 42px; font-weight: 900; color: var(--primary); margin: 0; letter-spacing: -1px;">
+      Bienvenido a una experiencia de calidad y sabor
+    </h1>
+    <p style="font-size: 18px; color: var(--text-light); margin-top: 10px;">
+      Elige tu mejor comida del día.
+    </p>
+  </div>
+
   <div class="carousel-container">
     <div class="carousel-track" id="carouselTrack">
-      <div class="carousel-slide" onclick="verDetalle('ID_DEL_COSTILLAR_AQUI')">
-        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" alt="Parrilla">
+      <div class="carousel-slide" onclick="verDetalle('692f63846726ee61a91ebedd')">
+        <img src="http://127.0.0.1:8000/static/images/5028cb7f80b4756bcb2a10bff1fded3c.avif" alt="Parrilla">
         <div class="carousel-overlay">
-          <h2>¡Finde Parrillero! 🍖</h2>
-          <p>Toca para ver el Costillar Premium.</p>
+          <h2>¡Finde Parrillero! </h2>
+          <p>Toca para ver nuestro Costillar Premium en oferta.</p>
         </div>
       </div>
-      <div class="carousel-slide" onclick="verDetalle('ID_DE_BEBIDA_AQUI')">
-        <img src="https://images.unsplash.com/photo-1606216733228-662703a497a7?q=80&w=1200&auto=format&fit=crop" alt="Bebidas">
+      <div class="carousel-slide" onclick="verDetalle('69223e78d38cb7435c44ebca')">
+        <img src="http://127.0.0.1:8000/static/images/564347-LomoVetado_bife-min.jpg" alt="Bebidas">
         <div class="carousel-overlay">
-          <h2>Refresca tu Asado 🍻</h2>
-          <p>Pack de bebidas con descuento.</p>
+          <h2>¡Carne premium en oferta!</h2>
+          <p>Nuestro exquisito Lomo Vetado a un precio imperdible.</p>
         </div>
       </div>
     </div>
@@ -177,26 +217,27 @@
   <div class="categories-scroll">
     <div class="category-pill active" onclick="filtrar('todos', this)">🍽️ Todo</div>
     <div class="category-pill" onclick="filtrar('carnes', this)">🥩 Carnes</div>
+    <div class="category-pill" onclick="filtrar('combos', this)">🔥 Combos</div>
     <div class="category-pill" onclick="filtrar('acompañamientos', this)">🥗 Acompañamientos</div>
     <div class="category-pill" onclick="filtrar('bebidas', this)">🥤 Bebidas</div>
     <div class="category-pill" onclick="filtrar('postres', this)">🍰 Postres</div>
   </div>
 
   <div class="promos-grid">
-    <div class="promo-card" onclick="verDetalle('ID_DEL_POLLO_AQUI')">
-      <img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=600&auto=format&fit=crop" alt="Pollo">
+    <div class="promo-card" onclick="verDetalle('692fb5e66726ee61a91ebeeb')">
+      <img src="http://127.0.0.1:8000/static/images/¿Qué es un helado artesanal y que diferencia existen con uno industrial (1).jpg" alt="Postres">
       <div class="promo-content">
-        <div class="promo-tag">Solo por hoy</div>
-        <h3>Pollo a las Brasas -20%</h3>
+        <div class="promo-tag">¡Solo por hoy!</div>
+        <h3>Aprovecha esta oferta de nuestro irresistible helado artesanal</h3>
         <span class="promo-link">Pedir Ahora →</span>
       </div>
     </div>
 
-    <div class="promo-card" onclick="verDetalle('ID_DEL_HELADO_AQUI')">
-      <img src="https://images.unsplash.com/photo-1576506295286-5cda18df43e7?q=80&w=600&auto=format&fit=crop" alt="Helado">
+    <div class="promo-card" onclick="verDetalle('692fb6d16726ee61a91ebeec')">
+      <img src="http://127.0.0.1:8000/static/images/tiramisu-facil-con-IKZWSK7CUNBJNO5J5YMJBSEPWY.avif" alt="Postres">
       <div class="promo-content">
-        <div class="promo-tag">Postre</div>
-        <h3>Helados Artesanales</h3>
+        <div class="promo-tag">Postre del Mes</div>
+        <h3>Nuestro exquisito tiramisú está disponible a un precio único</h3>
         <span class="promo-link">Ver Sabores →</span>
       </div>
     </div>
@@ -254,20 +295,45 @@ function renderizar(lista) {
   }
 
   lista.forEach(p => {
-    let imgHTML = (p.imagen && p.imagen.startsWith('http')) 
-      ? `<img src="${p.imagen}" alt="${p.nombre}">` 
-      : `<span>${p.imagen || "🥩"}</span>`;
+    // 1. Verificar Stock (Si no existe campo, asumimos true)
+    const enStock = p.disponible !== false;
 
+    // 2. Estilos condicionales (Gris si agotado)
+    const imgClass = enStock ? '' : 'filter: grayscale(100%); opacity: 0.7;';
+    
+    let imgHTML = (p.imagen && p.imagen.startsWith('http')) 
+      ? `<img src="${p.imagen}" alt="${p.nombre}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; ${imgClass}">` 
+      : `<span style="${imgClass}">${p.imagen || "🥩"}</span>`;
+
+    // 3. Precios y Badges
     let precioDisplay = `$${p.precio.toLocaleString()}`;
     let oldPriceHTML = '';
     let badgeHTML = '';
 
-    if (p.es_oferta) {
-      const precioAntiguo = p.precio_normal || p.precio * 1.2;
-      oldPriceHTML = `<span class="old-price">$${precioAntiguo.toLocaleString()}</span>`;
-      badgeHTML = `<span class="promo-badge">OFERTA</span>`;
+    // Badge de Agotado tiene prioridad sobre Oferta
+    if (!enStock) {
+        badgeHTML = `<span class="promo-badge" style="background:#333;">AGOTADO</span>`;
+    } else if (p.es_oferta) {
+        const precioAntiguo = p.precio_normal || p.precio * 1.2;
+        oldPriceHTML = `<span class="old-price">$${precioAntiguo.toLocaleString()}</span>`;
+        badgeHTML = `<span class="promo-badge">OFERTA</span>`;
     }
 
+    // 4. Botón de Acción (Deshabilitado si agotado)
+    let btnAction = '';
+    if (enStock) {
+        btnAction = `
+            <button class="add-btn" onclick="event.stopPropagation(); agregar('${p._id}', '${p.nombre}', ${p.precio})">
+              +
+            </button>`;
+    } else {
+        btnAction = `
+            <button class="add-btn" style="background:#ccc; cursor:not-allowed;" onclick="event.stopPropagation(); alert('Producto agotado')">
+              🚫
+            </button>`;
+    }
+
+    // 5. Renderizar Tarjeta
     grid.innerHTML += `
       <div class="product-card" onclick="verDetalle('${p._id}')">
         ${badgeHTML}
@@ -282,9 +348,7 @@ function renderizar(lista) {
               ${oldPriceHTML}
               <span class="current-price">${precioDisplay}</span>
             </div>
-            <button class="add-btn" onclick="event.stopPropagation(); agregar('${p._id}', '${p.nombre}', ${p.precio})">
-              +
-            </button>
+            ${btnAction}
           </div>
         </div>
       </div>
@@ -307,7 +371,7 @@ function filtrar(categoria, elemento) {
 }
 
 function verDetalle(id) {
-  if (id.includes("ID_")) return; // Prevenir click en placeholders
+  if (id.includes("ID_")) return; // Evita clicks en placeholders
   localStorage.setItem('productoSeleccionado', id);
   window.location.href = 'E2F3.html';
 }

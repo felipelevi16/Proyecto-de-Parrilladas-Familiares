@@ -6,19 +6,19 @@
 <title>Detalle - Parrilladas Don Eduardo</title>
 <style>
   :root {
-    /* Paleta de Colores "Blue Royal Innovator" */
     --primary: #042490;
     --primary-gradient: linear-gradient(135deg, #021B79 0%, #0575E6 100%);
     --secondary: #FFFFFF;
-    --accent: #FFD700;
     --text-dark: #1E293B;
     --text-light: #64748B;
     --bg-page: #F1F5F9;
     --glass: rgba(255, 255, 255, 0.95);
+    --accent: #FFD700;
+    --danger: #EF4444; /* Rojo para agotado */
   }
 
   body { 
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+    font-family: 'Segoe UI', system-ui, sans-serif; 
     background: var(--bg-page); 
     margin: 0; 
     min-height: 100vh; 
@@ -29,214 +29,116 @@
   
   .form-box { 
     background: var(--secondary); 
-    border-radius: 24px;
-    width: 100%; 
+    border-radius: 24px; 
+    width: 95%; 
     max-width: 600px; 
-    box-shadow: 0 20px 40px rgba(4, 36, 144, 0.1);
-    margin: 20px 0; 
+    box-shadow: 0 20px 40px rgba(4, 36, 144, 0.1); 
+    margin: 20px 0 100px 0; 
     overflow: hidden;
     position: relative;
-    border: 1px solid rgba(255,255,255,0.5);
   }
 
-  /* --- HEADER MODERNO --- */
   .nav { 
-    display: flex; 
-    justify-content: space-between; 
-    padding: 20px; 
-    background: var(--glass); 
-    backdrop-filter: blur(10px);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    display: flex; justify-content: space-between; padding: 20px; 
+    background: var(--glass); backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(0,0,0,0.05);
+    position: sticky; top: 0; z-index: 10;
   }
-
   .nav-btn { 
-    background: transparent; 
-    color: var(--text-light); 
-    border: 1px solid #E2E8F0; 
-    padding: 8px 16px; 
-    border-radius: 30px; 
-    font-weight: 600; 
-    cursor: pointer; 
-    font-size: 13px; 
-    transition: all 0.3s ease;
+    background: transparent; color: var(--text-light); 
+    border: 1px solid #E2E8F0; padding: 8px 16px; border-radius: 30px; 
+    cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.3s;
   }
-  
-  .nav-btn:hover { 
-    background: var(--primary); 
-    color: white; 
-    border-color: var(--primary);
-    transform: translateY(-2px);
-  }
-
-  /* Botón Carrito AZUL (Nuevo diseño) */
+  .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
   .nav-btn.cart { 
-    background: var(--primary); 
-    color: white; 
-    border: none;
+    background: var(--primary); color: white; border: none; 
     box-shadow: 0 4px 10px rgba(4, 36, 144, 0.3);
   }
 
-  .content-scroll { padding: 0 25px 120px 25px; } 
+  .content-scroll { padding: 25px; } 
 
-  /* --- IMAGEN CON ESTILO --- */
   .img-container { 
-    width: 100%; 
-    height: 280px; 
+    width: 100%; height: 280px; 
     background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
-    border-radius: 20px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    overflow: visible; 
-    margin: 20px 0 30px 0; 
-    position: relative;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.03);
+    border-radius: 20px; display: flex; align-items: center; justify-content: center; 
+    margin-bottom: 25px; position: relative;
   }
+  .img-container img { width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15)); }
   
-  .img-container img { 
-    width: 90%; 
-    height: 90%; 
-    object-fit: contain; 
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
-    transition: transform 0.5s;
-  }
-  
-  .img-container:hover img { transform: scale(1.05) rotate(2deg); }
-
+  /* Badges */
   .badge-oferta { 
-    position: absolute; 
-    top: 15px; 
-    right: 15px; 
-    background: #EF4444; 
-    color: white; 
-    padding: 6px 14px; 
-    border-radius: 30px; 
-    font-size: 11px; 
-    font-weight: 800; 
-    letter-spacing: 0.5px;
+    position: absolute; top: 15px; right: 15px; 
+    background: var(--danger); color: white; padding: 6px 14px; 
+    border-radius: 30px; font-size: 11px; font-weight: 800; 
     box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
-    animation: float 3s ease-in-out infinite;
   }
+  
+  .badge-agotado {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-10deg);
+    background: rgba(0,0,0,0.8); color: white; padding: 10px 30px;
+    border: 2px solid white; border-radius: 8px;
+    font-size: 24px; font-weight: 900; text-transform: uppercase;
+    letter-spacing: 2px; backdrop-filter: blur(4px);
+    z-index: 5;
+  }
+  .img-gray { filter: grayscale(100%); opacity: 0.6; } /* Efecto gris si está agotado */
 
-  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
-  /* --- TIPOGRAFÍA --- */
-  h1 { font-size: 28px; font-weight: 800; color: var(--text-dark); margin: 0 0 8px 0; letter-spacing: -0.5px; }
+  h1 { font-size: 26px; font-weight: 800; margin: 0 0 10px 0; color: var(--text-dark); }
   .desc { color: var(--text-light); font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
 
-  /* --- PRECIOS --- */
   .price-container { margin-bottom: 25px; display: flex; align-items: baseline; gap: 10px; }
-  .old-price { text-decoration: line-through; color: #94A3B8; font-size: 16px; font-weight: 500; }
-  .final-price { 
-    font-size: 36px; 
-    font-weight: 800; 
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-   background-clip: text;         
-    -webkit-text-fill-color: transparent;
-    color: transparent;            
-  }
+  .old-price { text-decoration: line-through; color: #94A3B8; font-size: 16px; font-weight: 600; }
+  .final-price { font-size: 32px; font-weight: 800; color: var(--primary); }
 
-  /* --- SECCIÓN DE EXTRAS --- */
-  .extras-section { 
-    background: white; 
-    border: none;
-    padding: 0; 
-    margin-bottom: 25px; 
-    display: none; 
-  }
-  .extras-section.active { display: block; }
-  
+  /* EXTRAS */
+  .extras-section { margin-top: 10px; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
   .extras-title { 
-    font-weight: 700; 
-    color: var(--text-dark); 
-    margin-bottom: 15px; 
-    display: block; 
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-light);
+    font-size: 13px; text-transform: uppercase; letter-spacing: 1px; 
+    font-weight: 700; color: var(--text-light); margin-bottom: 15px; display: block;
   }
   
   .extra-item { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 15px 20px; 
-    background: #FFFFFF; 
-    border-radius: 12px; 
-    margin-bottom: 10px; 
-    border: 1px solid #F1F5F9; 
-    cursor: pointer; 
+    display: flex; justify-content: space-between; align-items: center; 
+    padding: 15px 20px; background: #FFF; border-radius: 16px; 
+    margin-bottom: 12px; border: 2px solid #F1F5F9; cursor: pointer; 
     transition: all 0.2s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
   }
-  .extra-item:hover { 
-    border-color: var(--primary); 
-    transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(4, 36, 144, 0.1);
-  }
+  .extra-item:hover { border-color: #CBD5E1; transform: translateY(-2px); }
   
-  .extra-label { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 500; color: var(--text-dark); }
-  .extra-price { font-weight: 700; color: var(--primary); font-size: 14px; background: #E0E7FF; padding: 4px 8px; border-radius: 6px; }
+  .extra-label { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 15px; color: var(--text-dark); }
+  .extra-price { background: #E0E7FF; color: var(--primary); padding: 4px 10px; border-radius: 8px; font-size: 13px; font-weight: 700; }
 
-  input[type="checkbox"], input[type="radio"] { 
-    accent-color: var(--primary); 
-    width: 20px; 
-    height: 20px; 
-    cursor: pointer;
-  }
+  input[type="checkbox"], input[type="radio"] { accent-color: var(--primary); width: 20px; height: 20px; cursor: pointer; }
 
-  /* --- BARRA INFERIOR FLOTANTE --- */
+  /* BARRA INFERIOR */
   .bottom-bar { 
-    position: fixed; 
-    bottom: 20px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    width: 90%; 
-    max-width: 560px;
-    background: rgba(255,255,255,0.8);
-    backdrop-filter: blur(10px);
-    padding: 10px; 
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
-    display: flex; 
-    justify-content: center; 
-    z-index: 100; 
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+    width: 90%; max-width: 560px; 
+    background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); 
+    padding: 10px; border-radius: 24px; 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2); z-index: 100;
     border: 1px solid rgba(255,255,255,0.5);
   }
   
   .add-btn-large { 
-    background: var(--primary-gradient);
-    color: white; 
-    width: 100%; 
-    padding: 16px; 
-    border: none; 
-    border-radius: 16px; 
-    font-size: 16px; 
-    font-weight: 700; 
-    cursor: pointer; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    transition: all 0.3s; 
-    box-shadow: 0 10px 20px rgba(4, 36, 144, 0.3);
+    background: var(--primary-gradient); color: white; width: 100%; 
+    padding: 16px 24px; border: none; border-radius: 18px; 
+    font-size: 16px; font-weight: 700; cursor: pointer; 
+    display: flex; justify-content: space-between; align-items: center;
+    transition: 0.3s;
   }
+  .add-btn-large:hover { transform: scale(1.02); box-shadow: 0 10px 25px rgba(4, 36, 144, 0.3); }
   
-  .add-btn-large:hover { 
-    transform: scale(1.02); 
-    box-shadow: 0 15px 30px rgba(4, 36, 144, 0.4);
+  /* ESTILO BOTÓN AGOTADO */
+  .add-btn-large:disabled {
+    background: #94A3B8; cursor: not-allowed; transform: none; box-shadow: none;
+    justify-content: center; /* Centrar texto cuando está agotado */
   }
-  
-  .btn-price { 
-    background: rgba(255,255,255,0.2); 
-    padding: 4px 10px; 
-    border-radius: 8px; 
-    font-size: 14px; 
-  }
+
+  .btn-price { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 10px; font-size: 15px; }
+
 </style>
 </head>
 <body>
@@ -248,16 +150,12 @@
   </div>
 
   <div class="content-scroll" id="contentArea">
-    <div style="text-align:center; padding:50px; color:#999;">Cargando detalles...</div>
+    <div style="text-align:center; padding:50px; color:#999;">Cargando...</div>
   </div>
 </div>
 
-<div class="bottom-bar">
-    <button class="add-btn-large" onclick="agregarAlCarrito()">
-        <span>Agregar al Pedido</span>
-        <span class="btn-price" id="btnTotalPrice">$0</span>
-    </button>
-</div>
+<div class="bottom-bar" id="bottomBar">
+    </div>
 
 <script>
 let productoBase = null;
@@ -269,14 +167,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!productoId) { window.location.href = 'E2F1.html'; return; }
 
   try {
-    const response = await fetch(`http://127.0.0.1:8000/products/${productoId}`);
+    // IMPORTANTE: Agregamos ?t=... para evitar caché y leer el stock real
+    const response = await fetch(`http://127.0.0.1:8000/products/${productoId}?t=${Date.now()}`);
     if (!response.ok) throw new Error("Producto no encontrado");
     
     productoBase = await response.json();
     precioBase = productoBase.es_oferta ? productoBase.precio : productoBase.precio; 
     
     renderizarDetalle();
-    actualizarTotal();
 
   } catch (error) {
     document.getElementById('contentArea').innerHTML = '<p style="text-align:center; color:red">Error al cargar producto.</p>';
@@ -285,13 +183,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function renderizarDetalle() {
   const container = document.getElementById('contentArea');
+  const bottomBar = document.getElementById('bottomBar');
+  
+  // 1. VERIFICAR STOCK
+  // Si el campo 'disponible' es false, está agotado. Si no existe, asumimos true.
+  const enStock = productoBase.disponible !== false;
+
+  // 2. IMAGEN (Con efecto si está agotado)
+  let imgClass = enStock ? '' : 'img-gray';
+  let overlayAgotado = enStock ? '' : `<div class="badge-agotado">AGOTADO</div>`;
   
   let imgHTML = (productoBase.imagen && productoBase.imagen.startsWith("http")) 
-      ? `<img src="${productoBase.imagen}" alt="${productoBase.nombre}">`
-      : `<div style="font-size: 80px;">${productoBase.imagen || "🥩"}</div>`;
+      ? `<img src="${productoBase.imagen}" alt="${productoBase.nombre}" class="${imgClass}">`
+      : `<div style="font-size: 80px;" class="${imgClass}">${productoBase.imagen || "🥩"}</div>`;
 
-  let badgeHTML = productoBase.es_oferta ? `<div class="badge-oferta">¡OFERTA! 🔥</div>` : '';
+  let badgeHTML = (productoBase.es_oferta && enStock) ? `<div class="badge-oferta">¡OFERTA! 🔥</div>` : '';
   
+  // 3. PRECIOS
   let precioDisplay = '';
   if (productoBase.es_oferta) {
       const antiguo = productoBase.precio_normal || productoBase.precio * 1.2;
@@ -303,86 +211,78 @@ function renderizarDetalle() {
       precioDisplay = `<div class="final-price">$${productoBase.precio.toLocaleString()}</div>`;
   }
 
+  // 4. EXTRAS (Solo mostrar si hay stock)
   let extrasHTML = '';
-  let categoria = (productoBase.categoria || "").toLowerCase();
-  let nombreProd = (productoBase.nombre || "").toLowerCase();
+  if (enStock) {
+      let categoria = (productoBase.categoria || "").toLowerCase();
+      let nombreProd = (productoBase.nombre || "").toLowerCase();
 
-  // A) CARNES
-  if (categoria.includes('carne') || categoria.includes('parrilla')) {
-      extrasHTML = `
-        <div class="extras-section active">
-            <span class="extras-title">Elige un acompañamiento (Opcional)</span>
-            <label class="extra-item">
-                <div class="extra-label"><input type="checkbox" onchange="toggleExtra('Papas Fritas', 3000, this, 'extra')"> 🍟 Papas Fritas</div>
-                <div class="extra-price">+$3.000</div>
-            </label>
-            <label class="extra-item">
-                <div class="extra-label"><input type="checkbox" onchange="toggleExtra('Ensalada', 2500, this, 'extra')"> 🥗 Ensalada Chilena</div>
-                <div class="extra-price">+$2.500</div>
-            </label>
-        </div>
-      `;
+      // A) CARNES
+      if (categoria.includes('carne') || categoria.includes('parrilla')) {
+          extrasHTML = `
+            <div class="extras-section active">
+                <span class="extras-title">Completa tu plato (Opcional)</span>
+                <label class="extra-item">
+                    <div class="extra-label"><input type="checkbox" onchange="toggleExtra('Papas Fritas', 3000, this, 'extra')"> 🍟 Papas Fritas</div>
+                    <div class="extra-price">+$3.000</div>
+                </label>
+                <label class="extra-item">
+                    <div class="extra-label"><input type="checkbox" onchange="toggleExtra('Ensalada', 2500, this, 'extra')"> 🥗 Ensalada Chilena</div>
+                    <div class="extra-price">+$2.500</div>
+                </label>
+            </div>`;
+      }
+      // B) HELADOS
+      else if (nombreProd.includes('helado')) {
+          extrasHTML = `
+            <div class="extras-section active">
+                <span class="extras-title">Elige tu sabor</span>
+                <label class="extra-item"><div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Vainilla', 0, this, 'sabor')"> 🍦 Vainilla</div><div class="extra-price">Gratis</div></label>
+                <label class="extra-item"><div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Chocolate', 0, this, 'sabor')"> 🍫 Chocolate</div><div class="extra-price">Gratis</div></label>
+            </div>`;
+      }
+      // C) BEBIDAS
+      else if (categoria.includes('bebida')) {
+          extrasHTML = `
+            <div class="extras-section active">
+                <span class="extras-title">Sabor</span>
+                <label class="extra-item"><div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Coca Cola', 0, this, 'sabor')"> 🥤 Coca Cola</div><div class="extra-price">Gratis</div></label>
+                <label class="extra-item"><div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Fanta', 0, this, 'sabor')"> 🍊 Fanta</div><div class="extra-price">Gratis</div></label>
+            </div>`;
+      }
+  } else {
+      extrasHTML = `<div style="text-align:center; margin-top:30px; padding:20px; background:#FFF1F2; color:#BE123C; border-radius:12px; border:1px solid #FECDD3;">
+        Lo sentimos, este producto no está disponible por el momento.
+      </div>`;
   }
 
-  // B) PAPAS
-  if (categoria.includes('acompañamiento') || nombreProd.includes('papas')) {
-      extrasHTML = `
-        <div class="extras-section active">
-            <span class="extras-title">¿Alguna salsa?</span>
-            <label class="extra-item">
-                <div class="extra-label"><input type="checkbox" onchange="toggleExtra('Ketchup', 0, this, 'extra')"> 🍅 Ketchup</div>
-                <div class="extra-price">Gratis</div>
-            </label>
-            <label class="extra-item">
-                <div class="extra-label"><input type="checkbox" onchange="toggleExtra('Mayonesa', 0, this, 'extra')"> 🥚 Mayonesa</div>
-                <div class="extra-price">Gratis</div>
-            </label>
-        </div>
-      `;
-  }
-
-  // C) BEBIDAS
-  if (categoria.includes('bebida') || nombreProd.includes('bebida')) {
-      extrasHTML = `
-        <div class="extras-section active">
-            <span class="extras-title">Elige el sabor</span>
-            <label class="extra-item">
-                <div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Coca Cola', 0, this, 'sabor')"> 🥤 Coca Cola</div>
-                <div class="extra-price">Gratis</div>
-            </label>
-            <label class="extra-item">
-                <div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Fanta', 0, this, 'sabor')"> 🍊 Fanta</div>
-                <div class="extra-price">Gratis</div>
-            </label>
-        </div>
-      `;
-  }
-
-  // D) HELADOS
-  if (nombreProd.includes('helado')) {
-      extrasHTML = `
-        <div class="extras-section active">
-            <span class="extras-title">Elige tu sabor favorito</span>
-            <label class="extra-item">
-                <div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Vainilla', 0, this, 'sabor')"> 🍦 Vainilla</div>
-                <div class="extra-price">Gratis</div>
-            </label>
-            <label class="extra-item">
-                <div class="extra-label"><input type="radio" name="sabor" onchange="toggleExtra('Chocolate', 0, this, 'sabor')"> 🍫 Chocolate</div>
-                <div class="extra-price">Gratis</div>
-            </label>
-        </div>
-      `;
-  }
-
+  // RENDERIZAR CONTENIDO
   container.innerHTML = `
-    <div class="img-container">${imgHTML} ${badgeHTML}</div>
+    <div class="img-container">
+        ${imgHTML} ${badgeHTML} ${overlayAgotado}
+    </div>
     <h1>${productoBase.nombre}</h1>
     <div class="price-container">${precioDisplay}</div>
     <div class="desc">${productoBase.descripcion}</div>
     ${extrasHTML}
   `;
+
+  // RENDERIZAR BOTÓN (Lógica de Stock)
+  if (enStock) {
+      bottomBar.innerHTML = `
+        <button class="add-btn-large" onclick="agregarAlCarrito()">
+            <span>Agregar al Pedido</span>
+            <span class="btn-price" id="btnTotalPrice">$${precioBase.toLocaleString()}</span>
+        </button>`;
+  } else {
+      bottomBar.innerHTML = `
+        <button class="add-btn-large" disabled>
+            <span>🚫 Producto Agotado</span>
+        </button>`;
+  }
 }
+
+// --- LÓGICA DE CÁLCULO ---
 
 function toggleExtra(nombre, precio, input, tipo) {
     if (tipo === 'sabor') {
@@ -405,13 +305,13 @@ function actualizarTotal() {
 }
 
 function agregarAlCarrito() {
+    // (Lógica idéntica a la anterior, solo se ejecuta si el botón está habilitado)
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     
     let nombreProd = (productoBase.nombre || "").toLowerCase();
     let requiereSabor = nombreProd.includes('helado') || nombreProd.includes('bebida');
-    
     if (requiereSabor && extrasSeleccionados.length === 0) {
-        if(!confirm("No has elegido sabor. ¿Agregar así?")) return;
+        if(!confirm("⚠️ No has elegido sabor. ¿Agregar sin especificar?")) return;
     }
 
     let nombreFinal = productoBase.nombre;

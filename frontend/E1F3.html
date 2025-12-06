@@ -3,225 +3,231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PARRILLADAS FAMILIARES</title>
+<title>Recuperar Acceso - Parrilladas Don Eduardo</title>
 <style>
+  :root {
+    --primary: #042490;
+    --primary-gradient: linear-gradient(135deg, #021B79 0%, #0575E6 100%);
+    --secondary: #FFFFFF;
+    --text-dark: #1E293B;
+    --text-light: #64748B;
+    --bg-page: #F8FAFC;
+    --success: #10B981;
+  }
+
   body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg-page);
+    background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
+    background-size: 20px 20px;
+    margin: 0;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #f6f5f3, #042490);
-    height: 100vh; 
-    margin: 0;
+    color: var(--text-dark);
   }
+
   .form-box {
-    background: #fff; 
-    padding: 25px; 
-    border-radius: 12px;
-    width: 320px; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    text-align: center;
-  }
-  .form-box h1 {
-    color: #042490;
-    margin-bottom: 10px;
-  }
-  .form-box p {
-    margin-bottom: 20px;
-    color: #555;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background: var(--secondary);
+    padding: 40px;
+    border-radius: 24px;
     width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 50px rgba(4, 36, 144, 0.1);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.8);
   }
-  input[type="email"],
-  input[type="password"] {
-    width: 85%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    text-align: center; 
+
+  /* Barra de color superior */
+  .form-box::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+    background: var(--primary-gradient);
+  }
+
+  h1 { color: var(--primary); font-size: 22px; font-weight: 800; margin-bottom: 10px; }
+  p { color: var(--text-light); font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
+
+  /* INPUTS */
+  .form-group { margin-bottom: 15px; text-align: left; }
+  
+  input {
+    width: 100%; padding: 14px 16px;
+    border: 2px solid #F1F5F9; border-radius: 12px;
+    font-size: 14px; color: var(--text-dark);
+    transition: 0.3s; background: #FAFAFA;
     box-sizing: border-box;
   }
+
+  input:focus {
+    outline: none; border-color: var(--primary);
+    background: white; box-shadow: 0 0 0 4px rgba(4, 36, 144, 0.05);
+  }
+
+  /* BOTONES */
   button {
-    width: 85%;
-    padding: 10px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 8px;
-    background: #06048a;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
+    width: 100%; padding: 16px; margin-top: 10px;
+    border: none; border-radius: 14px;
+    background: var(--primary-gradient);
+    color: white; font-weight: 700; font-size: 16px;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 10px 20px rgba(4, 36, 144, 0.2);
   }
-  button:hover {
-    background: #0eabc7;
+
+  button:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(4, 36, 144, 0.3); }
+  
+  .btn-secondary {
+    background: transparent; color: var(--text-light); box-shadow: none;
+    border: 1px solid #E2E8F0; margin-top: 15px;
   }
-  small {
-    color: #e74c3c;
-    display: block;
-    height: 14px;
-    text-align: left;
-    width: 85%;
-    margin-bottom: 5px;
-  }
-  .mensaje {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: 600;
-    display: none;
-    width: 85%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .exito {
-    background: #2ecc71; 
-    color: #fff;
-  }
-  .error {
-    background: #e74c3c; 
-    color: #fff;
-  }
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-  }
-  .nav-btn {
-    flex: 1;
-    padding: 8px;
-    margin: 0 5px;
-    border: none;
-    border-radius: 5px;
-    background: #ddd;
-    cursor: pointer;
-    font-size: 12px;
-  }
-  .nav-btn.activo {
-    background: #06048a;
-    color: white;
-  }
-  .paso {
-    display: none;
-  }
-  .paso.activo {
-    display: block;
+  .btn-secondary:hover { background: #F1F5F9; box-shadow: none; color: var(--text-dark); }
+
+  /* VALIDACIÓN Y ERRORES */
+  small { color: #EF4444; font-size: 12px; display: block; margin-top: 5px; }
+
+  /* PASOS (Ocultar/Mostrar con animación) */
+  .paso { display: none; animation: fadeIn 0.5s ease; }
+  .paso.activo { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ICONOS DE ÉXITO */
+  .icon-success {
+    width: 60px; height: 60px; background: #DCFCE7; color: var(--success);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 30px; margin: 0 auto 20px;
   }
 </style>
 </head>
 <body>
-<div class="form-box">
-  <div class="nav">
-    <button class="nav-btn activo" onclick="location.href='E1F3.html'">Recuperar Contraseña</button>
-  </div>
 
-  <!-- Paso 1: Solicitar correo -->
+<div class="form-box">
+  
   <div id="paso1" class="paso activo">
-    <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
-    <p>Recuperar contraseña</p>
+    <h1>Recuperar Contraseña</h1>
+    <p>Ingresa tu correo electrónico y te enviaremos un enlace seguro para restablecer tu clave.</p>
     
     <form id="solicitudForm">
-      <input type="email" id="email" placeholder="Correo electrónico" value="eduardo@ejemplo.com" required>
-      <small id="error-email"></small>
-      <button type="submit">Enviar enlace de recuperación</button>
+      <div class="form-group">
+        <input type="email" id="email" placeholder="ejemplo@correo.com" required>
+        <small id="error-email"></small>
+      </div>
+      <button type="submit">Enviar Enlace</button>
+      <button type="button" class="btn-secondary" onclick="location.href='E1F2.html'">Volver al Login</button>
     </form>
-    
-    <div style="margin-top: 15px; font-size: 14px;">
-      <p><a href="E1F2.html" style="color: #06048a; text-decoration: none;">Volver al login</a></p>
-    </div>
   </div>
 
-  <!-- Paso 2: Enlace enviado -->
   <div id="paso2" class="paso">
-    <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
-    <div style="font-size: 48px; color: #2ecc71; margin: 15px 0;">✓</div>
-    <h3>ENLACE ENVIADO</h3>
-    <p>Se ha enviado un enlace de recuperación a:</p>
-    <p style="font-weight: bold; color: #042490; margin: 10px 0;" id="correoDestino"></p>
-    <p style="color: #0eabc7; font-weight: bold; font-size: 14px;">El enlace expira en 15 minutos</p>
-    <button onclick="mostrarPaso(3)">Continuar</button>
+    <div class="icon-success">✓</div>
+    <h1>¡Enlace Enviado!</h1>
+    <p>Hemos enviado las instrucciones a:<br><strong style="color:var(--primary)" id="correoDestino">...</strong></p>
+    <p style="font-size:13px; background:#EFF6FF; padding:10px; border-radius:8px; color:#1E40AF;">
+      ℹ️ Simulación: Haz clic en "Continuar" para simular que abriste el enlace del correo.
+    </p>
+    <button onclick="mostrarPaso(3)">Continuar (Simular clic)</button>
   </div>
 
-  <!-- Paso 3: Nueva contraseña -->
   <div id="paso3" class="paso">
-    <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
-    <p>Crear nueva contraseña para:<br><span id="correoUsuario" style="font-weight: bold; color: #042490;"></span></p>
+    <h1>Crear Nueva Contraseña</h1>
+    <p>Introduce tu nueva contraseña para la cuenta:<br><strong id="correoUsuario"></strong></p>
     
     <form id="nuevaPassForm">
-      <input type="password" id="nuevaPassword" placeholder="Nueva contraseña" required>
-      <small id="error-password"></small>
-      <input type="password" id="confirmarPassword" placeholder="Confirmar contraseña" required>
-      <small id="error-confirm"></small>
-      <button type="submit">Actualizar contraseña</button>
+      <div class="form-group">
+        <input type="password" id="nuevaPassword" placeholder="Nueva contraseña" required>
+        <small id="error-password"></small>
+      </div>
+      <div class="form-group">
+        <input type="password" id="confirmarPassword" placeholder="Confirmar contraseña" required>
+        <small id="error-confirm"></small>
+      </div>
+      <button type="submit">Actualizar Contraseña</button>
     </form>
   </div>
 
-  <!-- Paso 4: Contraseña actualizada -->
   <div id="paso4" class="paso">
-    <h1>PARRILLADAS FAMILIARES DON EDUARDO</h1>
-    <div style="font-size: 48px; color: #2ecc71; margin: 15px 0;">✓</div>
-    <h3>CONTRASEÑA ACTUALIZADA</h3>
-    <p>Tu contraseña ha sido restablecida exitosamente</p>
-    <button onclick="location.href='E1F2.html'">Ir al login</button>
+    <div class="icon-success">✓</div>
+    <h1>¡Todo Listo!</h1>
+    <p>Tu contraseña ha sido actualizada correctamente. Ya puedes ingresar con tus nuevas credenciales.</p>
+    <button onclick="location.href='E1F2.html'">Ir al Login</button>
   </div>
+
 </div>
 
 <script>
+// LÓGICA DE NAVEGACIÓN DE PASOS
 function mostrarPaso(numero) {
   document.querySelectorAll('.paso').forEach(p => p.classList.remove('activo'));
   document.getElementById('paso' + numero).classList.add('activo');
 }
 
+// VALIDACIONES
 function validarEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
 function validarPass(p){return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(p);}
 function err(id,txt){document.getElementById(id).textContent=txt;}
 function limpiarErrores(){['email','password','confirm'].forEach(c=>err('error-'+c,''));}
 
-document.getElementById("solicitudForm").addEventListener("submit",e=>{
+// EVENTO: SOLICITAR CORREO
+document.getElementById("solicitudForm").addEventListener("submit", e => {
   e.preventDefault();
   limpiarErrores();
   
   const email = document.getElementById("email").value.trim();
   
-  if(!email||!validarEmail(email)){
-    err("error-email","Correo electrónico inválido");
+  if(!email || !validarEmail(email)){
+    err("error-email","Por favor ingresa un correo válido");
     return;
   }
   
-  document.getElementById("correoDestino").textContent = email;
-  document.getElementById("correoUsuario").textContent = email;
-  mostrarPaso(2);
+  // Simulación de carga
+  const btn = e.target.querySelector('button[type="submit"]');
+  const originalText = btn.textContent;
+  btn.textContent = "Enviando...";
+  btn.disabled = true;
+
+  setTimeout(() => {
+    document.getElementById("correoDestino").textContent = email;
+    document.getElementById("correoUsuario").textContent = email;
+    mostrarPaso(2);
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }, 1000);
 });
 
-document.getElementById("nuevaPassForm").addEventListener("submit",e=>{
+// EVENTO: CAMBIAR CONTRASEÑA
+document.getElementById("nuevaPassForm").addEventListener("submit", async e => {
   e.preventDefault();
   limpiarErrores();
   
+  const email = document.getElementById("correoUsuario").textContent;
   const nuevaPass = document.getElementById("nuevaPassword").value;
   const confirmPass = document.getElementById("confirmarPassword").value;
   
-  if(!nuevaPass||!validarPass(nuevaPass)){
-    err("error-password","Contraseña no cumple requisitos");
+  // Validaciones Frontend
+  if(!nuevaPass || !validarPass(nuevaPass)){
+    err("error-password","Mínimo 8 caracteres, mayúscula, número y símbolo");
     return;
   }
   
-  if(confirmPass!==nuevaPass){
+  if(confirmPass !== nuevaPass){
     err("error-confirm","Las contraseñas no coinciden");
     return;
   }
   
-  mostrarPaso(4);
-});
+  // Simulación de llamada a API (O conexión real si la implementamos)
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.textContent = "Actualizando...";
+  btn.disabled = true;
 
-mostrarPaso(1);
+  // NOTA: Aquí podríamos conectar con el endpoint real, 
+  // pero para recuperación usualmente se requiere un token.
+  // Para efectos del video, la simulación visual es suficiente.
+  
+  setTimeout(() => {
+    mostrarPaso(4);
+  }, 1500);
+});
 </script>
+
 </body>
 </html>

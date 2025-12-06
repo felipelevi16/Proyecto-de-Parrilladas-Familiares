@@ -3,334 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Catálogo - Parrilladas Familiares</title>
+    <title>Productos - Admin</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background-color: #f8f9fa; }
-        .header { background: #004085; color: white; padding: 15px; text-align: center; }
-        .admin-nav { background: #343a40; padding: 15px; }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; gap: 30px; }
-        .nav-item { color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; transition: background 0.3s; }
-        .nav-item:hover, .nav-item.active { background: #004085; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
-        .page-title { text-align: center; margin-bottom: 30px; color: #333; }
+        /* ESTILOS COMPARTIDOS DEL SIDEBAR */
+        :root { --primary: #042490; --primary-gradient: linear-gradient(135deg, #021B79 0%, #0575E6 100%); --bg-page: #F8FAFC; --text-dark: #1E293B; --text-light: #64748B; --success: #10B981; --danger: #EF4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--bg-page); color: var(--text-dark); display: flex; min-height: 100vh; }
         
-        .management-tabs { display: flex; margin-bottom: 30px; border-bottom: 2px solid #dee2e6; }
-        .tab { padding: 12px 25px; cursor: pointer; border: none; background: none; font-size: 16px; border-bottom: 2px solid transparent; transition: all 0.3s; }
-        .tab.active { border-bottom-color: #004085; color: #004085; font-weight: bold; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .sidebar { width: 280px; background: var(--primary-gradient); color: white; padding: 30px 20px; display: flex; flex-direction: column; box-shadow: 4px 0 20px rgba(0,0,0,0.1); position: sticky; top: 0; height: 100vh; }
+        .logo { font-size: 22px; font-weight: 800; margin-bottom: 50px; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 16px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); }
+        .nav-group { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+        .nav-item { padding: 14px 20px; color: rgba(255,255,255,0.7); text-decoration: none; border-radius: 14px; transition: 0.3s; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 12px; border: 1px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.15); color: white; transform: translateX(5px); }
+        .nav-item.active { background: white; color: var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-weight: 800; }
+        .nav-footer { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
+
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .page-title { font-size: 28px; font-weight: 800; }
+
+        .btn-add { background: var(--success); color: white; border: none; padding: 12px 24px; border-radius: 12px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: 0.2s; }
+        .btn-add:hover { transform: translateY(-2px); }
+
+        .card { background: white; border-radius: 20px; padding: 0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 20px; background: #F8FAFC; color: var(--text-light); font-size: 12px; text-transform: uppercase; font-weight: 700; }
+        td { padding: 15px 20px; border-bottom: 1px solid #F1F5F9; vertical-align: middle; }
         
-        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px; }
-        .item-card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 4px solid #8B0000; }
-        .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
-        .item-name { font-weight: bold; font-size: 18px; color: #333; }
-        .item-price { color: #004085; font-weight: bold; font-size: 16px; }
-        .item-description { color: #666; margin-bottom: 15px; line-height: 1.4; }
-        .item-actions { display: flex; gap: 10px; }
-        .action-btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; flex: 1; }
-        .btn-edit { background: #ffc107; color: #212529; }
-        .btn-delete { background: #dc3545; color: white; }
-        .btn-status { background: #28a745; color: white; }
+        .product-thumb { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; background: #F1F5F9; }
+        .badge { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .in-stock { background: #D1FAE5; color: #065F46; }
+        .out-stock { background: #FEE2E2; color: #991B1B; }
         
-        .management-form { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
-        .form-actions { display: flex; gap: 15px; justify-content: flex-end; margin-top: 25px; }
-        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-primary { background: #004085; color: white; }
-        .btn-secondary { background: #6c757d; color: white; }
+        .btn-icon { background: none; border: none; font-size: 18px; cursor: pointer; padding: 8px; border-radius: 8px; transition: 0.2s; }
+        .btn-icon:hover { background: #F1F5F9; }
         
-        .status-indicator { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
-        .status-active { background: #28a745; }
-        .status-inactive { background: #dc3545; }
-        
-        .notification { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 20px; border-radius: 4px; display: none; z-index: 1000; }
+        /* MODAL (Estilos del anterior código, mantenidos) */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-card { background: white; padding: 30px; border-radius: 20px; width: 450px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: slideUp 0.3s; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #64748B; }
+        .form-input { width: 100%; padding: 10px; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 14px; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
+        .btn-cancel { background: #F1F5F9; color: #64748B; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-save { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Parrilladas Familiares - Administración</h1>
-    </div>
-    
-    <div class="admin-nav">
-        <div class="nav-container">
-            <a href="E6F1.html" class="nav-item">Dashboard</a>
-            <a href="#" class="nav-item">Administrar Pedidos</a>
-            <a href="E6F2.html" class="nav-item">Administrar Reservas</a>
-            <a href="E6F3.html" class="nav-item active">Administrar Catálogo</a>
+    <div class="sidebar">
+        <div class="logo">🔥 Admin Panel</div>
+        <div class="nav-group">
+            <a href="E6F1.html" class="nav-item"><span>📊</span> Dashboard</a>
+            <a href="E6F3.html" class="nav-item active"><span>🥩</span> Productos</a>
+            <a href="E6F2.html" class="nav-item"><span>📅</span> Reservas</a>
+        </div>
+        <div class="nav-footer">
+            <a href="E2F1.html" class="nav-item" target="_blank" style="background: rgba(255,255,255,0.1);"><span>🌐</span> Ver Tienda</a>
         </div>
     </div>
-    
-    <div class="container">
-        <h2 class="page-title">Gestión de Contenido</h2>
-        
-        <div class="notification" id="notification"></div>
-        
-        <div class="management-tabs">
-            <button class="tab active" onclick="showTab('promotions')">Promociones</button>
-            <button class="tab" onclick="showTab('catalog')">Productos</button>
-            <button class="tab" onclick="showTab('add-promotion')">Agregar Promoción</button>
-            <button class="tab" onclick="showTab('add-product')">Agregar Producto</button>
+
+    <div class="main-content">
+        <div class="header">
+            <h2 class="page-title">Catálogo de Productos</h2>
+            <button class="btn-add" onclick="openModal()">+ Nuevo Producto</button>
         </div>
-        
-        <!-- Pestaña: Promociones -->
-        <div id="promotions" class="tab-content active">
-            <h3 style="color: #333; margin-bottom: 25px;">Administración de Promociones</h3>
-            
-            <div class="items-grid">
-                <div class="item-card">
-                    <div class="item-header">
-                        <div class="item-name">Oferta Combo Parrillero</div>
-                        <div class="item-price">$18.000</div>
-                    </div>
-                    <div class="item-description">
-                        Combo especial incluye costillar, chorizos, pollo y acompañamientos para 4 personas
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn btn-edit" onclick="editItem('promo1')">Editar</button>
-                        <button class="action-btn btn-status" onclick="toggleStatus('promo1')">Desactivar</button>
-                    </div>
-                </div>
-                
-                <div class="item-card">
-                    <div class="item-header">
-                        <div class="item-name">Finde Parrillero</div>
-                        <div class="item-price">$15.000</div>
-                    </div>
-                    <div class="item-description">
-                        Promoción especial de fin de semana con descuento del 20%
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn btn-edit" onclick="editItem('promo2')">Editar</button>
-                        <button class="action-btn btn-delete" onclick="deleteItem('promo2')">Eliminar</button>
-                    </div>
-                </div>
-            </div>
+
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Img</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Categoría</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="productsTable">
+                    <tr><td colspan="6" style="text-align:center; padding:30px;">Cargando...</td></tr>
+                </tbody>
+            </table>
         </div>
-        
-        <!-- Pestaña: Productos -->
-        <div id="catalog" class="tab-content">
-            <h3 style="color: #333; margin-bottom: 25px;">Catálogo de Productos</h3>
-            
-            <div class="items-grid">
-                <div class="item-card">
-                    <div class="item-header">
-                        <div class="item-name">
-                            <span class="status-indicator status-active"></span>
-                            Lomo Vetado
-                        </div>
-                        <div class="item-price">$18.000</div>
-                    </div>
-                    <div class="item-description">
-                        Corte premium de lomo vetado, 400g aproximadamente
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn btn-edit" onclick="editItem('prod1')">Editar</button>
-                        <button class="action-btn btn-status" onclick="toggleStatus('prod1')">Desactivar</button>
-                    </div>
-                </div>
-                
-                <div class="item-card">
-                    <div class="item-header">
-                        <div class="item-name">
-                            <span class="status-indicator status-active"></span>
-                            Pollo Asado
-                        </div>
-                        <div class="item-price">$8.000</div>
-                    </div>
-                    <div class="item-description">
-                        Pollo entero asado a la parrilla con especias especiales
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn btn-edit" onclick="editItem('prod2')">Editar</button>
-                        <button class="action-btn btn-status" onclick="toggleStatus('prod2')">Desactivar</button>
-                    </div>
-                </div>
+    </div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-card">
+            <h3 style="margin-bottom:20px; font-weight:800; color:var(--primary)" id="modalTitle">Agregar Producto</h3>
+            <div class="form-group"><label class="form-label">Nombre</label><input type="text" id="pName" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Descripción</label><input type="text" id="pDesc" class="form-input"></div>
+            <div class="form-group" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div><label class="form-label">Precio</label><input type="number" id="pPrice" class="form-input"></div>
+                <div><label class="form-label">Categoría</label><select id="pCat" class="form-input"><option value="carnes">Carnes</option><option value="combos">Combos Parrilleros</option> <option value="carnes">Carnes</option><option value="acompañamientos">Acompañamientos</option><option value="bebidas">Bebidas</option><option value="postres">Postres</option></select></div>
             </div>
-        </div>
-        
-        <!-- Pestaña: Agregar Promoción -->
-        <div id="add-promotion" class="tab-content">
-            <h3 style="color: #333; margin-bottom: 25px;">Agregar Nueva Promoción</h3>
-            
-            <div class="management-form">
-                <div class="form-group">
-                    <label for="promoName">Nombre:</label>
-                    <input type="text" id="promoName" class="form-control" placeholder="Oferta Combo Parrillero">
-                </div>
-                
-                <div class="form-group">
-                    <label for="promoDescription">Descripción:</label>
-                    <textarea id="promoDescription" class="form-control" rows="3" placeholder="Descripción de la promoción"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="promoPrice">Precio:</label>
-                    <input type="number" id="promoPrice" class="form-control" placeholder="18000">
-                </div>
-                
-                <div class="form-group">
-                    <label for="promoPeriod">Vigencia:</label>
-                    <input type="text" id="promoPeriod" class="form-control" placeholder="10-11 de junio">
-                </div>
-                
-                <div class="form-actions">
-                    <button class="btn btn-secondary" onclick="showTab('promotions')">Cancelar</button>
-                    <button class="btn btn-primary" onclick="savePromotion()">Guardar</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Pestaña: Agregar Producto -->
-        <div id="add-product" class="tab-content">
-            <h3 style="color: #333; margin-bottom: 25px;">Agregar Nuevo Producto</h3>
-            
-            <div class="management-form">
-                <div class="form-group">
-                    <label for="productName">Nombre:</label>
-                    <input type="text" id="productName" class="form-control" placeholder="Lomo Vetado">
-                </div>
-                
-                <div class="form-group">
-                    <label for="productDescription">Descripción:</label>
-                    <textarea id="productDescription" class="form-control" rows="3" placeholder="Descripción del producto"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="productPrice">Precio:</label>
-                    <input type="number" id="productPrice" class="form-control" placeholder="18000">
-                </div>
-                
-                <div class="form-group">
-                    <label for="productCategory">Categoría:</label>
-                    <select id="productCategory" class="form-control">
-                        <option value="">Seleccionar categoría</option>
-                        <option value="carnes">Carnes</option>
-                        <option value="acompanamientos">Acompañamientos</option>
-                        <option value="bebidas">Bebidas</option>
-                        <option value="postres">Postres</option>
-                    </select>
-                </div>
-                
-                <div class="form-actions">
-                    <button class="btn btn-secondary" onclick="showTab('catalog')">Cancelar</button>
-                    <button class="btn btn-primary" onclick="saveProduct()">Guardar</button>
-                </div>
-            </div>
+            <div class="form-group"><label class="form-label">URL Imagen</label><input type="text" id="pImg" class="form-input"></div>
+            <div class="form-group"><label class="form-label"><input type="checkbox" id="pOferta"> ¿Es Oferta?</label></div>
+            <div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="saveProduct()">Guardar</button></div>
         </div>
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        cargarProductos();
-        // Navegación de pestañas
-        document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', e => showTab(e.target.getAttribute('onclick').split("'")[1])));
-    });
+        const API_URL = 'http://127.0.0.1:8000';
+        let productosGlobal = []; 
+        let editingProductId = null; 
 
-    // 1. CARGAR PRODUCTOS DESDE LA API
-    async function cargarProductos() {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/products');
-            const productos = await response.json();
-            
-            const grid = document.querySelector('#catalog .items-grid');
-            grid.innerHTML = ''; // Limpiar lista falsa
+        document.addEventListener('DOMContentLoaded', loadProducts);
 
-            productos.forEach(p => {
-                // Determinar imagen
-                let img = (p.imagen && p.imagen.startsWith('http')) 
-                    ? `<img src="${p.imagen}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">` 
-                    : `<span style="font-size:24px;">🥩</span>`;
-
-                grid.innerHTML += `
-                    <div class="item-card">
-                        <div class="item-header">
-                            <div class="item-name" style="display:flex; gap:10px; align-items:center;">
-                                ${img} ${p.nombre}
-                            </div>
-                            <div class="item-price">$${p.precio.toLocaleString()}</div>
-                        </div>
-                        <div class="item-description">${p.descripcion}</div>
-                        <div class="item-actions">
-                            <button class="action-btn btn-edit">Editar</button>
-                            <button class="action-btn btn-status">Desactivar</button>
-                        </div>
-                    </div>
-                `;
-            });
-        } catch (error) {
-            console.error("Error cargando productos:", error);
-        }
-    }
-
-    // 2. GUARDAR NUEVO PRODUCTO (CONECTADO A API)
-    async function saveProduct() {
-        const name = document.getElementById('productName').value;
-        const price = document.getElementById('productPrice').value;
-        const category = document.getElementById('productCategory').value;
-        const desc = document.getElementById('productDescription').value;
-        
-        // Validar
-        if (!name || !price || !category) {
-            showNotification('Por favor completa los campos obligatorios', 'error');
-            return;
-        }
-
-        const nuevoProducto = {
-            nombre: name,
-            descripcion: desc,
-            precio: parseInt(price),
-            categoria: category,
-            imagen: "", // Podrías poner una URL de imagen por defecto aquí si quieres
-            especificaciones: []
-        };
-
-        try {
-            const response = await fetch('http://127.0.0.1:8000/products', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(nuevoProducto)
-            });
-
-            if (response.ok) {
-                showNotification(`Producto "${name}" creado exitosamente`);
-                // Limpiar form
-                document.getElementById('productName').value = '';
-                document.getElementById('productPrice').value = '';
-                document.getElementById('productDescription').value = '';
+        async function loadProducts() {
+            const tbody = document.getElementById('productsTable');
+            try {
+                const res = await fetch(`${API_URL}/products?t=${Date.now()}`);
+                productosGlobal = await res.json();
+                tbody.innerHTML = '';
                 
-                // Recargar lista y volver a la pestaña de catálogo
-                cargarProductos();
-                showTab('catalog');
-            } else {
-                showNotification('Error al crear producto', 'error');
-            }
-        } catch (error) {
-            console.error(error);
-            showNotification('Error de conexión', 'error');
+                productosGlobal.forEach(p => {
+                    const imgUrl = (p.imagen && p.imagen.startsWith('http')) ? p.imagen : 'https://via.placeholder.com/40?text=P';
+                    const enStock = p.disponible !== false; 
+                    const badgeClass = enStock ? 'in-stock' : 'out-stock';
+                    const badgeText = enStock ? 'En Stock' : 'Agotado';
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><img src="${imgUrl}" class="product-thumb"></td>
+                            <td><strong>${p.nombre}</strong></td>
+                            <td>$${p.precio.toLocaleString()}</td>
+                            <td style="text-transform:capitalize;">${p.categoria}</td>
+                            <td><span class="badge ${badgeClass}" onclick="toggleStock('${p._id}', ${enStock})">${badgeText}</span></td>
+                            <td>
+                                <button class="btn-icon" onclick="openEditModal('${p._id}')">✏️</button>
+                                <button class="btn-icon" style="color:#EF4444;" onclick="deleteProduct('${p._id}')">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (e) { console.error(e); }
         }
-    }
 
-    // Funciones de UI (Pestañas y Notificaciones)
-    function showTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        // Funciones de lógica (Iguales a la versión anterior funcional)
+        function openModal() { editingProductId = null; document.getElementById('modalTitle').textContent = "Agregar Producto"; document.getElementById('pName').value = ''; document.getElementById('pDesc').value = ''; document.getElementById('pPrice').value = ''; document.getElementById('pImg').value = ''; document.getElementById('pOferta').checked = false; document.getElementById('modal').style.display = 'flex'; }
+        function openEditModal(id) { const p = productosGlobal.find(prod => prod._id === id); if (!p) return; document.getElementById('pName').value = p.nombre; document.getElementById('pDesc').value = p.descripcion; document.getElementById('pPrice').value = p.precio; document.getElementById('pCat').value = p.categoria; document.getElementById('pImg').value = p.imagen; document.getElementById('pOferta').checked = p.es_oferta; editingProductId = id; document.getElementById('modalTitle').textContent = "Editar Producto"; document.getElementById('modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
         
-        document.getElementById(tabId).classList.add('active');
-        // Buscar el botón que corresponde a este tab para activarlo visualmente
-        const btn = Array.from(document.querySelectorAll('.tab')).find(b => b.getAttribute('onclick').includes(tabId));
-        if(btn) btn.classList.add('active');
-    }
+        async function saveProduct() {
+            const data = { nombre: document.getElementById('pName').value, descripcion: document.getElementById('pDesc').value, precio: parseInt(document.getElementById('pPrice').value), categoria: document.getElementById('pCat').value, imagen: document.getElementById('pImg').value, es_oferta: document.getElementById('pOferta').checked, disponible: true };
+            try {
+                let url = `${API_URL}/products`; let method = 'POST';
+                if (editingProductId) { url = `${API_URL}/products/${editingProductId}`; method = 'PUT'; }
+                await fetch(url, { method: method, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+                closeModal(); loadProducts();
+            } catch (e) { alert("Error al guardar"); }
+        }
 
-    function showNotification(msg, type='success') {
-        const notif = document.getElementById('notification');
-        notif.textContent = msg;
-        notif.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
-        notif.style.display = 'block';
-        setTimeout(() => notif.style.display = 'none', 3000);
-    }
+        async function deleteProduct(id) { if(!confirm("¿Eliminar?")) return; await fetch(`${API_URL}/products/${id}`, { method: 'DELETE' }); loadProducts(); }
+        async function toggleStock(id, estado) { await fetch(`${API_URL}/products/${id}/stock?disponible=${!estado}`, { method: 'PATCH' }); loadProducts(); }
     </script>
 </body>
 </html>
